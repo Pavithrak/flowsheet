@@ -36,14 +36,12 @@ public class FlowsheetTab extends PatientDashboardTabExt {
 
 	@Override
 	public String getRequiredPrivilege() {
-		// TODO Auto-generated method stub
-		return null;
+		return "View Patients";
 	}
 
 	@Override
 	public String getPortletUrl() {
-		// TODO Auto-generated method stub
-		return null;
+		return "flowsheetHtmlForm";
 	}
 	
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="api/src/main/java"/>
+	<classpathentry kind="src" path="omod/src/test/java"/>
+	<classpathentry kind="src" path="omod/src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/openmrs/api/openmrs-api/1.8.0-SNAPSHOT/openmrs-api-1.8.0-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/openmrs/web/openmrs-web/1.8.0-SNAPSHOT/openmrs-web-1.8.0-SNAPSHOT.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit/junit/4.8.1/junit-4.8.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

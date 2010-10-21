@@ -1,3 +1,5 @@
+package org.openmrs.module.flowsheetmodule;
+
 /**
  * The contents of this file are subject to the OpenMRS Public License
  * Version 1.0 (the "License"); you may not use this file except in
@@ -11,18 +13,20 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.flowsheetmodule;
+//package org.openmrs.module.flowsheetmodule;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNotNull;
 
+import org.junit.Test;
 import org.openmrs.module.flowsheetmodule.extension.html.FlowsheetTab;
 
 
 /**
  * This test validates the AdminList extension class
  */
-public class PatientDashboardExtensionTest extends TestCase {
+public class PatientDashboardExtensionTest{
 
+	@Test
 	public void testshouldBeWrittenHere(){
 		assertNotNull(new FlowsheetTab());
 	}
