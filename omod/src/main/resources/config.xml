@@ -55,24 +55,30 @@
 	</globalProperty>
 	/Required Global Properties -->
 	
-	<!--
 	<dwr>
 		<allow>
-			<create creator="new" javascript="DWRFormEntryService">
-				<param name="class" value="org.openmrs.module.@MODULE_ID@.web.DWRFormEntryService"/>
-				<include method="enterForm"/>
+			<convert converter="bean" match="org.openmrs.module.flowsheet.web.dwr.data.Flowsheet">
+				<param name="include" value="encounters"/>
+			</convert>
+			<convert converter="bean" match="org.openmrs.module.flowsheet.web.dwr.data.Encounter">
+				<param name="include" value="observations"/>
+			</convert>
+			<convert converter="bean" match="org.openmrs.module.flowsheet.web.dwr.data.Observation"/>
+		
+			<create creator="new" javascript="DWRFlowsheetService">
+				<param name="class" value="org.openmrs.module.flowsheet.web.dwr.DWRFlowsheetService"/>
+				<include method="getFlowSheetForPatient"/>
 			</create>
 		</allow>
 
 		<signatures>
 			<![CDATA[
-			import @MODULE_PACKAGE@.web.DWRFormEntryService;
-			DWRFormEntryService.enterForm(Integer patientId, Integer formId, boolean useEncounter, List<String> fields);
+				import org.openmrs.module.flowsheet.web.dwr.DWRFlowsheetService;
+				DWRFlowsheetService.getFlowSheetForPatient(int patientId);
 			]]>
-		</signatures>	
+		</signatures>
 	</dwr>
-	-->
-	
+		
 	<!-- Servlets -->
 	<!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> 
 	<servlet>

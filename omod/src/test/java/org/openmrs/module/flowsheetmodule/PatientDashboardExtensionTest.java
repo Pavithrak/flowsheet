@@ -18,7 +18,7 @@ package org.openmrs.module.flowsheetmodule;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.openmrs.module.flowsheetmodule.extension.html.FlowsheetTab;
+import org.openmrs.module.flowsheet.extension.html.FlowsheetTab;
 
 
 

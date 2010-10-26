@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.flowsheetmodule;
+package org.openmrs.module.flowsheet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

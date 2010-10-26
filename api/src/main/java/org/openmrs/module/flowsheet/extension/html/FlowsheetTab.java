@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.flowsheetmodule.extension.html;
+package org.openmrs.module.flowsheet.extension.html;
 
 import org.openmrs.module.web.extension.PatientDashboardTabExt;
 

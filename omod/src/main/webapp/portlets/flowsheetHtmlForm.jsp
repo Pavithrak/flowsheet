@@ -5,22 +5,34 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Flowsheet</title>
+<%@ include file="/WEB-INF/template/include.jsp"%>
+<openmrs:htmlInclude file="/dwr/engine.js" />
+<openmrs:htmlInclude file="/dwr/util.js" />
+<openmrs:htmlInclude file="/dwr/interface/DWRFlowsheetService.js" />
+
 </head>
 <body>
 
 Hello World!, Welcome to Flowsheet project
-<div id="accordion">
-    <h3><a href="#">First header</a></h3>
-    <div>First content</div>
-    <h3><a href="#">Second header</a></h3>
-    <div>Second content</div>
+<div id="flowsheet">
 </div>
+
 </body>
 
 	<script>
-	$j(function() {
-		$j( "#accordion" ).accordion();
-	});
-	</script>
+	var patientId = <request:parameter name="patientId"/> ;
+	var getFlowsheetData = function(){
+		DWRFlowsheetService.getFlowSheetForPatient(patientId,drawFlowsheet);
+	};
+	var newcontent = '';
+	var drawFlowsheet = function(flowsheetData){
+		$j.each(flowsheetData.encounters,function(val){
+			newcontent += val;
+		});
+		$j('#flowsheet').html(newcontent);
+	}
+	
+	 $j(document).ready(getFlowsheetData);            
+	 </script>
 
 </html>

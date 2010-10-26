@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.openmrs.module</groupId>
-		<artifactId>flowsheetmodule</artifactId>
+		<artifactId>flowsheet</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.openmrs.module</groupId>
-	<artifactId>flowsheetmodule-api</artifactId>
+	<artifactId>flowsheet-api</artifactId>
 	<packaging>jar</packaging>
 	<name>Flowsheet Module API</name>
 	<description>API project for Basic Module</description>
