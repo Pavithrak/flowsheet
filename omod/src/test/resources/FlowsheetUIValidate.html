@@ -1,7 +1,7 @@
 <html>
 	<script type="text/javascript" src="../../main/resources/sampleFlowsheetData.js"></script> 
+	<script type="text/javascript" src="../../main/resources/flowsheetDataHandler.js"></script> 
 	<script type="text/javascript" src="../../main/resources/flowsheet.js"></script>
-	<script type="text/javascript" src="../../main/resources/flowsheetController.js"></script> 
 	<script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script> 
 	<script type="text/javascript" src="scripts/jquery-ui-1.8.2.custom.min.js"></script>
 	<script type="text/javascript" src="../../main/resources/jquery.jqGrid.min.js"></script> 
@@ -18,9 +18,10 @@
 		</td>
 	</table>
 	<script type="text/javascript">
-		var flowsheetData = SampleFlowsheetData();
-		var flowsheet = new Flowsheet(flowsheetData);
-		flowsheet.populateObservationDataGrid("flowsheet");
+		var flowsheetDataJson = SampleFlowsheetData();
+        var data = new FlowsheetDataHandler(flowsheetDataJson);
+		var flowsheet = new Flowsheet();
+		flowsheet.render(data,"flowsheet");
 		
 	</script>
 </html>
