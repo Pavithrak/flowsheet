@@ -57,13 +57,13 @@
 	
 	<dwr>
 		<allow>
-			<convert converter="bean" match="org.openmrs.module.flowsheet.web.dwr.data.Flowsheet">
+			<convert converter="bean" match="org.openmrs.module.flowsheet.Flowsheet">
 				<param name="include" value="encounters"/>
 			</convert>
 			<convert converter="bean" match="org.openmrs.module.flowsheet.web.dwr.data.Encounter">
 				<param name="include" value="observations"/>
 			</convert>
-			<convert converter="bean" match="org.openmrs.module.flowsheet.web.dwr.data.Observation"/>
+			<convert converter="bean" match="org.openmrs.module.flowsheet.Observation"/>
 		
 			<create creator="new" javascript="DWRFlowsheetService">
 				<param name="class" value="org.openmrs.module.flowsheet.web.dwr.DWRFlowsheetService"/>
