@@ -55,29 +55,29 @@
 	</globalProperty>
 	/Required Global Properties -->
 	
-	<dwr>
-		<allow>
-			<convert converter="bean" match="org.openmrs.module.flowsheet.Flowsheet">
-				<param name="include" value="encounters"/>
-			</convert>
-			<convert converter="bean" match="org.openmrs.module.flowsheet.web.dwr.data.Encounter">
-				<param name="include" value="observations"/>
-			</convert>
-			<convert converter="bean" match="org.openmrs.module.flowsheet.Observation"/>
-		
-			<create creator="new" javascript="DWRFlowsheetService">
-				<param name="class" value="org.openmrs.module.flowsheet.web.dwr.DWRFlowsheetService"/>
-				<include method="getFlowSheetForPatient"/>
-			</create>
-		</allow>
+	<!--<dwr>-->
+		<!--<allow>-->
+			<!--<convert converter="bean" match="org.openmrs.module.flowsheet.Flowsheet">-->
+				<!--<param name="include" value="encounters"/>-->
+			<!--</convert>-->
+			<!--<convert converter="bean" match="org.openmrs.module.flowsheet.web.dwr.data.Encounter">-->
+				<!--<param name="include" value="observations"/>-->
+			<!--</convert>-->
+			<!--&lt;!&ndash;<convert converter="bean" match="org.openmrs.module.flowsheet.Observation"/>&ndash;&gt;-->
+		<!---->
+			<!--&lt;!&ndash;<create creator="new" javascript="DWRFlowsheetService">&ndash;&gt;-->
+				<!--&lt;!&ndash;<param name="class" value="org.openmrs.module.flowsheet.web.dwr.DWRFlowsheetService"/>&ndash;&gt;-->
+				<!--&lt;!&ndash;<include method="getFlowSheetForPatient"/>&ndash;&gt;-->
+			<!--&lt;!&ndash;</create>&ndash;&gt;-->
+		<!--</allow>-->
 
-		<signatures>
-			<![CDATA[
-				import org.openmrs.module.flowsheet.web.dwr.DWRFlowsheetService;
-				DWRFlowsheetService.getFlowSheetForPatient(int patientId);
-			]]>
-		</signatures>
-	</dwr>
+		<!--<signatures>-->
+			<!--<![CDATA[-->
+				<!--import org.openmrs.module.flowsheet.web.dwr.DWRFlowsheetService;-->
+				<!--DWRFlowsheetService.getFlowSheetForPatient(int patientId);-->
+			<!--]]>-->
+		<!--</signatures>-->
+	<!--</dwr>-->
 		
 	<!-- Servlets -->
 	<!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> 
