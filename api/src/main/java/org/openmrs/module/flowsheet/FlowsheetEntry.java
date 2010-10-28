@@ -1,5 +1,7 @@
 package org.openmrs.module.flowsheet;
 
+import java.util.Locale;
+
 import org.openmrs.Obs;
 
 public class FlowsheetEntry {
@@ -15,7 +17,7 @@ public class FlowsheetEntry {
 	}
 
 	public String getValue() {
-		return obs.getValueAsString(null);
+		return obs.getValueAsString(Locale.ENGLISH);
 	}
 
 	public String getDataType() {
