@@ -1,13 +1,17 @@
 package org.openmrs.module.flowsheet;
 
-import java.util.Date;
+import org.openmrs.Obs;
 
 public class FlowsheetEntry {
 	
-	private Date date;
+	private final Obs obs;
 
-	public FlowsheetEntry(Date date) {
-		this.date = date;
+	public FlowsheetEntry(Obs obs) {
+		this.obs = obs;
+	}
+
+	public String getName() {
+		return obs.getConcept().getName().getName();
 	}
 	
 }

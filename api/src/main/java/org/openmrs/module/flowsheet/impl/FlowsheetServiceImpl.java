@@ -11,9 +11,12 @@ public class FlowsheetServiceImpl implements FlowsheetService {
 	private SessionFactory factory;
 
 	@SuppressWarnings("unchecked")
-	public Flowsheet getFlowsheet(int patientId) {
-		Query query = factory.getCurrentSession().createQuery(
-				"select new org.openmrs.module.flowsheet.FlowsheetEntry(obs.obsDatetime) from Obs obs");
+	public Flowsheet getFlowsheet(int personId) {
+		Query query = factory
+				.getCurrentSession()
+				.createQuery(
+						"select new org.openmrs.module.flowsheet.FlowsheetEntry(obs) from Obs obs where obs.person.personId = :id");
+		query.setInteger("id", personId);
 		List<FlowsheetEntry> obs = query.list();
 		return new Flowsheet(obs);
 	}

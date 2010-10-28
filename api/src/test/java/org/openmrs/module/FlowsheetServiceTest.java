@@ -13,12 +13,19 @@ import org.openmrs.test.BaseContextSensitiveTest;
 public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 
     @Test
-    public void shouldReturnFlowsheetData() {
+    public void shouldReturnObservationsForPerson() {
         FlowsheetService service = Context.getService(FlowsheetService.class);
-        Flowsheet flowsheet
-                = service.getFlowsheet(1);
-        List<FlowsheetEntry> entries = flowsheet.getEntries();
+        List<FlowsheetEntry> entries = service.getFlowsheet(1).getEntries();
+        Assert.assertEquals(0, entries.size());
+        
+        entries = service.getFlowsheet(7).getEntries();
         Assert.assertEquals(9, entries.size());
     }
 
+    @Test
+    public void shouldReturnConceptNameForEachObservation() {
+        FlowsheetService service = Context.getService(FlowsheetService.class);
+        FlowsheetEntry entry = service.getFlowsheet(7).getEntries().get(0);
+        Assert.assertEquals("WEIGHT (KG)", entry.getName());
+    }
 }
