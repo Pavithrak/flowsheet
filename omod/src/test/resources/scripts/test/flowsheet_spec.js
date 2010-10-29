@@ -5,12 +5,12 @@ var data = {
 
 Screw.Unit(function() {
     // Tests are organized into 'describes' and 'its', following the style of RSpec.
-    describe("flowsheet", function() {
-        it("should render data grid for observations", function() {
-            var flowsheet = new Flowsheet();
-            flowsheet.render(data, "flowsheet");
-            var renderedEntryName = $('#1').find('td:nth-child(2)').html() ;
-            expect(renderedEntryName).to(equal,data.entries[0].name);
+    describe("flowsheet grid", function() {
+        it("should display the concept name for the observation", function() {
+            var flowsheet = new Flowsheet($("#flowsheet"));
+            flowsheet.render(data);
+            var name = $('#1').find('td:nth-child(2)').html() ;
+            expect(name).to(equal,data.entries[0].name);
         })
     })
 });
