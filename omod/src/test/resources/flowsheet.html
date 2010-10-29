@@ -1,6 +1,5 @@
 <html>
 <script type="text/javascript" src="../../main/resources/sampleFlowsheetData.js"></script>
-<script type="text/javascript" src="../../main/resources/flowsheetDataHandler.js"></script>
 <script type="text/javascript" src="../../main/resources/flowsheet.js"></script>
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="../../main/resources/grid.locale-en.js"></script>
@@ -20,10 +19,8 @@
 		</td>
 	</table>
 	<script type="text/javascript">
-		var flowsheetDataJson = SampleFlowsheetData();
-        var data = new FlowsheetDataHandler(flowsheetDataJson);
-		var flowsheet = new Flowsheet();
-		flowsheet.render(data,"flowsheet");
-		
+        var data = new FlowsheetData(SampleFlowsheetData());
+		var flowsheet = new Flowsheet($("#flowsheet"));
+		flowsheet.render(data);
 	</script>
 </html>
