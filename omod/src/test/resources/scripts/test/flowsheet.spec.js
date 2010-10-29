@@ -4,7 +4,7 @@ var data = {
 		value : "95 mmHg",
 		dataType : "numeric",
 		classType : "Test",
-		obs_date : "2001-01-12"
+		date : "2001-01-12"
 	} ]
 }
 
@@ -13,21 +13,21 @@ Screw.Unit(function() {
 	// RSpec.
 	describe("flowsheet grid", function() {
 		it("should display the concept name of the observation", function() {
-			var flowsheet = new Flowsheet($("#flowsheet"));
+			var flowsheet = new Flowsheet("flowsheet");
 			flowsheet.render(data);
 			var name = $('#1').find('td:nth-child(2)').html();
 			expect(name).to(equal, data.entries[0].name);
 		}), it("should display the concept value of the observation",
 				function() {
-					var flowsheet = new Flowsheet($("#flowsheet"));
+					var flowsheet = new Flowsheet("flowsheet");
 					flowsheet.render(data);
 					var value = $('#1').find('td:nth-child(3)').html();
 					expect(value).to(equal, data.entries[0].value);
 				}), it("should display date of the observation", function() {
-			var flowsheet = new Flowsheet($("#flowsheet"));
+			var flowsheet = new Flowsheet("flowsheet");
 			flowsheet.render(data);
 			var date = $('#1').find('td:nth-child(1)').html();
-			expect(date).to(equal, data.entries[0].obs_date);
+			expect(date).to(equal, "12/01/2001");//formatted date
 		})
 	})
 });
