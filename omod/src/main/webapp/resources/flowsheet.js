@@ -15,6 +15,8 @@ var Flowsheet = function(tableId) {
                 {name:'value',width:100}
             ],
             sortname: 'date',
+            grouping:true,
+            groupingView : { groupField : ['date'], groupColumnShow : [true], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
             viewrecords: true, caption: "Observations" , sortorder: "desc"});
 
     }
