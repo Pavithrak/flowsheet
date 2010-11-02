@@ -4,6 +4,7 @@
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.jqGrid.min.js"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/sampleFlowsheetData.js"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/flowsheet.js"/>
+<openmrs:htmlInclude file="/moduleResources/flowsheet/dateRangeSlider.js"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/ui.multiselect.js"/>
 
 <openmrs:htmlInclude file="/moduleResources/flowsheet/ui.jqgrid.css"/>
@@ -14,7 +15,24 @@
 
 <table>
     <tr>
-        <td>Filter widgets here</td>
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <label for="dateFilter">Date range:</label>
+                        <input type="text" id="dateFilter" style="border:0; color:#f6931f; font-weight:bold;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="slider" style="width:500px;float:left">
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            
+        </td>
         <td>
             <table id="flowsheet" width="500px">
             </table>
@@ -32,6 +50,9 @@
         var data = new FlowsheetData(flowsheetDataJson);
         var flowsheet = new Flowsheet("flowsheet");
         flowsheet.render(data);
+
+        var slider = new DateRangeSlider(data);
+        slider.slider("slider","dateFilter");
     }
 
     $j.ajax({
