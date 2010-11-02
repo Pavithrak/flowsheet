@@ -95,6 +95,23 @@
 					<artifactId>maven-openmrs-plugin</artifactId>
 					<version>1.0-RC4</version>
 				</plugin>
+				<plugin>
+					<executions>
+						<execution>
+							<goals>
+								<goal>javascript-test</goal>
+							</goals>
+						</execution>
+					</executions>
+					<groupId>com.carbonfive.javascript-test</groupId>
+					<artifactId>javascript-test-maven-plugin</artifactId>
+					<version>1.0-beta1</version>
+					<configuration>
+						<includes>
+							<include>omod/src/test/resources/suite*.html</include>
+						</includes>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -116,6 +133,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
+		 <pluginRepository>
+            <id>c5-public-repository</id>
+            <name>Carbon Five Public Repository</name>
+            <url>http://mvn.carbonfive.com/public</url>
+        </pluginRepository>
 	</pluginRepositories>
 
 </project>

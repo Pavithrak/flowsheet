@@ -93,6 +93,23 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+		<plugin>
+			<executions>
+				<execution>
+					<goals>
+						<goal>javascript-test</goal>
+					</goals>
+				</execution>
+			</executions>
+			<groupId>com.carbonfive.javascript-test</groupId>
+			<artifactId>javascript-test-maven-plugin</artifactId>
+			<version>1.0-beta1</version>
+			<configuration>
+				<includes>
+					<include>src/test/resources/suite*.html</include>
+				</includes>
+			</configuration>
+		</plugin>
 			<plugin>
 				<groupId>org.motech.openmrs.plugin</groupId>
 				<artifactId>maven-openmrs-plugin</artifactId>
