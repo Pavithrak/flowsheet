@@ -3,7 +3,7 @@ Screw.Unit(function() {
         var flowsheet;
         var data;
         before(function() {
-            flowsheet = new Flowsheet("flowsheet");
+            flowsheet = new Flowsheet($("#flowsheet"));
             data = new FlowsheetData(SampleFlowsheetData());
             flowsheet.render(data);
         }),
@@ -39,11 +39,11 @@ Screw.Unit(function() {
     describe("flowsheet data", function() {
         it("getUniqueAndSortedDates should return the unique sorted array of dates", function() {
             var flowsheetData = new FlowsheetData(SampleFlowsheetData());
-            var uniqueAndSortedDates = flowsheetData.getUniqueAndSortedDates();
-            expect(uniqueAndSortedDates.length).to(equal, 3);
-            expect(uniqueAndSortedDates[0]).to(equal, "2001-01-12");
-            expect(uniqueAndSortedDates[1]).to(equal, "2002-01-12");
-            expect(uniqueAndSortedDates[2]).to(equal, "2010-01-12");
+            var range = flowsheetData.getDateRange();
+            expect(range.length).to(equal, 3);
+            expect(range[0]).to(equal, "2001-01-12");
+            expect(range[1]).to(equal, "2002-01-12");
+            expect(range[2]).to(equal, "2010-01-12");
 
         })
     })
@@ -52,9 +52,9 @@ Screw.Unit(function() {
 Screw.Unit(function() {
     describe("Date range filter", function() {
         it("should create a date range slider for the observations", function() {
-            var slider = new DateRangeSlider(new FlowsheetData(SampleFlowsheetData()));
+            var slider = new DateRangeSlider($("#slider"));
             var dateFilterId = "dateFilter";
-            slider.slider("slider", dateFilterId);
+            slider.render(new FlowsheetData(SampleFlowsheetData()).getDateRange(), dateFilterId);
             expect(jQuery("#"+dateFilterId).val()).to(equal,"2001-01-12 - 2010-01-12");
         })
     })

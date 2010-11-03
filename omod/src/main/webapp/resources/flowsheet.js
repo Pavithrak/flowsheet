@@ -1,8 +1,8 @@
-var Flowsheet = function(tableId) {
-    this.tableId = tableId;
+var Flowsheet = function(table) {
+    this.table = table;
 
     this.render = function(flowsheetData) {
-        jQuery("#" + this.tableId).jqGrid({
+        jQuery(this.table).jqGrid({
             data: flowsheetData.entries,
             datatype: "local",
             height: 'auto',
@@ -40,29 +40,36 @@ var FlowsheetData = function(data) {
         return dates;
     }
 
-    this.getUniqueAndSortedDates = function() {
+    this.getDateRange = function() {
         var dates = createDateArray(this.entries);
         return sortDateArray(jQuery.unique(dates));
     };
 }
 
-var DateRangeSlider = function(flowsheetData) {
-    var dateRange = flowsheetData.getUniqueAndSortedDates();
+var DateRangeSlider = function(slider) {
+		this.slider = slider;
+	
+	    this.render = function(dateRange, dateFilterId) {
+		jQuery(this.slider).slider(
+				{
+					range : true,
+					min : 0,
+					max : dateRange.length - 1,
+					values : [ 0, dateRange.length - 1 ],
+					slide : function(event, ui) {
+						jQuery("#" + dateFilterId).val(
+								dateRange[ui.values[0]] + ' - '
+										+ dateRange[ui.values[1]]);
+					}
+				});
 
-
-    this.slider = function(sliderId, dateFilterId) {
-        jQuery("#" + sliderId).slider({
-            range: true,
-            min: 0,
-            max: dateRange.length - 1,
-            values: [0,dateRange.length - 1],
-            slide: function(event, ui) {
-                jQuery("#" + dateFilterId).val(dateRange[ui.values[0]] + ' - ' + dateRange[ui.values[1]]);
-            }
-        });
-
-        jQuery("#" + dateFilterId).val(dateRange[jQuery("#" + sliderId).slider("values", 0)] + ' - ' + dateRange[jQuery("#" + sliderId).slider("values", 1)]);
-    };
+		jQuery("#" + dateFilterId)
+				.val(
+						dateRange[jQuery(this.slider).slider("values", 0)]
+								+ ' - '
+								+ dateRange[jQuery(this.slider).slider(
+										"values", 1)]);
+	};
 
 }
 

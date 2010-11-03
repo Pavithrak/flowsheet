@@ -26,7 +26,6 @@
                 <tr>
                     <td>
                         <div id="slider" style="width:500px;float:left">
-
                         </div>
                     </td>
                 </tr>
@@ -41,18 +40,18 @@
 
 <script type="text/javascript">
 
-    var patientIdValue = document.getElementById('patientId').value;
+    var patientIdValue = $j('#patientId').val();
 
     var jsondata = {patientId:patientIdValue};
 
+    var flowsheet = new Flowsheet($j("#flowsheet"));
+    var slider = new DateRangeSlider($j("#slider"));
+       
 
     var handleFlowsheetData = function(flowsheetDataJson) {
         var data = new FlowsheetData(flowsheetDataJson);
-        var flowsheet = new Flowsheet("flowsheet");
         flowsheet.render(data);
-
-        var slider = new DateRangeSlider(data);
-        slider.slider("slider","dateFilter");
+        slider.render(data.getDateRange(),"dateFilter");
     }
 
     $j.ajax({
