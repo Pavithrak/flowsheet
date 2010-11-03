@@ -6,5 +6,5 @@ target/
 **/.classpath
 *.swp
 bin/*
-
+*DS_Store
 
