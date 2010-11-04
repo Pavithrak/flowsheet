@@ -93,6 +93,7 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+<!--
 		<plugin>
 			<executions>
 				<execution>
@@ -110,6 +111,7 @@
 				</includes>
 			</configuration>
 		</plugin>
+-->
 			<plugin>
 				<groupId>org.motech.openmrs.plugin</groupId>
 				<artifactId>maven-openmrs-plugin</artifactId>
