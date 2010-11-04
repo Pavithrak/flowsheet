@@ -1,9 +1,10 @@
-var Flowsheet = function(table) {
-    this.table = table;
+var Flowsheet = function(tableId) {
+    this.tableId = tableId;
 
-    this.render = function(flowsheetData) {
-        jQuery(this.table).jqGrid({
-            data: flowsheetData.entries,
+    this.render = function(entries) {
+        //        jQuery(this.table).jqGrid({
+        jQuery("#" + tableId).jqGrid({
+            data: entries,
             datatype: "local",
             height: 'auto',
             rowNum: 100,
@@ -44,32 +45,42 @@ var FlowsheetData = function(data) {
         var dates = createDateArray(this.entries);
         return sortDateArray(jQuery.unique(dates));
     };
+
+    this.filterEntriesByDate = function(from, to) {
+        var filteredData = new Array();
+        jQuery(this.entries).each(function(index, entry) {
+            if ((entry.date >= from) && (entry.date <= to)) {
+                filteredData.push(entry);
+            }
+        })
+        return filteredData;
+    }
 }
 
-var DateRangeSlider = function(slider) {
-		this.slider = slider;
-	
-	    this.render = function(dateRange, dateFilterId) {
-		jQuery(this.slider).slider(
-				{
-					range : true,
-					min : 0,
-					max : dateRange.length - 1,
-					values : [ 0, dateRange.length - 1 ],
-					slide : function(event, ui) {
-						jQuery("#" + dateFilterId).val(
-								dateRange[ui.values[0]] + ' - '
-										+ dateRange[ui.values[1]]);
-					}
-				});
+var DateRangeSlider = function(slider, onChangeHandler) {
+    this.slider = slider;
+    this.render = function(dateRange, dateFilterId) {
+        jQuery(this.slider).slider(
+        {
+            range : true,
+            min : 0,
+            max : dateRange.length - 1,
+            values : [ 0, dateRange.length - 1 ],
+            change : function(event, ui) {
+                jQuery("#" + dateFilterId).val(
+                        dateRange[ui.values[0]] + ' - '
+                                + dateRange[ui.values[1]]);
+                onChangeHandler.call(null, dateRange[ui.values[0]], dateRange[ui.values[1]]);
+            }
+        });
 
-		jQuery("#" + dateFilterId)
-				.val(
-						dateRange[jQuery(this.slider).slider("values", 0)]
-								+ ' - '
-								+ dateRange[jQuery(this.slider).slider(
-										"values", 1)]);
-	};
+        jQuery("#" + dateFilterId)
+                .val(
+                dateRange[jQuery(this.slider).slider("values", 0)]
+                        + ' - '
+                        + dateRange[jQuery(this.slider).slider(
+                        "values", 1)]);
+    };
 
 }
 

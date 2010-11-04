@@ -40,18 +40,16 @@
 
 <script type="text/javascript">
 
+    var gridTableId = "flowsheet";
     var patientIdValue = $j('#patientId').val();
-
     var jsondata = {patientId:patientIdValue};
-
-    var flowsheet = new Flowsheet($j("#flowsheet"));
-    var slider = new DateRangeSlider($j("#slider"));
-       
+    var flowsheetObj = new Flowsheet(gridTableId);
+    var flowsheetData = null;
 
     var handleFlowsheetData = function(flowsheetDataJson) {
-        var data = new FlowsheetData(flowsheetDataJson);
-        flowsheet.render(data);
-        slider.render(data.getDateRange(),"dateFilter");
+        flowsheetData = new FlowsheetData(flowsheetDataJson);
+        flowsheetObj.render(flowsheetData.series);
+        slider.render(flowsheetData.getDateRange(),"dateFilter");
     }
 
     $j.ajax({
@@ -60,6 +58,14 @@
         success: handleFlowsheetData,
         dataType: "json"
     });
+
+    var onChangeHandler = function(from, to) {
+        var entries = flowsheetData.filterEntriesByDate(from, to);
+        jQuery("#"+gridTableId).GridUnload();
+        flowsheetObj.render(entries);
+    }
+
+    var slider = new DateRangeSlider(jQuery("#slider"), onChangeHandler);
 
 
 </script>

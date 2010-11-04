@@ -7,4 +7,7 @@ target/
 *.swp
 bin/*
 *DS_Store
+ideafiles/*
+omod/src/test/resources/scripts/test/debugMode/*
+omod/src/test/resources/flowsheet.html
 
