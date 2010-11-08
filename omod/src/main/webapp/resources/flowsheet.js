@@ -9,19 +9,37 @@ var Flowsheet = function(tableId) {
             height: 'auto',
             rowNum: 100,
             rowList: [10,20,30],
-            colNames:['Date','Name', 'Value'],
+            colNames:['Date','Name', 'Value','Range'],
             colModel:[
                 {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y'},
                 {name:'name', width:290},
-                {name:'value',width:100}
+                {name:'value',width:100},
+                {name:'low',width:100,formatter:rangeFormatter}
             ],
             sortname: 'date',
             grouping:true,
-            groupingView : { groupField : ['date'], groupColumnShow : [true], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
-            viewrecords: true, caption: "Observations" , sortorder: "desc"});
+            groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
+            viewrecords: true, caption: "Observations" , sortorder: "desc",
+            subGrid: true,
+            subGridData:entries,
+              subGridModel: [
+                  {
+                  name  : ['Low'],
+                  width : [55],
+                  align : ['left'],
+                  mapping:['low']
+                  }]            
+        });
+    }
 
+    function rangeFormatter (cellvalue, options, rowObject){
+        if(rowObject.numeric){
+            return "("+rowObject.numeric.low +"-"+rowObject.numeric.hi+" "+rowObject.numeric.unit+")";
+        }
+        return " ";
     }
 }
+
 var FlowsheetData = function(data) {
     this.entries = data.flowsheet.entries;
 
