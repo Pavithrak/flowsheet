@@ -2,34 +2,52 @@ package org.openmrs.module.flowsheet;
 
 import java.util.Locale;
 
+import org.openmrs.Concept;
 import org.openmrs.Obs;
 
 public class FlowsheetEntry {
 
-	private final Obs obs;
+	private String name;
+	private String value;
+	private String dataType;
+	private String classType;
+	private String date;
+	private Numeric numeric;
 
 	public FlowsheetEntry(Obs obs) {
-		this.obs = obs;
+		Concept concept = obs.getConcept();
+		name = concept.getName().getName();
+		value = obs.getValueAsString(Locale.ENGLISH);
+		dataType = concept.getDatatype().getName();
+		classType = obs.getConcept().getConceptClass().getName();
+		date = obs.getObsDatetime().toString();
+		if (concept.isNumeric()) {
+			this.numeric = new Numeric(concept);
+		}
 	}
 
 	public String getName() {
-		return obs.getConcept().getName().getName();
+		return name;
 	}
 
 	public String getValue() {
-		return obs.getValueAsString(Locale.ENGLISH);
+		return value;
 	}
 
 	public String getDataType() {
-		return obs.getConcept().getDatatype().getName();
+		return dataType;
 	}
 
 	public String getClassType() {
-		return obs.getConcept().getConceptClass().getName();
+		return classType;
 	}
 
 	public String getDate() {
-		return obs.getObsDatetime().toString();
+		return date;
+	}
+
+	public Numeric getNumeric() {
+		return numeric;
 	}
 
 }

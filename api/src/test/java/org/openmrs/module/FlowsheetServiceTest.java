@@ -55,4 +55,13 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 		Assert.assertEquals("2008-07-01 00:00:00.0", entry.getDate());
 	}
 
+	@Test
+	public void shouldReturnUnitForEachObservation() throws Exception {
+		Assert.assertEquals("kg", entry.getNumeric().getUnit());
+	}
+
+	@Test
+	public void shouldReturnHiValueEachObservation() throws Exception {
+		Assert.assertEquals("250.0", entry.getNumeric().getHi().toString());
+	}
 }

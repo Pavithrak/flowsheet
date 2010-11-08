@@ -2,8 +2,6 @@ package org.openmrs.module.flowsheet;
 
 import java.util.List;
 
-import org.openmrs.Obs;
-
 /**
  * This is the data object which is sent to the client.
  * 
