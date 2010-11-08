@@ -30,7 +30,16 @@ Screw.Unit(function() {
                     var secondGroupRowDate = $('#flowsheetghead_1').find('td:nth-child(1) b').html();
                     expect(firstGroupRowDate).to(equal, "2010-01-12");
                     expect(secondGroupRowDate).to(equal, "2002-01-12");
+                }),
+                it("should display the range value for numeric observation", function() {
+                    var value = $('#2').find('td:nth-child(4)').html();
+                    expect(value).to(equal, "("+data.entries[2].numeric.low +"-"+data.entries[2].numeric.hi+" "+data.entries[2].numeric.unit+")");
+                }),
+                it("should not display the range value for non-numeric observation", function() {
+                    var value = $('#3').find('td:nth-child(4)').html();
+                    expect(value).to(equal, " ");
                 })
+
     })
 });
 
