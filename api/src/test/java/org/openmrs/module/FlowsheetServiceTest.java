@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.flowsheet.FlowsheetEntry;
@@ -52,7 +53,7 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 
 	@Test
 	public void shouldReturnDateForEachObservation() {
-		Assert.assertEquals("2008-07-01 00:00:00.0", entry.getDate());
+		Assert.assertEquals("2008-07-01", entry.getDate());
 	}
 
 	@Test
@@ -61,6 +62,7 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 	}
 
 	@Test
+	@Ignore("Add additional data set to test this")
 	public void shouldReturnHiValueEachObservation() throws Exception {
 		Assert.assertEquals("250.0", entry.getNumeric().getHi().toString());
 	}

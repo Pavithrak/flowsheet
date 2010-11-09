@@ -11,7 +11,7 @@
 <input type="hidden" id="patientId" name="patientId" value='<request:parameter name="patientId" />'/>
 
 
-<table>
+<table><!--
 	<tr>
 		<td>
 		<table>
@@ -28,7 +28,7 @@
 		</table>
 		</td>
 	</tr>
-	<tr>
+	--><tr>
 		<td>
 		<table id="flowsheet" width="500px">
 		</table>
@@ -48,7 +48,7 @@
 	var handleFlowsheetData = function(flowsheetDataJson) {
 		flowsheetData = new FlowsheetData(flowsheetDataJson);
 		flowsheetObj.render(flowsheetData.entries);
-		slider.render(flowsheetData.getDateRange(), "dateFilter");
+		//slider.render(flowsheetData.getDateRange(), "dateFilter");
 	}
 
 	$j.ajax({
@@ -58,12 +58,12 @@
 		dataType : "json"
 	});
 
-	var onChangeHandler = function(from, to) {
-		var entries = flowsheetData.filterEntriesByDate(from, to);
-		jQuery("#" + gridTableId).GridUnload();
-		flowsheetObj.render(entries);
-	}
+	//var onChangeHandler = function(from, to) {
+	//	var entries = flowsheetData.filterEntriesByDate(from, to);
+	//	jQuery("#" + gridTableId).GridUnload();
+	//	flowsheetObj.render(entries);
+	//}
 
-	var slider = new DateRangeSlider(jQuery("#slider"), onChangeHandler);
+	//var slider = new DateRangeSlider(jQuery("#slider"), onChangeHandler);
 </script>
 
