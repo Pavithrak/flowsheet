@@ -10,4 +10,4 @@ bin/*
 ideafiles/*
 omod/src/test/resources/scripts/test/debugMode/*
 omod/src/test/resources/flowsheet.html
-
+*.springBeans
