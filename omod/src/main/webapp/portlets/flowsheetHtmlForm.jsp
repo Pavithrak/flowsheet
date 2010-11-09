@@ -47,7 +47,7 @@
 
 	var handleFlowsheetData = function(flowsheetDataJson) {
 		flowsheetData = new FlowsheetData(flowsheetDataJson);
-		flowsheetObj.render(flowsheetData.series);
+		flowsheetObj.render(flowsheetData.entries);
 		slider.render(flowsheetData.getDateRange(), "dateFilter");
 	}
 
