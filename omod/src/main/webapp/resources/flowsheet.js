@@ -19,16 +19,8 @@ var Flowsheet = function(tableId) {
             sortname: 'date',
             grouping:true,
             groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
-            viewrecords: true, caption: "Observations" , sortorder: "desc",
-            subGrid: true,
-            subGridData:entries,
-              subGridModel: [
-                  {
-                  name  : ['Low'],
-                  width : [55],
-                  align : ['left'],
-                  mapping:['low']
-                  }]            
+            viewrecords: true, caption: "Observations" , sortorder: "desc"
+
         });
     }
 
