@@ -22,6 +22,8 @@ var Flowsheet = function(tableId) {
             viewrecords: true, caption: "Observations" , sortorder: "desc"
 
         });
+        jQuery("#" + tableId).jqGrid('filterToolbar',{autosearch:true,searchOnEnter:true,multipleSearch:true });
+
     }
 
     function rangeFormatter (cellvalue, options, rowObject){
