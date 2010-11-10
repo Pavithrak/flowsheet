@@ -2,13 +2,9 @@
 <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="../../main/webapp/resources/grid.locale-en.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui.custom.min.js"></script>
-<!--<script type="text/javascript" src="../../main/resources/ui.multiselect.js"></script>-->
-<!--<script type="text/javascript" src="../../main/webapp/resources/jquery.jqGrid.min.js"></script>-->
-<script type="text/javascript" src="scripts/test/debugMode/jquery.jqGrid.js"></script>
+<script type="text/javascript" src="../../main/webapp/resources/jquery.jqGrid.min.js"></script>
 
-<script type="text/javascript" src="../../main/webapp/resources/flowsheetController.js"></script>
 <script type="text/javascript" src="../../main/webapp/resources/flowsheet.js"></script>
-<script type="text/javascript" src="../../main/webapp/resources/dateRangeSlider.js"></script>
 <script type="text/javascript" src="scripts/test/sampleFlowsheetData.js"></script>
 
 <link rel="stylesheet" type="text/css" media="screen" href="../../main/webapp/resources/ui.jqgrid.css"/>
@@ -46,17 +42,17 @@
     var gridTableId = "flowsheet";
     var flowsheetObj = new Flowsheet(gridTableId);
     var flowsheetData = null;
+    flowsheetData = new FlowsheetData(SampleFlowsheetData());
+
     var onChangeHandler = function(from, to) {
         var entries = flowsheetData.filterEntriesByDate(from, to);
         jQuery("#"+gridTableId).GridUnload();
         flowsheetObj.render(entries);
     }
 
+
+
     var slider = new DateRangeSlider(jQuery("#slider"), onChangeHandler);
-
-
-
-    flowsheetData = new FlowsheetData(SampleFlowsheetData());
     flowsheetObj.render(flowsheetData.entries);
     slider.render(flowsheetData.getDateRange(), "dateFilter");
 
