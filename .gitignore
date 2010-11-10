@@ -9,4 +9,4 @@ bin/*
 *DS_Store
 ideafiles/*
 omod/src/test/resources/scripts/test/debugMode/*
-
+*.springBeans
