@@ -10,21 +10,26 @@
 <link rel="stylesheet" type="text/css" media="screen" href="../../main/webapp/resources/ui.jqgrid.css"/>
 <link rel="stylesheet" type="text/css" media="screen" href="scripts/jquery-ui.custom.css"/>
 
+
+<link rel="stylesheet" href="../../main/webapp/resources/jslider.css" type="text/css">
+<script type="text/javascript" src="../../main/webapp/resources/jquery.dependClass.js"></script>
+<script type="text/javascript" src="../../main/webapp/resources/jquery.slider-min.js"></script>
+<!--<script type="text/javascript" src="scripts/test/debugMode/jquery.slider.js"></script>-->
+
+
+
 <table>
     <tr>
         <td>
             <table>
                 <tr>
                     <td>
-                        <label for="dateFilter">Date range:</label>
-                        <input type="text" id="dateFilter" style="border:0; color:#f6931f; font-weight:bold;"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="slider" style="width:300px;float:left">
 
-                        </div>
+                        <div class="layout-slider" style="width: 100%">
+                             <span style="display: inline-block; width: 400px; padding: 0 5px;">
+                            <input id="Slider1" type="slider" name="price"  /></span>
+                           </div>
+
                     </td>
                 </tr>
             </table>
@@ -52,10 +57,13 @@
 
 
 
-    var slider = new DateRangeSlider(jQuery("#slider"), onChangeHandler);
+    var slider = new DateRangeSlider(jQuery("#Slider1"), onChangeHandler);
     flowsheetObj.render(flowsheetData.entries);
-    slider.render(flowsheetData.getDateRange(), "dateFilter");
+    slider.render(flowsheetData.getDateRange(), "Slider1");
 
+    jQuery('.jslider-value span').remove();
 
 </script>
+
+
 </html>

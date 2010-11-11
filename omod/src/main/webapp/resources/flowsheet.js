@@ -72,26 +72,33 @@ var FlowsheetData = function(data) {
 var DateRangeSlider = function(slider, onChangeHandler) {
     this.slider = slider;
     this.render = function(dateRange, dateFilterId) {
+        var dateRangeLength = (dateRange.length-1);
+        jQuery(this.slider).attr("value","0;"+dateRangeLength);
         jQuery(this.slider).slider(
         {
             range : true,
             min : 0,
-            max : dateRange.length - 1,
-            values : [ 0, dateRange.length - 1 ],
-            change : function(event, ui) {
-                jQuery("#" + dateFilterId).val(
-                        dateRange[ui.values[0]] + ' - '
-                                + dateRange[ui.values[1]]);
-                onChangeHandler.call(null, dateRange[ui.values[0]], dateRange[ui.values[1]]);
-            }
+            max : dateRangeLength,
+            from : 0,
+            to :dateRangeLength ,
+            scale : dateRange,
+            onstatechange : function(value) {
+                var from = value.split(";")[0];
+                var to = value.split(";")[1];
+                onChangeHandler.call(null, dateRange[from], dateRange[to]);
+            },
+            smooth: false,
+            limits :false,
+            step : 1,
+            skin: "plastic"
         });
 
-        jQuery("#" + dateFilterId)
-                .val(
-                dateRange[jQuery(this.slider).slider("values", 0)]
-                        + ' - '
-                        + dateRange[jQuery(this.slider).slider(
-                        "values", 1)]);
+//        jQuery("#" + dateFilterId)
+//                .val(
+//                dateRange[jQuery(this.slider).slider("values", 0)]
+//                        + ' - '
+//                        + dateRange[jQuery(this.slider).slider(
+//                        "values", 1)]);
     };
 
 }
