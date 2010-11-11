@@ -35,6 +35,9 @@ Screw.Unit(function() {
                     var value = $('#3').find('td:nth-child(4)').html();
                     expect(value).to(equal, " ");
                 }),
+                it("should hide the column headers ", function(){
+                    expect(jQuery('.ui-jqgrid-hdiv').css("display")).to(equal, "none");
+                }),
                 it("should not create Grid if there are no observations", function() {
                     jQuery("#flowsheet").GridUnload();
                     var emptyData = function() {
