@@ -33,7 +33,7 @@ Screw.Unit(function() {
                 }),
                 it("should display the range value for numeric observation", function() {
                     var value = $('#2').find('td:nth-child(4)').html();
-                    expect(value).to(equal, "("+data.entries[2].numeric.low +"-"+data.entries[2].numeric.hi+" "+data.entries[2].numeric.unit+")");
+                    expect(value).to(equal, "(" + data.entries[2].numeric.low + "-" + data.entries[2].numeric.hi + " " + data.entries[2].numeric.unit + ")");
                 }),
                 it("should not display the range value for non-numeric observation", function() {
                     var value = $('#3').find('td:nth-child(4)').html();
@@ -75,11 +75,12 @@ Screw.Unit(function() {
 
 Screw.Unit(function() {
     describe("Date range filter", function() {
-        var dateFilterId = "dateFilter";
         it("should create a date range slider for the observations", function() {
-            var slider = new DateRangeSlider(jQuery("#slider"));
-            slider.render(new FlowsheetData(SampleFlowsheetData()).getDateRange(), dateFilterId);
-            expect(jQuery("#"+dateFilterId).val()).to(equal,"2001-01-12 - 2010-01-12");
+            var sliderId = "Slider1";
+            var slider = new DateRangeSlider(jQuery("#" + sliderId));
+            slider.render(new FlowsheetData(SampleFlowsheetData()).getDateRange(), sliderId);
+            expect(jQuery("#" + sliderId).attr("value")).to(equal, "0;2");
         })
     })
 });
+var dateFilterId = "textSlider1";

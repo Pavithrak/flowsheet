@@ -3,12 +3,15 @@
     <!--<script src="scripts/test/jquery-1.2.6.js"></script>-->
 
     <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="scripts/jquery-ui.custom.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.custom.min.js"></script>
     <script type="text/javascript" src="../../main/webapp/resources/grid.locale-en.js"></script>
     <script type="text/javascript" src="../../main/webapp/resources/jquery.jqGrid.min.js"></script>
 
     <script src="scripts/test/jquery.fn.js"></script>
     <script src="scripts/test/jquery.print.js"></script>
+
+    <link rel="stylesheet" href="../../main/webapp/resources/jslider.css" type="text/css">
+    <script type="text/javascript" src="../../main/webapp/resources/jquery.dependClass.js"></script>
 
     <script src="scripts/test/screw.builder.js"></script>
     <script src="scripts/test/screw.matchers.js"></script>
@@ -32,25 +35,24 @@
             <table>
                 <tr>
                     <td>
-                        <label for="dateFilter">Date range:</label>
-                        <input type="text" id="dateFilter" style="border:0; color:#f6931f; font-weight:bold;"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="slider" style="width:300px;float:left">
 
+                        <div class="layout-slider" style="width: 100%">
+                             <span  id="textSlider1"  style="display: inline-block; width: 400px; padding: 0 5px;">
+                            <input id="Slider1" type="slider" name="price"/></span>
                         </div>
+
                     </td>
                 </tr>
             </table>
 
         </td>
         <td>
-            <table id="flowsheet" width="500px">
+            <table id="flowsheet" width="500px;float:right">
             </table>
+
         </td>
 </table>
+
 
 </body>
 </html>
