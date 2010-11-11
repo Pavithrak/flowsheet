@@ -7,16 +7,22 @@ var Flowsheet = function(tableId) {
     this.tableId = tableId;
 
     this.render = function(entries) {
-        //        jQuery(this.table).jqGrid({
+//        if (!entries || entries.length == 0) {
+//            jQuery("#" + tableId).append(jQuery('<tr>')
+//                    .append(jQuery('<td>')
+//                    .text('There are currently no observations for this patient')));
+//
+//            return;
+//        }
         jQuery("#" + tableId).jqGrid({
             data: entries,
             datatype: "local",
             height: 'auto',
             rowNum: 100,
             rowList: [10,20,30],
-            colNames:['Date','Name', 'Value','Range'],
+            //            colNames:['Date','Name', 'Value','Range'],
             colModel:[
-                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y'},
+                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y',search:true},
                 {name:'name', width:290},
                 {name:'value',width:100},
                 {name:'low',width:100,formatter:rangeFormatter}
@@ -24,16 +30,20 @@ var Flowsheet = function(tableId) {
             sortname: 'date',
             grouping:true,
             groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
-            viewrecords: true, caption: "Observations" , sortorder: "desc"
+            viewrecords: true, sortorder: "desc"
+
 
         });
-        jQuery("#" + tableId).jqGrid('filterToolbar',{autosearch:true,searchOnEnter:true,multipleSearch:true });
+
+        jQuery('.ui-jqgrid-hdiv').hide();
+
+        jQuery("#" + tableId).jqGrid('filterToolbar', {autosearch:true,searchOnEnter:true,multipleSearch:true });
 
     }
 
-    function rangeFormatter (cellvalue, options, rowObject){
-        if(rowObject.numeric){
-            return "("+rowObject.numeric.low +"-"+rowObject.numeric.hi+" "+rowObject.numeric.unit+")";
+    function rangeFormatter(cellvalue, options, rowObject) {
+        if (rowObject.numeric) {
+            return "(" + rowObject.numeric.low + "-" + rowObject.numeric.hi + " " + rowObject.numeric.unit + ")";
         }
         return " ";
     }
@@ -89,13 +99,13 @@ var FlowsheetData = function(data) {
 var DateRangeSlider = function(slider, onChangeHandler) {
     this.slider = slider;
     this.render = function(dateRange, dateFilterId) {
-        var dateRangeLength = (dateRange.length-1);
-        jQuery(this.slider).attr("value","0;"+dateRangeLength);
+        var dateRangeLength = (dateRange.length - 1);
+        jQuery(this.slider).attr("value", "0;" + dateRangeLength);
         jQuery(this.slider).slider(
         {
             range : true,
-            min : 0,
-            max : dateRangeLength,
+            //            min : 0,
+            //            max : dateRangeLength,
             from : 0,
             to :dateRangeLength ,
             scale : dateRange,
@@ -110,12 +120,14 @@ var DateRangeSlider = function(slider, onChangeHandler) {
             skin: "plastic"
         });
 
-//        jQuery("#" + dateFilterId)
-//                .val(
-//                dateRange[jQuery(this.slider).slider("values", 0)]
-//                        + ' - '
-//                        + dateRange[jQuery(this.slider).slider(
-//                        "values", 1)]);
+        jQuery('.jslider-value span').remove();
+
+        //        jQuery("#" + dateFilterId)
+        //                .val(
+        //                dateRange[jQuery(this.slider).slider("values", 0)]
+        //                        + ' - '
+        //                        + dateRange[jQuery(this.slider).slider(
+        //                        "values", 1)]);
     };
 
 }
