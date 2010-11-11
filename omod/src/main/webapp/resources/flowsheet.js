@@ -31,6 +31,10 @@ var Flowsheet = function(tableId) {
 
     }
 
+    this.reload = function(entries){
+    	jQuery("#" + tableId).jqGrid('setGridParam',{data:entries}).trigger("reloadGrid");
+    }
+    
     function rangeFormatter (cellvalue, options, rowObject){
         if(rowObject.numeric){
             return "("+rowObject.numeric.low +"-"+rowObject.numeric.hi+" "+rowObject.numeric.unit+")";

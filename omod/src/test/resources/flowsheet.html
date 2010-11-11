@@ -51,8 +51,8 @@
 
     var onChangeHandler = function(from, to) {
         var entries = flowsheetData.filterEntriesByDate(from, to);
-        jQuery("#"+gridTableId).GridUnload();
-        flowsheetObj.render(entries);
+        //jQuery("#"+gridTableId).GridUnload();
+        flowsheetObj.reload(entries);
     }
 
 
