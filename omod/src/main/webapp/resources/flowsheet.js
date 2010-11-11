@@ -1,3 +1,8 @@
+String.prototype.contains = function(compare){
+	return this.toLowerCase().indexOf(compare.toLowerCase()) != -1;
+}
+
+
 var Flowsheet = function(tableId) {
     this.tableId = tableId;
 
@@ -73,8 +78,20 @@ var FlowsheetData = function(data) {
         jQuery(this.entries).each(function(index, entry) {
             if ((entry.date >= from) && (entry.date <= to)) {
                 filteredData.push(entry);
-            }
-        })
+            }        	
+        });
+        
+        return filteredData;
+    }
+    
+    this.search = function(query){
+        var filteredData = new Array();
+        jQuery(this.entries).each(function(index, entry) {
+            if (entry.name.contains(query) || entry.value.contains(query)) {
+                filteredData.push(entry);
+            }        	
+        });
+        
         return filteredData;
     }
 }
