@@ -1,11 +1,10 @@
 Screw.Unit(function() {
     describe("Flowsheet grid", function() {
-        var flowsheet;
-        var data;
+        var flowsheet = new Flowsheet("flowsheet");
+        var data = new FlowsheetData(SampleFlowsheetData());
+        flowsheet.render(data.entries);
         before(function() {
-            flowsheet = new Flowsheet("flowsheet");
-            data = new FlowsheetData(SampleFlowsheetData());
-            flowsheet.render(data.entries);
+            
         }),
                 it("should display the concept name of the observation", function() {
                     var name = $('#2').find('td:nth-child(2)').html();
