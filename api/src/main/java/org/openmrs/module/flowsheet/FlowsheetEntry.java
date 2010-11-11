@@ -1,10 +1,10 @@
 package org.openmrs.module.flowsheet;
 
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import org.openmrs.Concept;
 import org.openmrs.Obs;
+import org.openmrs.api.context.Context;
 
 public class FlowsheetEntry {
 
@@ -19,7 +19,7 @@ public class FlowsheetEntry {
 	public FlowsheetEntry(Obs obs) {
 		Concept concept = obs.getConcept();
 		name = concept.getName().getName();
-		value = obs.getValueAsString(Locale.ENGLISH);
+		value = obs.getValueAsString(Context.getLocale());
 		dataType = concept.getDatatype().getName();
 		classType = obs.getConcept().getConceptClass().getName();
 		date = format.format(obs.getObsDatetime());
