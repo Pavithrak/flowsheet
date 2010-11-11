@@ -50,18 +50,26 @@ Screw.Unit(function() {
         it("should return the unique sorted array of dates", function() {
             var range = flowsheetData.getDateRange();
             expect(range.length).to(equal, 3);
-            expect(range[0]).to(equal, "2001-01-12");
-            expect(range[1]).to(equal, "2002-01-12");
-            expect(range[2]).to(equal, "2010-01-12");
+            expect("2001-01-12").to(equal, range[0]);
+            expect("2002-01-12").to(equal, range[1]);
+            expect("2010-01-12").to(equal, range[2]);
 
         }),
         it("should be able to filter data by date",function(){
             var filteredData = flowsheetData.filterEntriesByDate("2002-01-02","2020-01-01");
             expect(filteredData.length).to(equal,3);
             filteredData = flowsheetData.filterEntriesByDate("1998-01-02","2020-01-01");
-            expect(filteredData.length).to(equal,5);
+            expect(5).to(equal,filteredData.length);
 
-        })
+        }),
+        it("should search by concept name",function(){
+            var filteredData = flowsheetData.search("blood");
+            expect(2).to(equal,filteredData.length);
+        }),
+        it("should search by concept value",function(){
+            var filteredData = flowsheetData.search("dermatitis");
+            expect(1).to(equal,filteredData.length);
+        })       
     })
 });
 
