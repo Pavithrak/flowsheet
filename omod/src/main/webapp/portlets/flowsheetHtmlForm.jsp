@@ -62,8 +62,7 @@
 
     var onChangeHandler = function(from, to) {
         var entries = flowsheetData.filterEntriesByDate(from, to);
-        jQuery("#" + gridTableId).GridUnload();
-        flowsheetObj.render(entries);
+        flowsheetObj.reload(entries);
     }
     var slider = new DateRangeSlider(jQuery("#Slider1"), onChangeHandler);
 
