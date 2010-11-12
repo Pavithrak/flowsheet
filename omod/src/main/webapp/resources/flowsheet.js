@@ -8,6 +8,7 @@ var Flowsheet = function(tableId) {
 
     hideColumnHeaders =function() {
         jQuery('.ui-jqgrid-hdiv').hide();
+        jQuery('.jqgroup td').attr('colspan',3);
     }
 
     createSearchToolBar=function () {
@@ -28,17 +29,21 @@ var Flowsheet = function(tableId) {
             height: 'auto',
             rowNum: 100,
             rowList: [10,20,30],
-            //            colNames:['Date','Name', 'Value','Range'],
+            colNames:['Date','Name', 'Value','Range'],
             colModel:[
-                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y',search:true},
+                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y',search:true,hidden: true},
                 {name:'name', width:290},
                 {name:'value',width:100},
                 {name:'low',width:100,formatter:rangeFormatter}
             ],
             sortname: 'date',
+            altRows:true,
+            altclass:'row_odd',
             grouping:true,
+            width:700,
             groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
-            viewrecords: true, sortorder: "desc"
+            hoverrows:false,
+            viewrecords: false, sortorder: "desc"
 
 
         });
@@ -85,20 +90,20 @@ var FlowsheetData = function(data) {
         jQuery(this.entries).each(function(index, entry) {
             if ((entry.date >= from) && (entry.date <= to)) {
                 filteredData.push(entry);
-            }        	
+            }
         });
-        
+
         return filteredData;
     }
-    
+
     this.search = function(query){
         var filteredData = new Array();
         jQuery(this.entries).each(function(index, entry) {
             if (entry.name.contains(query) || entry.value.contains(query)) {
                 filteredData.push(entry);
-            }        	
+            }
         });
-        
+
         return filteredData;
     }
 }
@@ -120,7 +125,7 @@ var DateRangeSlider = function(slider, onChangeHandler) {
             //            max : dateRangeLength,
             from : 0,
             to :dateRangeLength ,
-            scale : dateRange,
+            scale : [dateRange[0],dateRange[dateRangeLength]],
             onstatechange : function(value) {
                 var from = value.split(";")[0];
                 var to = value.split(";")[1];
