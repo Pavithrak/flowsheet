@@ -93,6 +93,13 @@ Screw.Unit(function() {
             slider.render(new FlowsheetData(SampleFlowsheetData()).getDateRange(), sliderId);
             expect(jQuery("#" + sliderId).attr("value")).to(equal, "0;2");
         }),
+                it("should provide initial from and to date information",function(){
+                    var sliderId = "Slider1";
+                    var slider = new DateRangeSlider(jQuery("#" + sliderId));
+                    slider.render(new FlowsheetData(SampleFlowsheetData()).getDateRange(), sliderId);
+                    expect(jQuery("#sliderInfoFrom").html()).to(equal,"2001-01-12");
+                    expect(jQuery("#sliderInfoTo").html()).to(equal,"2010-01-12");
+                }),
                 it("should not render the date range silder if there are observations of one date or no observations", function() {
                     var sliderId = "Slider1";
                     var emptyData = function() {

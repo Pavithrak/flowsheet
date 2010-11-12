@@ -23,11 +23,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="slider_info">From : yyyy-mm-dd
+                    <td class="slider_info">From : <label id="sliderInfoFrom"></label>
                     </td>
                 </tr>
                 <tr>
-                    <td class="slider_info">To : yyyy-mm-dd
+                    <td class="slider_info">To : <label id="sliderInfoTo"></label>
                     </td>
                 </tr>
                 <tr>

@@ -141,6 +141,8 @@ var DateRangeSlider = function(slider, onChangeHandler) {
                 var from = value.split(";")[0];
                 var to = value.split(";")[1];
                 onChangeHandler.call(null, dateRange[from], dateRange[to]);
+                jQuery("#sliderInfoFrom").html(dateRange[from]);
+                jQuery("#sliderInfoTo").html(dateRange[to]);
             },
             smooth: false,
             limits :false,
@@ -149,13 +151,8 @@ var DateRangeSlider = function(slider, onChangeHandler) {
         });
 
         jQuery('.jslider-value span').remove();
-
-        //        jQuery("#" + dateFilterId)
-        //                .val(
-        //                dateRange[jQuery(this.slider).slider("values", 0)]
-        //                        + ' - '
-        //                        + dateRange[jQuery(this.slider).slider(
-        //                        "values", 1)]);
+        jQuery("#sliderInfoFrom").html(dateRange[0]);
+        jQuery("#sliderInfoTo").html(dateRange[dateRangeLength]);
     };
 
 }

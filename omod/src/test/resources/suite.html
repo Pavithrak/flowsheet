@@ -29,25 +29,37 @@
 <body>
 <div id="dom_test" style="position: absolute; left: -9999"></div>
 
-<table>
+<table class="table_group">
     <tr>
-        <td>
+        <td class="flowsheet_left_panel">
             <table>
+                <tr>
+                    <td class="slider_title">Date Range
+                    </td>
+                </tr>
+                <tr>
+                    <td class="slider_info">From : <label id="sliderInfoFrom"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="slider_info">To : <label id="sliderInfoTo"></label>
+                    </td>
+                </tr>
                 <tr>
                     <td>
 
-                        <div class="layout-slider" style="width: 100%">
-                             <span  id="textSlider1"  style="display: inline-block; width: 400px; padding: 0 5px;">
-                            <input id="Slider1" type="slider" name="price"/></span>
-                        </div>
+                        <div class="layout-slider">
+                             <span class="slider">
+                            <input id="Slider1" type="slider" name="price"  /></span>
+                           </div>
 
                     </td>
                 </tr>
             </table>
 
         </td>
-        <td>
-            <table id="flowsheet" width="500px;float:right">
+        <td class="flowsheet_grid">
+            <table id="flowsheet">
             </table>
 
         </td>
