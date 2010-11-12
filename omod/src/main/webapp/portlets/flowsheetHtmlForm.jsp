@@ -27,7 +27,7 @@
                         </div>
 
                     </td>
-                    <td >
+                    <td>
                         <table id="flowsheet" width="500px">
                         </table>
                     </td>
@@ -49,7 +49,8 @@
 
     var onChangeHandler = function(from, to) {
         var entries = flowsheetData.filterEntriesByDate(from, to);
-        flowsheetObj.reload(entries);
+        jQuery("#" + gridTableId).GridUnload();
+        flowsheetObj.render(entries);
     }
     var slider = new DateRangeSlider(jQuery("#Slider1"), onChangeHandler);
 
