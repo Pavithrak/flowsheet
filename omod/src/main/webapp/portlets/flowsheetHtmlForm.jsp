@@ -33,7 +33,7 @@
                 <tr>
                     <td>
 
-                        <div class="layout-slider" style="width: 100%">
+                        <div class="layout-slider">
                              <span class="slider">
                             <input id="Slider1" type="slider" name="price"  /></span>
                            </div>
@@ -44,7 +44,7 @@
 
         </td>
         <td class="flowsheet_grid">
-            <table id="flowsheet" style="{width:'600px'}">
+            <table id="flowsheet">
             </table>
 
         </td>

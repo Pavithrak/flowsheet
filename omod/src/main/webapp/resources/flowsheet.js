@@ -1,17 +1,17 @@
-String.prototype.contains = function(compare){
-	return this.toLowerCase().indexOf(compare.toLowerCase()) != -1;
+String.prototype.contains = function(compare) {
+    return this.toLowerCase().indexOf(compare.toLowerCase()) != -1;
 }
 
 
 var Flowsheet = function(tableId) {
     this.tableId = tableId;
 
-    hideColumnHeaders =function() {
+    hideColumnHeaders = function() {
         jQuery('.ui-jqgrid-hdiv').hide();
         jQuery('.jqgroup td').attr('colspan',3);
     }
 
-    createSearchToolBar=function () {
+    createSearchToolBar = function () {
         jQuery("#" + tableId).jqGrid('filterToolbar', {autosearch:true,searchOnEnter:true,multipleSearch:true });
     }
 
@@ -27,11 +27,10 @@ var Flowsheet = function(tableId) {
             data: entries,
             datatype: "local",
             height: 'auto',
-            rowNum: 100,
-            rowList: [10,20,30],
-            colNames:['Date','Name', 'Value','Range'],
+            rowNum: -1,
+            //            colNames:['Date','Name', 'Value','Range'],
             colModel:[
-                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y',search:true,hidden: true},
+                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y'},
                 {name:'name', width:290},
                 {name:'value',width:100},
                 {name:'low',width:100,formatter:rangeFormatter}
@@ -51,6 +50,11 @@ var Flowsheet = function(tableId) {
         hideColumnHeaders();
         createSearchToolBar();
 
+    }
+
+    this.reload = function(entries) {
+        jQuery("#" + tableId).clearGridData(false);
+        jQuery("#" + tableId).jqGrid('setGridParam', {data:entries}).trigger("reloadGrid");
     }
 
     function rangeFormatter(cellvalue, options, rowObject) {
@@ -96,7 +100,7 @@ var FlowsheetData = function(data) {
         return filteredData;
     }
 
-    this.search = function(query){
+    this.search = function(query) {
         var filteredData = new Array();
         jQuery(this.entries).each(function(index, entry) {
             if (entry.name.contains(query) || entry.value.contains(query)) {
@@ -111,7 +115,7 @@ var FlowsheetData = function(data) {
 var DateRangeSlider = function(slider, onChangeHandler) {
     this.slider = slider;
     this.render = function(dateRange, dateFilterId) {
-        if(!dateRange || dateRange.length <= 1){
+        if (!dateRange || dateRange.length <= 1) {
             jQuery(".layout-slider").html("No sufficient date to filter");
             return;
         }
@@ -121,8 +125,6 @@ var DateRangeSlider = function(slider, onChangeHandler) {
         jQuery(this.slider).slider(
         {
             range : true,
-            //            min : 0,
-            //            max : dateRangeLength,
             from : 0,
             to :dateRangeLength ,
             scale : [dateRange[0],dateRange[dateRangeLength]],
