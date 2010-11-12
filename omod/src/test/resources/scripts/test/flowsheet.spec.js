@@ -10,7 +10,7 @@ Screw.Unit(function() {
                 it("should display the concept value of the observation", function() {
                     var value = $('#2').find('td:nth-child(3)').html();
                     var expectedData = data.entries[2];
-                    expect(value).to(equal, expectedData.value + "(" + expectedData.numeric.unit + ")");
+                    expect(value).to(equal, expectedData.value + " " + expectedData.numeric.unit);
                 }),
                 it("should display date of the observation", function() {
                     var date = $('#2').find('td:nth-child(1)').html();

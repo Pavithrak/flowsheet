@@ -62,7 +62,7 @@ var Flowsheet = function(tableId) {
 
     var valueFormatter = function(cellvalue, options, rowObject) {
         if (rowObject.value && rowObject.numeric) {
-            return  rowObject.value + "(" + rowObject.numeric.unit + ")";
+            return  rowObject.value + " " + rowObject.numeric.unit;
         }
         return " ";
 
