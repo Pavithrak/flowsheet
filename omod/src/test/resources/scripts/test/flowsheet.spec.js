@@ -9,7 +9,8 @@ Screw.Unit(function() {
         }),
                 it("should display the concept value of the observation", function() {
                     var value = $('#2').find('td:nth-child(3)').html();
-                    expect(value).to(equal, data.entries[2].value);
+                    var expectedData = data.entries[2];
+                    expect(value).to(equal, expectedData.value + "(" + expectedData.numeric.unit + ")");
                 }),
                 it("should display date of the observation", function() {
                     var date = $('#2').find('td:nth-child(1)').html();
@@ -29,13 +30,13 @@ Screw.Unit(function() {
                 }),
                 it("should display the range value for numeric observation", function() {
                     var value = $('#2').find('td:nth-child(4)').html();
-                    expect(value).to(equal, "(" + data.entries[2].numeric.low + "-" + data.entries[2].numeric.hi + " " + data.entries[2].numeric.unit + ")");
+                    expect(value).to(equal, "(" + data.entries[2].numeric.low + "-" + data.entries[2].numeric.hi + ")");
                 }),
                 it("should not display the range value for non-numeric observation", function() {
                     var value = $('#3').find('td:nth-child(4)').html();
                     expect(value).to(equal, " ");
                 }),
-                it("should hide the column headers ", function(){
+                it("should hide the column headers ", function() {
                     expect(jQuery('.ui-jqgrid-hdiv').css("display")).to(equal, "none");
                 }),
                 it("should not create Grid if there are no observations", function() {
@@ -92,18 +93,18 @@ Screw.Unit(function() {
             slider.render(new FlowsheetData(SampleFlowsheetData()).getDateRange(), sliderId);
             expect(jQuery("#" + sliderId).attr("value")).to(equal, "0;2");
         }),
-        it("should not render the date range silder if there are observations of one date or no observations", function() {
-            var sliderId = "Slider1";
-             var emptyData = function() {
+                it("should not render the date range silder if there are observations of one date or no observations", function() {
+                    var sliderId = "Slider1";
+                    var emptyData = function() {
                         this.flowsheet = {
                             entries : []
                         };
                         return this;
                     }
-            var slider = new DateRangeSlider(jQuery("#" + sliderId));
-            slider.render(new FlowsheetData(emptyData()).getDateRange(), sliderId);
-            expect(jQuery(".layout-slider").html()).to(equal, "No sufficient date to filter");
-        })
+                    var slider = new DateRangeSlider(jQuery("#" + sliderId));
+                    slider.render(new FlowsheetData(emptyData()).getDateRange(), sliderId);
+                    expect(jQuery(".layout-slider").html()).to(equal, "No sufficient date to filter");
+                })
     })
 });
 var dateFilterId = "textSlider1";

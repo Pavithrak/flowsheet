@@ -66,4 +66,11 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 	public void shouldReturnHiValueEachObservation() throws Exception {
 		Assert.assertEquals("250.0", entry.getNumeric().getHi().toString());
 	}
+
+	@Test
+	public void shouldReturnHiLowAsEmpty() throws Exception {
+		Assert.assertEquals("", entry.getNumeric().getHi());
+		Assert.assertEquals("", entry.getNumeric().getLow());
+	}
+
 }

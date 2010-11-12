@@ -30,11 +30,15 @@ public class Numeric {
 		return unit;
 	}
 
-	public Double getHi() {
-		return hi;
+	public String getHi() {
+		return nullSafeString(hi);
 	}
 
-	public Double getLow() {
-		return low;
+	public String getLow() {
+		return nullSafeString(low);
+	}
+
+	public String nullSafeString(Double value) {
+		return value == null ? "" : "" + value;
 	}
 }
