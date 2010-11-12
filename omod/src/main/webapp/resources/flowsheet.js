@@ -6,6 +6,14 @@ String.prototype.contains = function(compare){
 var Flowsheet = function(tableId) {
     this.tableId = tableId;
 
+    hideColumnHeaders =function() {
+        jQuery('.ui-jqgrid-hdiv').hide();
+    }
+
+    createSearchToolBar=function () {
+        jQuery("#" + tableId).jqGrid('filterToolbar', {autosearch:true,searchOnEnter:true,multipleSearch:true });
+    }
+
     this.render = function(entries) {
         if (!entries || entries.length == 0) {
             jQuery("#" + tableId).append(jQuery('<tr>')
@@ -35,9 +43,8 @@ var Flowsheet = function(tableId) {
 
         });
 
-        jQuery('.ui-jqgrid-hdiv').hide();
-
-        jQuery("#" + tableId).jqGrid('filterToolbar', {autosearch:true,searchOnEnter:true,multipleSearch:true });
+        hideColumnHeaders();
+        createSearchToolBar();
 
     }
 
