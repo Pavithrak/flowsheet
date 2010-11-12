@@ -7,36 +7,49 @@
 
 <openmrs:htmlInclude file="/moduleResources/flowsheet/ui.jqgrid.css"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jslider.css"/>
+<openmrs:htmlInclude file="/moduleResources/flowsheet/uicustom.css"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.dependClass.js"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.slider-min.js"/>
 
 
 <input type="hidden" id="patientId" name="patientId" value='<request:parameter name="patientId" />'/>
 
-
-<table>
+<table class="table_group">
     <tr>
-        <td>
+        <td class="flowsheet_left_panel">
             <table>
                 <tr>
-                    <td valign="top">
-
-                        <div class="layout-slider" style="width: 100%;align:top">
-                             <span style="display: inline-block; width: 400px; padding: 0 5px;">
-                            <input id="Slider1" type="slider" name="price"/></span>
-                        </div>
-
+                    <td class="slider_title">Date Range
                     </td>
+                </tr>
+                <tr>
+                    <td class="slider_info">From : yyyy-mm-dd
+                    </td>
+                </tr>
+                <tr>
+                    <td class="slider_info">To : yyyy-mm-dd
+                    </td>
+                </tr>
+                <tr>
                     <td>
-                        <table id="flowsheet" width="500px">
-                        </table>
+
+                        <div class="layout-slider">
+                             <span class="slider">
+                            <input id="Slider1" type="slider" name="price"  /></span>
+                           </div>
+
                     </td>
                 </tr>
             </table>
-        </td>
-    </tr>
 
+        </td>
+        <td class="flowsheet_grid">
+            <table id="flowsheet">
+            </table>
+
+        </td>
 </table>
+
 
 <script type="text/javascript">
     var gridTableId = "flowsheet";
@@ -49,7 +62,8 @@
 
     var onChangeHandler = function(from, to) {
         var entries = flowsheetData.filterEntriesByDate(from, to);
-        flowsheetObj.reload(entries);
+        jQuery("#" + gridTableId).GridUnload();
+        flowsheetObj.render(entries);
     }
     var slider = new DateRangeSlider(jQuery("#Slider1"), onChangeHandler);
 

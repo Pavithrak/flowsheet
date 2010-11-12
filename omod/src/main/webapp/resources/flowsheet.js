@@ -8,6 +8,7 @@ var Flowsheet = function(tableId) {
 
     hideColumnHeaders = function() {
         jQuery('.ui-jqgrid-hdiv').hide();
+        jQuery('.jqgroup td').attr('colspan',3);
     }
 
     createSearchToolBar = function () {
@@ -36,9 +37,13 @@ var Flowsheet = function(tableId) {
                 {name:'low',width:100,formatter:rangeFormatter}
             ],
             sortname: 'date',
+            altRows:true,
+            altclass:'row_odd',
             grouping:true,
+            width:700,
             groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
-            viewrecords: true, sortorder: "desc"
+            hoverrows:false,
+            viewrecords: false, sortorder: "desc"
 
 
         });
@@ -129,11 +134,9 @@ var DateRangeSlider = function(slider, onChangeHandler) {
         jQuery(this.slider).slider(
         {
             range : true,
-            //            min : 0,
-            //            max : dateRangeLength,
             from : 0,
             to :dateRangeLength ,
-            scale : dateRange,
+            scale : [dateRange[0],dateRange[dateRangeLength]],
             onstatechange : function(value) {
                 var from = value.split(";")[0];
                 var to = value.split(";")[1];

@@ -1,0 +1,30 @@
+/*
+* Overwriting jquery-ui.custom.css
+*/
+
+.jqgroup td{ border-top: 2px solid #5785BB; background-color:#dfeaf5; font-size:16px;}
+.table_group { -moz-border-radius: 5px; border-radius: 5px; border: 1px solid #A6C9E2; background-color: #d2deee; }
+.table_group td { vertical-align: top;}
+.row_odd td {background-color:#f3f3f3}
+/*To remove the padding for table*/
+.ui-jqgrid {width : 600px;}
+.ui-jqgrid .ui-jqgrid-hbox { padding-right: 0;}
+.ui-jqgrid tr.jqgrow td { white-space: pre-wrap;}
+.flowsheet_left_panel {
+    padding-left:30px;
+    padding-right:20px;
+    padding-top:10px;
+    padding-bottom:30px;
+    width:200px;
+}
+.slider {display: inline-block; width: 200px; padding: 0 5px;}
+.flowsheet_grid {
+padding-left:45px;
+}
+.slider_info {
+    font-size : 9px;
+}
+.slider_title {
+    font-size : 12px;
+    font-weight:bold;
+}
