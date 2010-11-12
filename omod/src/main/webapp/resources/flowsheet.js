@@ -1,16 +1,16 @@
-String.prototype.contains = function(compare){
-	return this.toLowerCase().indexOf(compare.toLowerCase()) != -1;
+String.prototype.contains = function(compare) {
+    return this.toLowerCase().indexOf(compare.toLowerCase()) != -1;
 }
 
 
 var Flowsheet = function(tableId) {
     this.tableId = tableId;
 
-    hideColumnHeaders =function() {
+    hideColumnHeaders = function() {
         jQuery('.ui-jqgrid-hdiv').hide();
     }
 
-    createSearchToolBar=function () {
+    createSearchToolBar = function () {
         jQuery("#" + tableId).jqGrid('filterToolbar', {autosearch:true,searchOnEnter:true,multipleSearch:true });
     }
 
@@ -47,11 +47,11 @@ var Flowsheet = function(tableId) {
 
     }
 
-    /* -- This is another way of dynamically populating the data in grid but this option is quite unreliable 
-    this.reload = function(entries){
-    	jQuery("#" + tableId).jqGrid('setGridParam',{data:entries}).trigger("reloadGrid");
-    }*/
-    
+    this.reload = function(entries) {
+        jQuery("#" + tableId).clearGridData(false);
+        jQuery("#" + tableId).jqGrid('setGridParam', {data:entries}).trigger("reloadGrid");
+    }
+
     function rangeFormatter(cellvalue, options, rowObject) {
         if (rowObject.numeric) {
             return "(" + rowObject.numeric.low + "-" + rowObject.numeric.hi + " " + rowObject.numeric.unit + ")";
@@ -89,20 +89,20 @@ var FlowsheetData = function(data) {
         jQuery(this.entries).each(function(index, entry) {
             if ((entry.date >= from) && (entry.date <= to)) {
                 filteredData.push(entry);
-            }        	
+            }
         });
-        
+
         return filteredData;
     }
-    
-    this.search = function(query){
+
+    this.search = function(query) {
         var filteredData = new Array();
         jQuery(this.entries).each(function(index, entry) {
             if (entry.name.contains(query) || entry.value.contains(query)) {
                 filteredData.push(entry);
-            }        	
+            }
         });
-        
+
         return filteredData;
     }
 }
@@ -110,7 +110,7 @@ var FlowsheetData = function(data) {
 var DateRangeSlider = function(slider, onChangeHandler) {
     this.slider = slider;
     this.render = function(dateRange, dateFilterId) {
-        if(!dateRange || dateRange.length <= 1){
+        if (!dateRange || dateRange.length <= 1) {
             jQuery(".layout-slider").html("No sufficient date to filter");
             return;
         }
