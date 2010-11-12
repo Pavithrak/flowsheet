@@ -7,13 +7,13 @@ var Flowsheet = function(tableId) {
     this.tableId = tableId;
 
     this.render = function(entries) {
-//        if (!entries || entries.length == 0) {
-//            jQuery("#" + tableId).append(jQuery('<tr>')
-//                    .append(jQuery('<td>')
-//                    .text('There are currently no observations for this patient')));
-//
-//            return;
-//        }
+        if (!entries || entries.length == 0) {
+            jQuery("#" + tableId).append(jQuery('<tr>')
+                    .append(jQuery('<td>')
+                    .text('There are currently no observations for this patient')));
+
+            return;
+        }
         jQuery("#" + tableId).jqGrid({
             data: entries,
             datatype: "local",
@@ -103,6 +103,11 @@ var FlowsheetData = function(data) {
 var DateRangeSlider = function(slider, onChangeHandler) {
     this.slider = slider;
     this.render = function(dateRange, dateFilterId) {
+        if(!dateRange || dateRange.length <= 1){
+            jQuery(".layout-slider").html("No sufficient date to filter");
+            return;
+        }
+
         var dateRangeLength = (dateRange.length - 1);
         jQuery(this.slider).attr("value", "0;" + dateRangeLength);
         jQuery(this.slider).slider(
