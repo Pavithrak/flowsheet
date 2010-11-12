@@ -26,11 +26,10 @@ var Flowsheet = function(tableId) {
             data: entries,
             datatype: "local",
             height: 'auto',
-            rowNum: 100,
-            rowList: [10,20,30],
+            rowNum: -1,
             //            colNames:['Date','Name', 'Value','Range'],
             colModel:[
-                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y',search:true},
+                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y'},
                 {name:'name', width:290},
                 {name:'value',width:100},
                 {name:'low',width:100,formatter:rangeFormatter}
@@ -48,9 +47,10 @@ var Flowsheet = function(tableId) {
 
     }
 
+    /* -- This is another way of dynamically populating the data in grid but this option is quite unreliable 
     this.reload = function(entries){
     	jQuery("#" + tableId).jqGrid('setGridParam',{data:entries}).trigger("reloadGrid");
-    }
+    }*/
     
     function rangeFormatter(cellvalue, options, rowObject) {
         if (rowObject.numeric) {
