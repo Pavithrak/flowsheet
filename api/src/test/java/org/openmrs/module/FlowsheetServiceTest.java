@@ -73,5 +73,4 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 		Assert.assertEquals("", entry.getNumeric().getLow());
 	}
 
-	
 }
