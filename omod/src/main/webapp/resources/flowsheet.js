@@ -22,6 +22,7 @@ var Flowsheet = function(tableId) {
 
             return;
         }
+
         jQuery("#" + tableId).jqGrid({
             data: entries,
             datatype: "local",
@@ -31,7 +32,7 @@ var Flowsheet = function(tableId) {
             colModel:[
                 {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y'},
                 {name:'name', width:290},
-                {name:'value',width:100},
+                {name:'value',width:100,formatter:valueFormatter},
                 {name:'low',width:100,formatter:rangeFormatter}
             ],
             sortname: 'date',
@@ -52,12 +53,20 @@ var Flowsheet = function(tableId) {
         jQuery("#" + tableId).jqGrid('setGridParam', {data:entries}).trigger("reloadGrid");
     }
 
-    function rangeFormatter(cellvalue, options, rowObject) {
+    var rangeFormatter = function(cellvalue, options, rowObject) {
         if (rowObject.numeric) {
-            return "(" + rowObject.numeric.low + "-" + rowObject.numeric.hi + " " + rowObject.numeric.unit + ")";
+            return "(" + rowObject.numeric.low + "-" + rowObject.numeric.hi + ")";
         }
         return " ";
     }
+
+    var valueFormatter = function(cellvalue, options, rowObject) {
+        if (rowObject.value && rowObject.numeric) {
+            return  rowObject.value + "(" + rowObject.numeric.unit + ")";
+        }
+        return " ";
+
+    };
 }
 
 var FlowsheetData = function(data) {
