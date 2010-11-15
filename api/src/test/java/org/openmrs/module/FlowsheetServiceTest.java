@@ -20,7 +20,7 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 	private FlowsheetEntry entry;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		service = Context.getService(FlowsheetService.class);
 		entry = getFlowSheetEntry(7).get(0);
 	}
@@ -28,7 +28,7 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void shouldReturnObservationsForPerson() {
 		Assert.assertEquals(0, getFlowSheetEntry(1).size());
-		Assert.assertEquals(9, getFlowSheetEntry(7).size());
+		Assert.assertEquals(10, getFlowSheetEntry(7).size());
 	}
 
 	@Test
@@ -59,6 +59,13 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 	@Test
 	public void shouldReturnUnitForEachObservation() throws Exception {
 		Assert.assertEquals("kg", entry.getNumeric().getUnit());
+	}
+
+	@Test
+	@Ignore("Add additional data set to test this")
+	public void shouldReturnCommentObservation() throws Exception {
+		FlowsheetEntry entry = getFlowSheetEntry(7).get(10);
+		Assert.assertEquals("", entry.getComment());
 	}
 
 	@Test

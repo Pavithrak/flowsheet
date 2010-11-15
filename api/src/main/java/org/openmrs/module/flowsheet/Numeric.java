@@ -13,8 +13,8 @@ public class Numeric {
 	public Numeric(Concept concept) {
 		ConceptNumeric numeric = deproxy(concept, ConceptNumeric.class);
 		this.unit = numeric.getUnits();
-		this.hi = numeric.getHiAbsolute();
-		this.low = numeric.getLowAbsolute();
+		this.hi = numeric.getHiNormal();
+		this.low = numeric.getLowNormal();
 	}
 
 	private <T> T deproxy(Object maybeProxy, Class<T> baseClass)

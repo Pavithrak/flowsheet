@@ -16,13 +16,13 @@ public class FlowsheetEntry {
 	private String date;
 	private Numeric numeric;
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	private String comment;
 
 	public FlowsheetEntry(Obs obs) {
 		Concept concept = obs.getConcept();
 
 		ConceptName shortName = concept.getShortNameInLocale(Locale.ENGLISH);
 		ConceptName displayName = shortName == null ? concept.getName() : shortName;
-
 		name = displayName.getName();
 		value = obs.getValueAsString(Locale.ENGLISH);
 		dataType = concept.getDatatype().getName();
@@ -55,6 +55,10 @@ public class FlowsheetEntry {
 
 	public Numeric getNumeric() {
 		return numeric;
+	}
+
+	public String getComment() {
+		return comment;
 	}
 
 }
