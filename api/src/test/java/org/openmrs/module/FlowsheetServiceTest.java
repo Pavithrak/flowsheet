@@ -33,7 +33,7 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 
 	@Test
 	public void shouldReturnConceptNameForEachObservation() {
-		Assert.assertEquals("WEIGHT (KG)", entry.getName());
+		Assert.assertEquals("WT", entry.getName());
 	}
 
 	@Test

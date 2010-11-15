@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import org.openmrs.Concept;
+import org.openmrs.ConceptName;
 import org.openmrs.Obs;
-import org.openmrs.api.context.Context;
 
 public class FlowsheetEntry {
 
@@ -16,10 +16,14 @@ public class FlowsheetEntry {
 	private String date;
 	private Numeric numeric;
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-	
+
 	public FlowsheetEntry(Obs obs) {
 		Concept concept = obs.getConcept();
-		name = concept.getName().getName();
+
+		ConceptName shortName = concept.getShortNameInLocale(Locale.ENGLISH);
+		ConceptName displayName = shortName == null ? concept.getName() : shortName;
+
+		name = displayName.getName();
 		value = obs.getValueAsString(Locale.ENGLISH);
 		dataType = concept.getDatatype().getName();
 		classType = obs.getConcept().getConceptClass().getName();
