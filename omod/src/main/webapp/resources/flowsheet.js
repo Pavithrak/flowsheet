@@ -59,7 +59,7 @@ var Flowsheet = function(tableId) {
     }
 
     var rangeFormatter = function(cellvalue, options, rowObject) {
-        if (rowObject.numeric) {
+        if (rowObject.numeric && rowObject.numeric.hi && rowObject.numeric.low) {
             return "(" + rowObject.numeric.low + "-" + rowObject.numeric.hi + ")";
         }
         return " ";

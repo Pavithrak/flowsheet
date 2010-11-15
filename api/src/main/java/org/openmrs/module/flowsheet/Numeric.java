@@ -38,7 +38,7 @@ public class Numeric {
 		return nullSafeString(low);
 	}
 
-	public String nullSafeString(Double value) {
+	private String nullSafeString(Double value) {
 		return value == null ? "" : "" + value;
 	}
 }

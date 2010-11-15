@@ -41,6 +41,10 @@ Screw.Unit(function() {
                     var value = $('#2').find('td:nth-child(4)').html();
                     expect(value).to(equal, "(" + data.entries[2].numeric.low + "-" + data.entries[2].numeric.hi + ")");
                 }),
+                 it("should not display the range value for numeric observation when the high or low value is empty", function() {
+                    var value = $('#4').find('td:nth-child(4)').html();
+                    expect(value).to(equal, " ");
+                }),
                 it("should not display the range value for non-numeric observation", function() {
                     var value = $('#3').find('td:nth-child(4)').html();
                     expect(value).to(equal, " ");
