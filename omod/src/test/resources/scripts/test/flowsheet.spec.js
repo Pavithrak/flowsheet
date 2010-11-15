@@ -7,10 +7,19 @@ Screw.Unit(function() {
             var name = $('#2').find('td:nth-child(2)').html();
             expect(name).to(equal, data.entries[2].name);
         }),
-                it("should display the concept value of the observation", function() {
+                it("should display the concept value along with the units for the numeric observations", function() {
                     var value = $('#2').find('td:nth-child(3)').html();
                     var expectedData = data.entries[2];
                     expect(value).to(equal, expectedData.value + " " + expectedData.numeric.unit);
+                }),
+                 it("should display the concept value  for the non numeric observations", function() {
+                    var value = $('#1').find('td:nth-child(3)').html();
+                    var expectedData = data.entries[4];
+                    expect(value).to(equal, expectedData.value);
+                }),
+                 it("should display blank value for the null observations", function() {
+                    var value = $('#4').find('td:nth-child(3)').html();
+                    expect(value).to(equal, " ");
                 }),
                 it("should display date of the observation", function() {
                     var date = $('#2').find('td:nth-child(1)').html();
@@ -31,6 +40,10 @@ Screw.Unit(function() {
                 it("should display the range value for numeric observation", function() {
                     var value = $('#2').find('td:nth-child(4)').html();
                     expect(value).to(equal, "(" + data.entries[2].numeric.low + "-" + data.entries[2].numeric.hi + ")");
+                }),
+                 it("should not display the range value for numeric observation when the high or low value is empty", function() {
+                    var value = $('#4').find('td:nth-child(4)').html();
+                    expect(value).to(equal, " ");
                 }),
                 it("should not display the range value for non-numeric observation", function() {
                     var value = $('#3').find('td:nth-child(4)').html();

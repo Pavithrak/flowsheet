@@ -8,7 +8,7 @@ var Flowsheet = function(tableId) {
 
     hideColumnHeaders = function() {
         jQuery('.ui-jqgrid-hdiv').hide();
-        jQuery('.jqgroup td').attr('colspan',3);
+        jQuery('.jqgroup td').attr('colspan', 3);
     }
 
     createSearchToolBar = function () {
@@ -59,15 +59,20 @@ var Flowsheet = function(tableId) {
     }
 
     var rangeFormatter = function(cellvalue, options, rowObject) {
-        if (rowObject.numeric) {
+        if (rowObject.numeric && rowObject.numeric.hi && rowObject.numeric.low) {
             return "(" + rowObject.numeric.low + "-" + rowObject.numeric.hi + ")";
         }
         return " ";
     }
 
     var valueFormatter = function(cellvalue, options, rowObject) {
-        if (rowObject.value && rowObject.numeric) {
-            return  rowObject.value + " " + rowObject.numeric.unit;
+        if (rowObject.value) {
+            if (rowObject.numeric) {
+                return  rowObject.value + " " + rowObject.numeric.unit;
+            }
+            else {
+                return rowObject.value;
+            }
         }
         return " ";
 
