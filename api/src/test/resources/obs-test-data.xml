@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<obs obs_id="17" person_id="7" concept_id="5089" encounter_id="5"
+		obs_datetime="2008-08-19 00:00:00.0" location_id="2" value_numeric="61.0"
+		comments="comment" creator="1" date_created="2008-08-19 12:35:30.0" voided="false"
+		uuid="2ed1e57d-9f18-41d3-b067-2eeaf4b30fz2" />
+
+</dataset>
