@@ -28,7 +28,7 @@ var Flowsheet = function(tableId) {
             data: entries,
             datatype: "local",
             height: 'auto',
-            //            rowNum: -1,
+                        rowNum: -1,
             //            colNames:['Date','Name', 'Value','Range'],
             colModel:[
                 {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y'},
@@ -55,7 +55,7 @@ var Flowsheet = function(tableId) {
 
     this.reload = function(entries) {
         jQuery("#" + tableId).clearGridData(false);
-        jQuery("#" + tableId).jqGrid('setGridParam', {data:entries, rowNum:entries.length}).trigger("reloadGrid");
+        jQuery("#" + tableId).jqGrid('setGridParam', {data:entries}).trigger("reloadGrid");
     }
 
     var rangeFormatter = function(cellvalue, options, rowObject) {
@@ -107,7 +107,9 @@ var FlowsheetData = function(data) {
         var filteredEntries = [];
         var entries = this.entries;
         jQuery(entries).each(function(index, entry) {
-            if ((entry.date >= dateObj.from) && (entry.date <= dateObj.to) && (jQuery.inArray(entry.classType, classTypes)) >= 0) {
+            var classTypeCheck = (jQuery.inArray(entry.classType, classTypes) >= 0);
+            var dateCheck = (entry.date >= dateObj.from) && (entry.date <= dateObj.to);
+            if (dateCheck && classTypeCheck) {
                 filteredEntries.push(entry);
             }
         });
@@ -173,13 +175,13 @@ var DateRangeSlider = function(slider, filterHandler) {
 
 }
 
-var ConceptClassTypeFilter = function(classTypes, classTypeListId,filterHandler) {
+var ConceptClassTypeFilter = function(classTypes, classTypeListId, filterHandler) {
     this.classTypes = classTypes;
     this.classTypeListId = classTypeListId;
 
     this.render = function() {
         jQuery(this.classTypes).each(function(index, classType) {
-            var classTypeContainer = jQuery("#"+classTypeListId);
+            var classTypeContainer = jQuery("#" + classTypeListId);
 
             var inputElement = jQuery('<input>', {
                 id: classType,
@@ -201,4 +203,5 @@ var DateObject = function(from, to) {
     this.from = from;
     this.to = to;
 }
+
 

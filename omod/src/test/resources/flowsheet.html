@@ -71,7 +71,6 @@
 
     var flowsheetData = new FlowsheetData(SampleFlowsheetData());
 
-
     getSelectedClassTypes = function() {
         var selectedClassTypes = [];
         jQuery("input[@name='classTypeCB[]']:checked").each(function() {
@@ -80,14 +79,16 @@
         });
         return selectedClassTypes;
     }
+
     var filterHandler = function() {
         var from = jQuery('#sliderInfoFrom').text();
         var to = jQuery('#sliderInfoTo').text();
         var entries = flowsheetData.filterEntries(new DateObject(from, to), getSelectedClassTypes());
         flowsheetObj.reload(entries);
     }
-    var classTypeFilter = new ConceptClassTypeFilter(flowsheetData.getUniqueClassTypes(), classTypeListId,filterHandler);
-    var slider = new DateRangeSlider(jQuery("#"+sliderId), filterHandler);
+
+    var classTypeFilter = new ConceptClassTypeFilter(flowsheetData.getUniqueClassTypes(), classTypeListId, filterHandler);
+    var slider = new DateRangeSlider(jQuery("#" + sliderId), filterHandler);
 
     renderFlowsheetPage = function() {
         classTypeFilter.render();

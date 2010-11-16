@@ -12,12 +12,12 @@ Screw.Unit(function() {
                     var expectedData = data.entries[2];
                     expect(value).to(equal, expectedData.value + " " + expectedData.numeric.unit);
                 }),
-                 it("should display the concept value  for the non numeric observations", function() {
+                it("should display the concept value  for the non numeric observations", function() {
                     var value = $('#1').find('td:nth-child(3)').html();
                     var expectedData = data.entries[4];
                     expect(value).to(equal, expectedData.value);
                 }),
-                 it("should display blank value for the null observations", function() {
+                it("should display blank value for the null observations", function() {
                     var value = $('#4').find('td:nth-child(3)').html();
                     expect(value).to(equal, " ");
                 }),
@@ -41,7 +41,7 @@ Screw.Unit(function() {
                     var value = $('#2').find('td:nth-child(4)').html();
                     expect(value).to(equal, "(" + data.entries[2].numeric.low + "-" + data.entries[2].numeric.hi + ")");
                 }),
-                 it("should not display the range value for numeric observation when the high or low value is empty", function() {
+                it("should not display the range value for numeric observation when the high or low value is empty", function() {
                     var value = $('#4').find('td:nth-child(4)').html();
                     expect(value).to(equal, " ");
                 }),
@@ -80,12 +80,11 @@ Screw.Unit(function() {
             expect("2010-01-12").to(equal, range[2]);
 
         }),
-                it("should be able to filter data by date", function() {
-                    var filteredData = flowsheetData.filterEntriesByDate("2002-01-02", "2020-01-01");
+                it("should be able to filter data by date and Concept Class Types", function() {
+                    var filteredData = flowsheetData.filterEntries(new DateObject("2002-01-02", "2020-01-01"), ["Finding","Test"]);
                     expect(filteredData.length).to(equal, 3);
-                    filteredData = flowsheetData.filterEntriesByDate("1998-01-02", "2020-01-01");
-                    expect(5).to(equal, filteredData.length);
-
+                    var newfilteredData = flowsheetData.filterEntries(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"]);
+                    expect(3).to(equal, filteredData.length);
                 }),
                 it("should search by concept name", function() {
                     var filteredData = flowsheetData.search("blood");
@@ -94,6 +93,11 @@ Screw.Unit(function() {
                 it("should search by concept value", function() {
                     var filteredData = flowsheetData.search("dermatitis");
                     expect(1).to(equal, filteredData.length);
+                }),
+                it("should return Unique classtype array from the flowsheet data", function() {
+                    var uniqueClassTypes = flowsheetData.getUniqueClassTypes();
+                    expect(3).to(equal, uniqueClassTypes.length);
+                    expect(["Test","Diagnosis","Finding"]).to(equal, uniqueClassTypes);
                 })
     })
 });
@@ -106,12 +110,12 @@ Screw.Unit(function() {
             slider.render(new FlowsheetData(SampleFlowsheetData()).getDateRange(), sliderId);
             expect(jQuery("#" + sliderId).attr("value")).to(equal, "0;2");
         }),
-                it("should provide initial from and to date information",function(){
+                it("should provide initial from and to date information", function() {
                     var sliderId = "Slider1";
                     var slider = new DateRangeSlider(jQuery("#" + sliderId));
                     slider.render(new FlowsheetData(SampleFlowsheetData()).getDateRange(), sliderId);
-                    expect(jQuery("#sliderInfoFrom").html()).to(equal,"2001-01-12");
-                    expect(jQuery("#sliderInfoTo").html()).to(equal,"2010-01-12");
+                    expect(jQuery("#sliderInfoFrom").html()).to(equal, "2001-01-12");
+                    expect(jQuery("#sliderInfoTo").html()).to(equal, "2010-01-12");
                 }),
                 it("should not render the date range silder if there are observations of one date or no observations", function() {
                     var sliderId = "Slider1";
@@ -125,6 +129,35 @@ Screw.Unit(function() {
                     slider.render(new FlowsheetData(emptyData()).getDateRange(), sliderId);
                     expect(jQuery(".layout-slider").html()).to(equal, "No sufficient date to filter");
                 })
+    })
+});
+
+Screw.Unit(function() {
+    describe("ConceptClassTypefilter", function() {
+        var flowsheetData = new FlowsheetData(SampleFlowsheetData());
+        var classTypeFilter = new ConceptClassTypeFilter(flowsheetData.getUniqueClassTypes(), "classTypeList", null);
+
+        it("should render checkbox for all UniqueClassType data", function() {
+            classTypeFilter.render();
+            expect(3).to(equal, jQuery("#classTypeList").find("input").length);
+
+            expect("Test").to(equal, jQuery("#classTypeList").find("input")[0].id);
+            expect("classTypeCB").to(equal, jQuery("#classTypeList").find("input")[0].name);
+            expect("Test").to(equal, jQuery("#classTypeList").find("input")[0].value);
+            expect(true).to(equal, jQuery("#classTypeList").find("input")[0].checked);
+
+            expect("Diagnosis").to(equal, jQuery("#classTypeList").find("input")[1].id);
+            expect("classTypeCB").to(equal, jQuery("#classTypeList").find("input")[1].name);
+            expect("Diagnosis").to(equal, jQuery("#classTypeList").find("input")[1].value);
+            expect(true).to(equal, jQuery("#classTypeList").find("input")[1].checked);
+
+            expect("Finding").to(equal, jQuery("#classTypeList").find("input")[2].id);
+            expect("classTypeCB").to(equal, jQuery("#classTypeList").find("input")[2].name);
+            expect("Finding").to(equal, jQuery("#classTypeList").find("input")[2].value);
+            expect(true).to(equal, jQuery("#classTypeList").find("input")[2].checked);
+
+        })
+
     })
 });
 var dateFilterId = "textSlider1";
