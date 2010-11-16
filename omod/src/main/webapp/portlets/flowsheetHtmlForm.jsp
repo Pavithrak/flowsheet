@@ -35,8 +35,11 @@
 
                         <div class="layout-slider">
                              <span class="slider">
-                            <input id="Slider1" type="slider" name="price"  /></span>
-                           </div>
+                            <input id="Slider1" type="slider" name="price"/></span>
+                        </div>
+                        <br/>
+
+                        <div id="classTypeList">Class Types</div>
 
                     </td>
                 </tr>
@@ -59,17 +62,32 @@
     };
     var flowsheetObj = new Flowsheet(gridTableId);
     var flowsheetData = null;
+     var classTypeListId = "classTypeList";
+    var sliderId= "Slider1";
 
-    var onChangeHandler = function(from, to) {
-        var entries = flowsheetData.filterEntriesByDate(from, to);
+    getSelectedClassTypes = function() {
+        var selectedClassTypes = [];
+        jQuery("input[@name='classTypeCB[]']:checked").each(function() {
+            var valueCB = jQuery(this).val();
+            selectedClassTypes.push(valueCB);
+        });
+        return selectedClassTypes;
+    }
+    var filterHandler = function() {
+        var from = jQuery('#sliderInfoFrom').text();
+        var to = jQuery('#sliderInfoTo').text();
+        var entries = flowsheetData.filterEntries(new DateObject(from, to), getSelectedClassTypes());
         flowsheetObj.reload(entries);
     }
-    var slider = new DateRangeSlider(jQuery("#Slider1"), onChangeHandler);
+
+    var slider = new DateRangeSlider(jQuery("#Slider1"), filterHandler);
 
     var handleFlowsheetData = function(flowsheetDataJson) {
         flowsheetData = new FlowsheetData(flowsheetDataJson);
         flowsheetObj.render(flowsheetData.entries);
         slider.render(flowsheetData.getDateRange(), "Slider1");
+        var classTypeFilter = new ConceptClassTypeFilter(flowsheetData.getUniqueClassTypes(), classTypeListId, filterHandler);
+        classTypeFilter.render();
     }
 
     $j.ajax({

@@ -104,7 +104,7 @@ var FlowsheetData = function(data) {
     };
 
     this.filterEntries = function(dateObj, classTypes) {
-        var filteredEntries = [];
+        var filteredEntries = new Array();
         var entries = this.entries;
         jQuery(entries).each(function(index, entry) {
             var classTypeCheck = (jQuery.inArray(entry.classType, classTypes) >= 0);
@@ -166,12 +166,11 @@ var DateRangeSlider = function(slider, filterHandler) {
                 var to = value.split(";")[1];
                 jQuery("#sliderInfoFrom").html(dateRange[from]);
                 jQuery("#sliderInfoTo").html(dateRange[to]);
-                filterHandler.call(null);
             },
             callback: function(value){
                 var from = value.split(";")[0];
                 var to = value.split(";")[1];
-                onChangeHandler.call(null, dateRange[from], dateRange[to]);
+                filterHandler.call(null);
             },
             smooth: false,
             limits :false,
