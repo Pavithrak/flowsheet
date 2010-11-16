@@ -28,7 +28,7 @@ var Flowsheet = function(tableId) {
             data: entries,
             datatype: "local",
             height: 'auto',
-                        rowNum: -1,
+            rowNum: -1,
             //            colNames:['Date','Name', 'Value','Range'],
             colModel:[
                 {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y'},
@@ -141,12 +141,12 @@ var FlowsheetData = function(data) {
 
 var DateRangeSlider = function(slider, filterHandler) {
     this.slider = slider;
-    
-    var date = function(values){
-    	this.from = value.split(";")[0];
-    	this.to = value.split(";")[1];
+
+    var date = function(values) {
+        this.from = value.split(";")[0];
+        this.to = value.split(";")[1];
     }
-    
+
     this.render = function(dateRange, dateFilterId) {
         if (!dateRange || dateRange.length <= 1) {
             jQuery(".layout-slider").html("No sufficient date to filter");
@@ -167,7 +167,7 @@ var DateRangeSlider = function(slider, filterHandler) {
                 jQuery("#sliderInfoFrom").html(dateRange[from]);
                 jQuery("#sliderInfoTo").html(dateRange[to]);
             },
-            callback: function(value){
+            callback: function(value) {
                 var from = value.split(";")[0];
                 var to = value.split(";")[1];
                 filterHandler.call(null);
@@ -185,12 +185,10 @@ var DateRangeSlider = function(slider, filterHandler) {
 
 }
 
-var ConceptClassTypeFilter = function(classTypes, classTypeListId, filterHandler) {
-    this.classTypes = classTypes;
-    this.classTypeListId = classTypeListId;
+var ConceptClassTypes = function() {
 
-    this.render = function() {
-        jQuery(this.classTypes).each(function(index, classType) {
+    this.render = function(classTypes, classTypeListId) {
+        jQuery(classTypes).each(function(index, classType) {
             var classTypeContainer = jQuery("#" + classTypeListId);
 
             var inputElement = jQuery('<input>', {
@@ -203,7 +201,18 @@ var ConceptClassTypeFilter = function(classTypes, classTypeListId, filterHandler
 
             classTypeContainer.append(classType);
         })
+    }
 
+    this.getSelectedClassTypes = function() {
+        var selectedClassTypes = [];
+        jQuery("input[@name='classTypeCB[]']:checked").each(function() {
+            var valueCB = jQuery(this).val();
+            selectedClassTypes.push(valueCB);
+        });
+        return selectedClassTypes;
+    }
+
+    this.attachClassTypesOnChangeHandler = function(filterHandler) {
         jQuery("input[name='classTypeCB']").change(filterHandler);
     }
 

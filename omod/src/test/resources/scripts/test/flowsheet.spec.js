@@ -133,12 +133,12 @@ Screw.Unit(function() {
 });
 
 Screw.Unit(function() {
-    describe("ConceptClassTypefilter", function() {
+    describe("ConceptClassTypes", function() {
         var flowsheetData = new FlowsheetData(SampleFlowsheetData());
-        var classTypeFilter = new ConceptClassTypeFilter(flowsheetData.getUniqueClassTypes(), "classTypeList", null);
+        var classTypeFilter = new ConceptClassTypes();
+        classTypeFilter.render(flowsheetData.getUniqueClassTypes(), "classTypeList");
 
         it("should render checkbox for all UniqueClassType data", function() {
-            classTypeFilter.render();
             expect(3).to(equal, jQuery("#classTypeList").find("input").length);
 
             expect("Test").to(equal, jQuery("#classTypeList").find("input")[0].id);
@@ -156,7 +156,12 @@ Screw.Unit(function() {
             expect("Finding").to(equal, jQuery("#classTypeList").find("input")[2].value);
             expect(true).to(equal, jQuery("#classTypeList").find("input")[2].checked);
 
-        })
+        }),
+                it("should retrieve checked classTypes", function() {
+                    jQuery("#classTypeList").find("input")[0].checked = false;
+                    jQuery("#classTypeList").find("input")[1].checked = false;
+                    expect(1).to(equal, classTypeFilter.getSelectedClassTypes().length);
+                })
 
     })
 });

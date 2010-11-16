@@ -62,33 +62,28 @@
     };
     var flowsheetObj = new Flowsheet(gridTableId);
     var flowsheetData = null;
-     var classTypeListId = "classTypeList";
-    var sliderId= "Slider1";
+    var classTypeListId = "classTypeList";
+    var sliderId = "Slider1";
 
-    getSelectedClassTypes = function() {
-        var selectedClassTypes = [];
-        jQuery("input[@name='classTypeCB[]']:checked").each(function() {
-            var valueCB = jQuery(this).val();
-            selectedClassTypes.push(valueCB);
-        });
-        return selectedClassTypes;
-    }
+
+    var classTypes = new ConceptClassTypes();
+
     var filterHandler = function() {
         var from = jQuery('#sliderInfoFrom').text();
         var to = jQuery('#sliderInfoTo').text();
-        var entries = flowsheetData.filterEntries(new DateObject(from, to), getSelectedClassTypes());
+        var entries = flowsheetData.filterEntries(new DateObject(from, to), classTypes.getSelectedClassTypes());
         flowsheetObj.reload(entries);
     }
 
-    var slider = new DateRangeSlider(jQuery("#Slider1"), filterHandler);
-
+    var slider = new DateRangeSlider(jQuery("#" + sliderId), filterHandler);
     var handleFlowsheetData = function(flowsheetDataJson) {
         flowsheetData = new FlowsheetData(flowsheetDataJson);
         flowsheetObj.render(flowsheetData.entries);
-        slider.render(flowsheetData.getDateRange(), "Slider1");
-        var classTypeFilter = new ConceptClassTypeFilter(flowsheetData.getUniqueClassTypes(), classTypeListId, filterHandler);
-        classTypeFilter.render();
+        slider.render(flowsheetData.getDateRange(), sliderId);
+        classTypes.render(flowsheetData.getUniqueClassTypes(), classTypeListId);
+        classTypes.attachClassTypesOnChangeHandler(filterHandler);
     }
+
 
     $j.ajax({
         url : "flowsheet.json",
@@ -96,5 +91,6 @@
         success : handleFlowsheetData,
         dataType : "json"
     });
+
 </script>
 

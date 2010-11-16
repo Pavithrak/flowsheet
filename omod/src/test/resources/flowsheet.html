@@ -67,37 +67,26 @@
     var gridTableId = "flowsheet";
     var flowsheetObj = new Flowsheet(gridTableId);
     var classTypeListId = "classTypeList";
-    var sliderId= "Slider1";
+    var sliderId = "Slider1";
 
     var flowsheetData = new FlowsheetData(SampleFlowsheetData());
-
-    getSelectedClassTypes = function() {
-        var selectedClassTypes = [];
-        jQuery("input[@name='classTypeCB[]']:checked").each(function() {
-            var valueCB = jQuery(this).val();
-            selectedClassTypes.push(valueCB);
-        });
-        return selectedClassTypes;
-    }
+    var classTypes = new ConceptClassTypes();
 
     var filterHandler = function() {
         var from = jQuery('#sliderInfoFrom').text();
         var to = jQuery('#sliderInfoTo').text();
-        var entries = flowsheetData.filterEntries(new DateObject(from, to), getSelectedClassTypes());
+        var entries = flowsheetData.filterEntries(new DateObject(from, to), classTypes.getSelectedClassTypes());
         flowsheetObj.reload(entries);
     }
 
-    var classTypeFilter = new ConceptClassTypeFilter(flowsheetData.getUniqueClassTypes(), classTypeListId, filterHandler);
     var slider = new DateRangeSlider(jQuery("#" + sliderId), filterHandler);
 
     renderFlowsheetPage = function() {
-        classTypeFilter.render();
+        classTypes.render(flowsheetData.getUniqueClassTypes(), classTypeListId);
+        classTypes.attachClassTypesOnChangeHandler(filterHandler);
         flowsheetObj.render(flowsheetData.entries);
         slider.render(flowsheetData.getDateRange(), sliderId);
     }();
-
-
-    
 
 
 </script>
