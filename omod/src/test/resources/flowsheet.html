@@ -3,41 +3,60 @@
 <script type="text/javascript" src="../../main/webapp/resources/grid.locale-en.js"></script>
 <script type="text/javascript" src="scripts/jquery-ui.custom.min.js"></script>
 <script type="text/javascript" src="../../main/webapp/resources/jquery.jqGrid.min.js"></script>
+<!--<script type="text/javascript" src="scripts/test/debugMode/jquery.jqGrid.js"></script>-->
 
 <script type="text/javascript" src="../../main/webapp/resources/flowsheet.js"></script>
 <script type="text/javascript" src="scripts/test/sampleFlowsheetData.js"></script>
 
 <link rel="stylesheet" type="text/css" media="screen" href="../../main/webapp/resources/ui.jqgrid.css"/>
 <link rel="stylesheet" type="text/css" media="screen" href="scripts/jquery-ui.custom.css"/>
-<link rel="stylesheet" type="text/css" media="screen" href="scripts/uicustom.css"/><!-- adding custom css -->
+<link rel="stylesheet" type="text/css" media="screen" href="scripts/uicustom.css"/>
+<!-- adding custom css -->
 
 
 <link rel="stylesheet" href="../../main/webapp/resources/jslider.css" type="text/css">
 <script type="text/javascript" src="../../main/webapp/resources/jquery.dependClass.js"></script>
 <script type="text/javascript" src="../../main/webapp/resources/jquery.slider-min.js"></script>
-<!--<script type="text/javascript" src="scripts/test/debugMode/jquery.slider.js"></script>-->
 
 
+<!--<script type="text/javascript" src="jqgrid/js/grid.base.js"></script>-->
+
+
+<input type="hidden" id="patientId" name="patientId" value='<request:parameter name="patientId" />'/>
 
 <table class="table_group">
     <tr>
-        <td>
+        <td class="flowsheet_left_panel">
             <table>
+                <tr>
+                    <td class="slider_title">Date Range
+                    </td>
+                </tr>
+                <tr>
+                    <td class="slider_info">From : <label id="sliderInfoFrom"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="slider_info">To : <label id="sliderInfoTo"></label>
+                    </td>
+                </tr>
                 <tr>
                     <td>
 
-                        <div class="layout-slider" style="width: 100%">
-                             <span style="display: inline-block; width: 400px; padding: 0 5px;">
-                            <input id="Slider1" type="slider" name="price"  /></span>
-                           </div>
+                        <div class="layout-slider">
+                             <span class="slider">
+                            <input id="Slider1" type="slider" name="price"/></span>
+                        </div>
+                        <br/>
 
+                        <div id="classTypeList">Class Types</div>
                     </td>
                 </tr>
             </table>
 
         </td>
-        <td>
-            <table id="flowsheet" width="500px;float:right">
+        <td class="flowsheet_grid">
+            <table id="flowsheet">
             </table>
 
         </td>
@@ -47,19 +66,37 @@
 <script type="text/javascript">
     var gridTableId = "flowsheet";
     var flowsheetObj = new Flowsheet(gridTableId);
-    var flowsheetData = null;
-    flowsheetData = new FlowsheetData(SampleFlowsheetData());
+    var classTypeListId = "classTypeList";
+    var sliderId= "Slider1";
 
-    var onChangeHandler = function(from, to) {
-        var entries = flowsheetData.filterEntriesByDate(from, to);
+    var flowsheetData = new FlowsheetData(SampleFlowsheetData());
+
+
+    getSelectedClassTypes = function() {
+        var selectedClassTypes = [];
+        jQuery("input[@name='classTypeCB[]']:checked").each(function() {
+            var valueCB = jQuery(this).val();
+            selectedClassTypes.push(valueCB);
+        });
+        return selectedClassTypes;
+    }
+    var filterHandler = function() {
+        var from = jQuery('#sliderInfoFrom').text();
+        var to = jQuery('#sliderInfoTo').text();
+        var entries = flowsheetData.filterEntries(new DateObject(from, to), getSelectedClassTypes());
         flowsheetObj.reload(entries);
     }
+    var classTypeFilter = new ConceptClassTypeFilter(flowsheetData.getUniqueClassTypes(), classTypeListId,filterHandler);
+    var slider = new DateRangeSlider(jQuery("#"+sliderId), filterHandler);
+
+    renderFlowsheetPage = function() {
+        classTypeFilter.render();
+        flowsheetObj.render(flowsheetData.entries);
+        slider.render(flowsheetData.getDateRange(), sliderId);
+    }();
 
 
-
-    var slider = new DateRangeSlider(jQuery("#Slider1"), onChangeHandler);
-    flowsheetObj.render(flowsheetData.entries);
-    slider.render(flowsheetData.getDateRange(), "Slider1");
+    
 
 
 </script>

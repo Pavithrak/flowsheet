@@ -28,7 +28,7 @@ var Flowsheet = function(tableId) {
             data: entries,
             datatype: "local",
             height: 'auto',
-            rowNum: -1,
+            //            rowNum: -1,
             //            colNames:['Date','Name', 'Value','Range'],
             colModel:[
                 {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y'},
@@ -55,7 +55,7 @@ var Flowsheet = function(tableId) {
 
     this.reload = function(entries) {
         jQuery("#" + tableId).clearGridData(false);
-        jQuery("#" + tableId).jqGrid('setGridParam', {data:entries}).trigger("reloadGrid");
+        jQuery("#" + tableId).jqGrid('setGridParam', {data:entries, rowNum:entries.length}).trigger("reloadGrid");
     }
 
     var rangeFormatter = function(cellvalue, options, rowObject) {
@@ -103,15 +103,15 @@ var FlowsheetData = function(data) {
         return sortDateArray(jQuery.unique(dates));
     };
 
-    this.filterEntriesByDate = function(from, to) {
-        var filteredData = new Array();
-        jQuery(this.entries).each(function(index, entry) {
-            if ((entry.date >= from) && (entry.date <= to)) {
-                filteredData.push(entry);
+    this.filterEntries = function(dateObj, classTypes) {
+        var filteredEntries = [];
+        var entries = this.entries;
+        jQuery(entries).each(function(index, entry) {
+            if ((entry.date >= dateObj.from) && (entry.date <= dateObj.to) && (jQuery.inArray(entry.classType, classTypes)) >= 0) {
+                filteredEntries.push(entry);
             }
         });
-
-        return filteredData;
+        return filteredEntries;
     }
 
     this.search = function(query) {
@@ -124,9 +124,20 @@ var FlowsheetData = function(data) {
 
         return filteredData;
     }
+
+    this.getUniqueClassTypes = function() {
+        var uniqueClassTypes = [];
+        var entries = this.entries;
+        jQuery.each(entries, function() {
+            if ((jQuery.inArray(this.classType, uniqueClassTypes)) < 0) {
+                uniqueClassTypes.push(this.classType);
+            }
+        })
+        return uniqueClassTypes;
+    }
 }
 
-var DateRangeSlider = function(slider, onChangeHandler) {
+var DateRangeSlider = function(slider, filterHandler) {
     this.slider = slider;
     this.render = function(dateRange, dateFilterId) {
         if (!dateRange || dateRange.length <= 1) {
@@ -145,9 +156,9 @@ var DateRangeSlider = function(slider, onChangeHandler) {
             onstatechange : function(value) {
                 var from = value.split(";")[0];
                 var to = value.split(";")[1];
-                onChangeHandler.call(null, dateRange[from], dateRange[to]);
                 jQuery("#sliderInfoFrom").html(dateRange[from]);
                 jQuery("#sliderInfoTo").html(dateRange[to]);
+                filterHandler.call(null);
             },
             smooth: false,
             limits :false,
@@ -160,5 +171,34 @@ var DateRangeSlider = function(slider, onChangeHandler) {
         jQuery("#sliderInfoTo").html(dateRange[dateRangeLength]);
     };
 
+}
+
+var ConceptClassTypeFilter = function(classTypes, classTypeListId,filterHandler) {
+    this.classTypes = classTypes;
+    this.classTypeListId = classTypeListId;
+
+    this.render = function() {
+        jQuery(this.classTypes).each(function(index, classType) {
+            var classTypeContainer = jQuery("#"+classTypeListId);
+
+            var inputElement = jQuery('<input>', {
+                id: classType,
+                name: 'classTypeCB',
+                type: 'checkbox',
+                value: classType,
+                checked:true
+            }).appendTo(classTypeContainer);
+
+            classTypeContainer.append(classType);
+        })
+
+        jQuery("input[name='classTypeCB']").change(filterHandler);
+    }
+
+}
+
+var DateObject = function(from, to) {
+    this.from = from;
+    this.to = to;
 }
 
