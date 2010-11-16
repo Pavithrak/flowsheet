@@ -141,6 +141,12 @@ var FlowsheetData = function(data) {
 
 var DateRangeSlider = function(slider, filterHandler) {
     this.slider = slider;
+    
+    var date = function(values){
+    	this.from = value.split(";")[0];
+    	this.to = value.split(";")[1];
+    }
+    
     this.render = function(dateRange, dateFilterId) {
         if (!dateRange || dateRange.length <= 1) {
             jQuery(".layout-slider").html("No sufficient date to filter");
@@ -161,6 +167,11 @@ var DateRangeSlider = function(slider, filterHandler) {
                 jQuery("#sliderInfoFrom").html(dateRange[from]);
                 jQuery("#sliderInfoTo").html(dateRange[to]);
                 filterHandler.call(null);
+            },
+            callback: function(value){
+                var from = value.split(";")[0];
+                var to = value.split(";")[1];
+                onChangeHandler.call(null, dateRange[from], dateRange[to]);
             },
             smooth: false,
             limits :false,
