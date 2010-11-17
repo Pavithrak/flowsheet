@@ -5,19 +5,20 @@
 <script type="text/javascript" src="../../main/webapp/resources/jquery.jqGrid.min.js"></script>
 <!--<script type="text/javascript" src="scripts/test/debugMode/jquery.jqGrid.js"></script>-->
 
+<script type="text/javascript" src="../../main/webapp/resources/date.js"></script>
 <script type="text/javascript" src="../../main/webapp/resources/flowsheet.js"></script>
 <script type="text/javascript" src="scripts/test/sampleFlowsheetData.js"></script>
 
 <link rel="stylesheet" type="text/css" media="screen" href="../../main/webapp/resources/ui.jqgrid.css"/>
 <link rel="stylesheet" type="text/css" media="screen" href="scripts/jquery-ui.custom.css"/>
-<link rel="stylesheet" type="text/css" media="screen" href="scripts/uicustom.css"/>
-<!-- adding custom css -->
+<link rel="stylesheet" type="text/css" media="screen" href="../../main/webapp/resources/uicustom.css"/><!-- adding custom css -->
 
 
 <link rel="stylesheet" href="../../main/webapp/resources/jslider.css" type="text/css">
 <script type="text/javascript" src="../../main/webapp/resources/jquery.dependClass.js"></script>
 <script type="text/javascript" src="../../main/webapp/resources/jquery.slider-min.js"></script>
 
+<script type="text/javascript" src="scripts/jquery.flot.min.js"></script>
 
 <!--<script type="text/javascript" src="jqgrid/js/grid.base.js"></script>-->
 
@@ -62,6 +63,14 @@
         </td>
 </table>
 
+<div id="numericObsInfo" class="obsInfoPanel">
+    <div id="numericObsInfoLabel" class="obsInfoLabel"></div>
+    <div id="numericObsGraph" class="obsGraph"></div>
+    <div id="numericObsGraphLegend" class="obsGraphLegend" ></div>
+    <div id="numericObsInfoGrid" class="obsInfoGrid">
+    </div>
+
+</div>
 
 <script type="text/javascript">
     var gridTableId = "flowsheet";
@@ -81,13 +90,27 @@
 
     var slider = new DateRangeSlider(jQuery("#" + sliderId), filterHandler);
 
+    //Adding Observation info panel
+    var numericObsInfo = new ObsInfo(jQuery("#numericObsInfo"),"numericObsInfoGrid",jQuery("#numericObsGraph"),
+            jQuery("#numericObsGraphLegend"),jQuery("#numericObsInfoLabel"));
+//    numericObsInfo.render(flowsheetData.entries);
+    var onClickHandlerForGrid = function(rowid,iCol,cellcontent,e) {
+        e.stopPropagation();
+        var conceptName = jQuery("#"+rowid).find('td:nth-child(2)').html();
+        var searchResult = flowsheetData.search(conceptName);
+        numericObsInfo.reload(searchResult,rowid);
+    }
+    
     renderFlowsheetPage = function() {
         classTypes.render(flowsheetData.getUniqueClassTypes(), classTypeListId);
         classTypes.attachClassTypesOnChangeHandler(filterHandler);
-        flowsheetObj.render(flowsheetData.entries);
+        flowsheetObj.render(flowsheetData.entries,onClickHandlerForGrid);
         slider.render(flowsheetData.getDateRange(), sliderId);
     }();
 
+     jQuery("body").click(function(){
+        jQuery("#numericObsInfo").hide();
+     });    
 
 </script>
 

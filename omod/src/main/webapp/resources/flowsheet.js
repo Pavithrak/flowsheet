@@ -1,5 +1,7 @@
 String.prototype.contains = function(compare) {
-    return this.toLowerCase().indexOf(compare.toLowerCase()) != -1;
+    if(compare){
+        return this.toLowerCase().indexOf(compare.toLowerCase()) != -1;
+    }
 }
 
 
@@ -15,7 +17,7 @@ var Flowsheet = function(tableId) {
         jQuery("#" + tableId).jqGrid('filterToolbar', {autosearch:true,searchOnEnter:true,multipleSearch:true });
     }
 
-    this.render = function(entries) {
+    this.render = function(entries,onClickHandlerForGrid) {
         if (!entries || entries.length == 0) {
             jQuery("#" + tableId).append(jQuery('<tr>')
                     .append(jQuery('<td>')
@@ -41,7 +43,8 @@ var Flowsheet = function(tableId) {
             altclass:'row_odd',
             grouping:true,
             width:700,
-            groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupOrder: ['desc'] },
+            onCellSelect:onClickHandlerForGrid,
+            groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
             hoverrows:false,
             viewrecords: false, sortorder: "desc"
 
@@ -129,8 +132,7 @@ var FlowsheetData = function(data) {
 
     this.getUniqueClassTypes = function() {
         var uniqueClassTypes = [];
-        var entries = this.entries;
-        jQuery.each(entries, function() {
+        jQuery(this.entries).each(function() {
             if ((jQuery.inArray(this.classType, uniqueClassTypes)) < 0) {
                 uniqueClassTypes.push(this.classType);
             }
@@ -221,6 +223,107 @@ var ConceptClassTypes = function() {
 var DateObject = function(from, to) {
     this.from = from;
     this.to = to;
+}
+
+var ObsInfo = function(obsInfoElem,numericObsInfoGrid,numericObsGraph,numericObsGraphLegend,obsInfoLabel){
+ this.obsInfoElem = obsInfoElem;
+ this.numericObsGraph = numericObsGraph;
+ this.numericObsGraphLegend = numericObsGraphLegend;
+ this.obsInfoLabel = obsInfoLabel;
+ jQuery(this.obsInfoElem).hide();
+
+
+ var requiredKey = ["date","value"];
+
+    this.render = function(entries, theme, requiredKey) {
+        var array = entries;
+        var str = '<table class="' + theme + '">';
+        // table head
+            str += '<thead><tr>';
+            for (var index in requiredKey) {
+                str += '<th scope="col">' + requiredKey[index] + '</th>';
+            }
+            str += '</tr></thead>';
+
+        // table body
+        str += '<tbody>';
+        for (var i = 0; i < array.length; i++) {
+            str += (i % 2 == 0) ? '<tr class="alt">' : '<tr>';
+            for(var key in requiredKey){
+                var keyToLook = requiredKey[key];
+                str += '<td>' + array[i][keyToLook] + '</td>';
+            }
+            str += '</tr>';
+        }
+        str += '</tbody>'
+        str += '</table>';
+        jQuery("#" + numericObsInfoGrid).append(str);
+        jQuery(this.obsInfoLabel).html(entries[0].name);
+
+    }
+
+    this.reload = function(entries,positionTargetId) {
+        jQuery(this.obsInfoElem).show();
+        jQuery("#" + numericObsInfoGrid).empty();
+        jQuery(this.obsInfoElem).position({
+            of: jQuery( "#"+positionTargetId ),
+            my: "left center",
+            at: "right center",
+            offset: "10 0",
+            collision: "fit"
+        });
+        if(isNumericObs(entries)){
+            jQuery(this.numericObsGraph).show();
+            jQuery(this.numericObsGraphLegend).show();
+            var dataToPlot = convertEntriesToPlotArray(entries);
+            jQuery.plot(this.numericObsGraph, [
+                    {label:"Hi",data: dataToPlot.criticalRangeHi,lines: { show: true, fill: false,color:"#d18b2c" }},
+                    {label:"Low",data: dataToPlot.criticalRangeLow,lines: { show: true, fill: false,color:"#d18b2c" }},
+                    {label:"Value",data: dataToPlot.values,lines: { show: true }}
+            ],
+            {
+                xaxis:{
+                    mode:"time",timeformat:"%y/%m/%d"
+                },legend:{
+                    container:this.numericObsGraphLegend,noColumns:3
+                }
+            }
+            );
+        }else{
+           jQuery(this.numericObsGraph).hide();
+           jQuery(this.numericObsGraphLegend).hide();
+        }
+        this.render(entries, "lightPro", requiredKey);
+    }
+
+    this.hide = function(){
+        jQuery("#" + numericObsInfoGrid).empty();
+        jQuery(this.obsInfoElem).hide();
+    }
+
+    var convertEntriesToPlotArray = function(entries){
+        var dataToPlot = {}; //json containing, critical range array and value array
+        var criticalRangeHi = Array();
+        var criticalRangeLow = Array();
+        var values = Array();
+        jQuery.each(entries,function(index,entry){
+            values.push([Date.parse(entry.date).getTime(),entry.value]);
+            criticalRangeHi.push([Date.parse(entry.date).getTime(),entry.numeric.hi]);
+            criticalRangeLow.push([Date.parse(entry.date).getTime(),entry.numeric.low]);
+        })
+        dataToPlot.values = values;
+        dataToPlot.criticalRangeHi = criticalRangeHi;
+        dataToPlot.criticalRangeLow = criticalRangeLow.reverse();
+        return dataToPlot;
+    }
+
+    var isNumericObs = function(entries){
+        if(entries.length>=1 && entries[0].numeric){
+            return true;
+        }
+        return false;
+    }
+
 }
 
 
