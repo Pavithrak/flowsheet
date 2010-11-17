@@ -33,7 +33,7 @@ var Flowsheet = function(tableId) {
             rowNum: -1,
             //            colNames:['Date','Name', 'Value','Range'],
             colModel:[
-                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y'},
+                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y', class:'firstCol'},
                 {name:'name', width:290},
                 {name:'value',width:100,formatter:valueFormatter},
                 {name:'low',width:100,formatter:rangeFormatter}
@@ -192,6 +192,13 @@ var ConceptClassTypes = function() {
     this.render = function(classTypes, classTypeListId) {
         jQuery(classTypes).each(function(index, classType) {
             var classTypeContainer = jQuery("#" + classTypeListId);
+//
+//            var classTypeSpan =  jQuery('<span>', {
+//                id: classType+"span"
+//            })
+
+             var classTypeSpan =  jQuery('<span>');
+
 
             var inputElement = jQuery('<input>', {
                 id: classType,
@@ -199,9 +206,12 @@ var ConceptClassTypes = function() {
                 type: 'checkbox',
                 value: classType,
                 checked:true
-            }).appendTo(classTypeContainer);
+            }).appendTo(classTypeSpan);
 
-            classTypeContainer.append(classType);
+            classTypeSpan.append(classType);
+
+            classTypeSpan.appendTo(classTypeContainer);
+
         })
     }
 
