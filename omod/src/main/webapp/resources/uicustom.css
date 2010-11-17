@@ -29,6 +29,6 @@ padding-left:45px;
     font-weight:bold;
 }
 
-ui-icon-circlesmall-minus {
-	display:none;
+.ui-icon-circlesmall-minus {
+	display:none !important;
 }
