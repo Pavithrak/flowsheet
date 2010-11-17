@@ -19,27 +19,24 @@
         <td class="flowsheet_left_panel">
             <table>
                 <tr>
-                    <td class="slider_title">Date Range
-                    </td>
-                </tr>
-                <tr>
-                    <td class="slider_info">From : <label id="sliderInfoFrom"></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="slider_info">To : <label id="sliderInfoTo"></label>
-                    </td>
-                </tr>
-                <tr>
                     <td>
+                        <div class="slider_title"> Date Range</div>
+                        <div class="slider_info"> From : <label id="sliderInfoFrom"></label></div>
+                        <div class="slider_info"> To : <label id="sliderInfoTo"></label></div>
 
                         <div class="layout-slider">
                              <span class="slider">
                             <input id="Slider1" type="slider" name="price"/></span>
                         </div>
-                        <br/>
+                    </td>
 
-                        <div id="classTypeList"> <div class="slider_title">Result Types</div></div>
+                    </tr>
+                <tr>
+                    <td>
+
+                        <div id="classTypeList">
+                            <div class="slider_title">Result Types</div>
+                        </div>
 
                     </td>
                 </tr>

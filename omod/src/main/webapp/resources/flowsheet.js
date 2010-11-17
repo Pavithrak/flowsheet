@@ -190,6 +190,13 @@ var ConceptClassTypes = function() {
     this.render = function(classTypes, classTypeListId) {
         jQuery(classTypes).each(function(index, classType) {
             var classTypeContainer = jQuery("#" + classTypeListId);
+//
+//            var classTypeSpan =  jQuery('<span>', {
+//                id: classType+"span"
+//            })
+
+             var classTypeSpan =  jQuery('<span>');
+
 
             var inputElement = jQuery('<input>', {
                 id: classType,
@@ -197,9 +204,12 @@ var ConceptClassTypes = function() {
                 type: 'checkbox',
                 value: classType,
                 checked:true
-            }).appendTo(classTypeContainer);
+            }).appendTo(classTypeSpan);
 
-            classTypeContainer.append(classType);
+            classTypeSpan.append(classType);
+
+            classTypeSpan.appendTo(classTypeContainer);
+
         })
     }
 
