@@ -39,7 +39,7 @@
                         </div>
                         <br/>
 
-                        <div id="classTypeList">Class Types</div>
+                        <div id="classTypeList"> <div class="slider_title">Result Types</div></div>
 
                     </td>
                 </tr>

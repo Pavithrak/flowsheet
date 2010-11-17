@@ -9,7 +9,7 @@
 /*To remove the padding for table*/
 .ui-jqgrid {width : 600px;}
 .ui-jqgrid .ui-jqgrid-hbox { padding-right: 0;}
-.ui-jqgrid tr.jqgrow td { white-space: pre-wrap;}
+.ui-jqgrid tr.jqgrow td { white-space: pre-wrap; padding-left:15px;}
 .flowsheet_left_panel {
     padding-left:30px;
     padding-right:20px;
@@ -31,4 +31,7 @@ padding-left:45px;
 
 .ui-icon-circlesmall-minus {
 	display:none;
+}
+.firstCol{
+    font-weight:bold;
 }
