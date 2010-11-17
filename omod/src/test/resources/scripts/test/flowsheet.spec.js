@@ -81,9 +81,9 @@ Screw.Unit(function() {
 
         }),
                 it("should be able to filter data by date and Concept Class Types", function() {
-                    var filteredData = flowsheetData.filterEntries(new DateObject("2002-01-02", "2020-01-01"), ["Finding","Test"]);
+                    var filteredData = flowsheetData.filter(new DateObject("2002-01-02", "2020-01-01"), ["Finding","Test"]);
                     expect(filteredData.length).to(equal, 3);
-                    var newfilteredData = flowsheetData.filterEntries(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"]);
+                    var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"]);
                     expect(3).to(equal, filteredData.length);
                 }),
                 it("should search by concept name", function() {
@@ -95,7 +95,7 @@ Screw.Unit(function() {
                     expect(1).to(equal, filteredData.length);
                 }),
                 it("should return Unique classtype array from the flowsheet data", function() {
-                    var uniqueClassTypes = flowsheetData.getUniqueClassTypes();
+                    var uniqueClassTypes = flowsheetData.getConceptClasses();
                     expect(3).to(equal, uniqueClassTypes.length);
                     expect(["Test","Diagnosis","Finding"]).to(equal, uniqueClassTypes);
                 })
@@ -106,13 +106,13 @@ Screw.Unit(function() {
     describe("Date range filter", function() {
         it("should create a date range slider for the observations", function() {
             var sliderId = "Slider1";
-            var slider = new DateRangeSlider(jQuery("#" + sliderId));
+            var slider = new DateRange(jQuery("#" + sliderId));
             slider.render(new FlowsheetData(SampleFlowsheetData()).getDateRange(), sliderId);
             expect(jQuery("#" + sliderId).attr("value")).to(equal, "0;2");
         }),
                 it("should provide initial from and to date information", function() {
                     var sliderId = "Slider1";
-                    var slider = new DateRangeSlider(jQuery("#" + sliderId));
+                    var slider = new DateRange(jQuery("#" + sliderId));
                     slider.render(new FlowsheetData(SampleFlowsheetData()).getDateRange(), sliderId);
                     expect(jQuery("#sliderInfoFrom").html()).to(equal, "2001-01-12");
                     expect(jQuery("#sliderInfoTo").html()).to(equal, "2010-01-12");
@@ -125,7 +125,7 @@ Screw.Unit(function() {
                         };
                         return this;
                     }
-                    var slider = new DateRangeSlider(jQuery("#" + sliderId));
+                    var slider = new DateRange(jQuery("#" + sliderId));
                     slider.render(new FlowsheetData(emptyData()).getDateRange(), sliderId);
                     expect(jQuery(".layout-slider").html()).to(equal, "No sufficient date to filter");
                 })
@@ -135,8 +135,8 @@ Screw.Unit(function() {
 Screw.Unit(function() {
     describe("ConceptClassTypes", function() {
         var flowsheetData = new FlowsheetData(SampleFlowsheetData());
-        var classTypeFilter = new ConceptClassTypes();
-        classTypeFilter.render(flowsheetData.getUniqueClassTypes(), "classTypeList");
+        var classTypeFilter = new ConceptClass("#classTypeList");
+        classTypeFilter.render(flowsheetData.getConceptClasses());
 
         it("should render checkbox for all UniqueClassType data", function() {
             expect(3).to(equal, jQuery("#classTypeList").find("input").length);
@@ -160,7 +160,7 @@ Screw.Unit(function() {
                 it("should retrieve checked classTypes", function() {
                     jQuery("#classTypeList").find("input")[0].checked = false;
                     jQuery("#classTypeList").find("input")[1].checked = false;
-                    expect(1).to(equal, classTypeFilter.getSelectedClassTypes().length);
+                    expect(1).to(equal, classTypeFilter.getSelected().length);
                 })
 
     })

@@ -55,40 +55,37 @@
 
 
 <script type="text/javascript">
-    var gridTableId = "flowsheet";
     var patientIdValue = $j('#patientId').val();
     var jsondata = {
         patientId : patientIdValue
     };
-    var flowsheetObj = new Flowsheet(gridTableId);
-    var flowsheetData = null;
-    var classTypeListId = "classTypeList";
-    var sliderId = "Slider1";
-
-
-    var classTypes = new ConceptClassTypes();
-
-    var filterHandler = function() {
+    
+    var flowsheetObj = new Flowsheet("flowsheet");
+    var data;
+    var classes = new ConceptClass("#classTypeList");
+ 
+    var filter = function() {
         var from = jQuery('#sliderInfoFrom').text();
         var to = jQuery('#sliderInfoTo').text();
-        var entries = flowsheetData.filterEntries(new DateObject(from, to), classTypes.getSelectedClassTypes());
+        var entries = data.filter(new DateObject(from, to), classes.getSelected());
         flowsheetObj.reload(entries);
     }
 
-    var slider = new DateRangeSlider(jQuery("#" + sliderId), filterHandler);
-    var handleFlowsheetData = function(flowsheetDataJson) {
-        flowsheetData = new FlowsheetData(flowsheetDataJson);
-        flowsheetObj.render(flowsheetData.entries);
-        slider.render(flowsheetData.getDateRange(), sliderId);
-        classTypes.render(flowsheetData.getUniqueClassTypes(), classTypeListId);
-        classTypes.change(filterHandler);
-    }
+    var dateRange = new DateRange(jQuery("#Slider1"), filter);
 
+
+    renderflowsheet = function(json) {
+    	data = new FlowsheetData(json);
+        flowsheetObj.render(data.entries);
+        classes.render(data.getConceptClasses());
+        classes.change(filter);
+        dateRange.render(data.getDateRange());
+    };
 
     $j.ajax({
         url : "flowsheet.json",
         data : jsondata,
-        success : handleFlowsheetData,
+        success : renderflowsheet,
         dataType : "json"
     });
 

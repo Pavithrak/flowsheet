@@ -103,7 +103,7 @@ var FlowsheetData = function(data) {
         return sortDateArray(jQuery.unique(dates));
     };
 
-    this.filterEntries = function(dateObj, classTypes) {
+    this.filter = function(dateObj, classTypes) {
         var filteredEntries = new Array();
         var entries = this.entries;
         jQuery(entries).each(function(index, entry) {
@@ -127,7 +127,7 @@ var FlowsheetData = function(data) {
         return filteredData;
     }
 
-    this.getUniqueClassTypes = function() {
+    this.getConceptClasses = function() {
         var uniqueClassTypes = [];
         var entries = this.entries;
         jQuery.each(entries, function() {
@@ -139,7 +139,7 @@ var FlowsheetData = function(data) {
     }
 }
 
-var DateRangeSlider = function(slider, filterHandler) {
+var DateRange = function(slider, filterHandler) {
     this.slider = slider;
 
     var date = function(values) {
@@ -147,7 +147,7 @@ var DateRangeSlider = function(slider, filterHandler) {
         this.to = value.split(";")[1];
     }
 
-    this.render = function(dateRange, dateFilterId) {
+    this.render = function(dateRange) {
         if (!dateRange || dateRange.length <= 1) {
             jQuery(".layout-slider").html("No sufficient date to filter");
             return;
@@ -185,11 +185,12 @@ var DateRangeSlider = function(slider, filterHandler) {
 
 }
 
-var ConceptClassTypes = function(filterHandler) {
+var ConceptClass = function(list) {
+	this.list = list;
 	
-    this.render = function(classTypes, classTypeListId) {
+    this.render = function(classTypes) {
         jQuery(classTypes).each(function(index, classType) {
-            var classTypeContainer = jQuery("#" + classTypeListId);
+            var classTypeContainer = jQuery(list);
 
             var inputElement = jQuery('<input>', {
                 id: classType,
@@ -203,7 +204,7 @@ var ConceptClassTypes = function(filterHandler) {
         })
     }
 
-    this.getSelectedClassTypes = function() {
+    this.getSelected = function() {
         var selectedClassTypes = [];
         jQuery("input[@name='classTypeCB[]']:checked").each(function() {
             var valueCB = jQuery(this).val();
