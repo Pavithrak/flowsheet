@@ -289,14 +289,14 @@ var ObsInfo = function(obsInfoElem,numericObsInfoGrid,numericObsGraph,numericObs
             jQuery.plot(this.numericObsGraph, [
                     {label:"Hi",data: dataToPlot.criticalRangeHi,lines: { show: true, fill: false,color:"#d18b2c" }},
                     {label:"Low",data: dataToPlot.criticalRangeLow,lines: { show: true, fill: false,color:"#d18b2c" }},
-                    {label:"Value",data: dataToPlot.values,lines: { show: true }}
+                    {label:"Value",data: dataToPlot.values,lines: { show: true },points: { show: true }}
             ],
             {
                 xaxis:{
-                    mode:"time",timeformat:"%y/%m/%d"
+                    mode:"time",timeformat:"%y/%m/%d",ticks:4
                 },legend:{
                     container:this.numericObsGraphLegend,noColumns:3
-                }
+                },grid: { hoverable: true, clickable: true }
             }
             );
         }else{

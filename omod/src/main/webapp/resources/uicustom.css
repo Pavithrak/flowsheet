@@ -91,7 +91,7 @@
 Verdana, Arial, Helvetica, sans-serif; font-size: 1em; color: #000; empty-cells: show; background-color: #fff; width:100%; }
 .lightPro caption { caption-side: top; font-size: 0.9em; font-style: italic; text-align: right; padding: 0.5em 0; }
 .lightPro th, .lightPro td { border: 1px solid #000; padding: 0.1em 0.3em; text-align: left; color: #055f81; }
-.lightPro th[scope=col] { color: #fff; background-color: #582E00; text-transform: uppercase; font-size: 1.1em; border: 1px solid #000; padding-left: 6px; }
+.lightPro th[scope=col] { background-color: #DFEAF5; text-transform: capitalize; font-size: 1.1em; border: 1px solid #000000; padding-left: 6px; }
 .lightPro th[scope=row] { width: 140px; background-color: #eee; border: 1px solid #000; font-size: 1.2em; color: #582E00; }
 .lightPro tr.alt th[scope=row], .lightPro tr.alt td { color: #055f81; }
 .lightPro tr.alt td { background-color: #eee; }
