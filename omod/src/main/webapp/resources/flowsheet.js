@@ -41,7 +41,7 @@ var Flowsheet = function(tableId) {
             altclass:'row_odd',
             grouping:true,
             width:700,
-            groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
+            groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupOrder: ['desc'] },
             hoverrows:false,
             viewrecords: false, sortorder: "desc"
 
