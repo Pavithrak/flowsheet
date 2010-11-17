@@ -185,8 +185,8 @@ var DateRangeSlider = function(slider, filterHandler) {
 
 }
 
-var ConceptClassTypes = function() {
-
+var ConceptClassTypes = function(filterHandler) {
+	
     this.render = function(classTypes, classTypeListId) {
         jQuery(classTypes).each(function(index, classType) {
             var classTypeContainer = jQuery("#" + classTypeListId);
@@ -212,7 +212,7 @@ var ConceptClassTypes = function() {
         return selectedClassTypes;
     }
 
-    this.attachClassTypesOnChangeHandler = function(filterHandler) {
+    this.change = function(filterHandler) {
         jQuery("input[name='classTypeCB']").change(filterHandler);
     }
 

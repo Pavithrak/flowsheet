@@ -81,7 +81,7 @@
         flowsheetObj.render(flowsheetData.entries);
         slider.render(flowsheetData.getDateRange(), sliderId);
         classTypes.render(flowsheetData.getUniqueClassTypes(), classTypeListId);
-        classTypes.attachClassTypesOnChangeHandler(filterHandler);
+        classTypes.change(filterHandler);
     }
 
 
