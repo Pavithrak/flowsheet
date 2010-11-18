@@ -31,9 +31,8 @@ var Flowsheet = function(tableId) {
             datatype: "local",
             height: 'auto',
             rowNum: -1,
-            //            colNames:['Date','Name', 'Value','Range'],
             colModel:[
-                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y', class:'firstCol'},
+                {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y', klass:'firstCol'},
                 {name:'name', width:290},
                 {name:'value',width:100,formatter:valueFormatter},
                 {name:'low',width:100,formatter:rangeFormatter}

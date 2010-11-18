@@ -73,6 +73,8 @@
 </div>
 
 <script type="text/javascript">
+
+jQuery(document).ready(function(){
     var flowsheetObj = new Flowsheet("flowsheet");
     var data;
     var classes = new ConceptClass("#classTypeList");
@@ -109,7 +111,9 @@
         dateRange.render(data.getDateRange());
     };
 
-    renderflowsheet(SampleFlowsheetData());
+    renderflowsheet(SampleFlowsheetData());	
+});
+
     
 
 </script>

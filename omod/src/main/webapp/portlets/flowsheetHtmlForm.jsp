@@ -63,6 +63,9 @@
 </div>
 
 <script type="text/javascript">
+
+jQuery(document).ready(function(){
+
     var patientIdValue = $j('#patientId').val();
     var jsondata = {
         patientId : patientIdValue
@@ -111,5 +114,6 @@
         dataType : "json"
     });
 
+});    
 </script>
 
