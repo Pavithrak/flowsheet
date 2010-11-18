@@ -74,7 +74,7 @@ jQuery(document).ready(function(){
     var flowsheetObj = new Flowsheet("flowsheet");
     var data;
     var classes = new ConceptClass("#classTypeList");
-    var numericObsInfo = new ObsInfo(jQuery("#numericObsInfo"),"numericObsInfoGrid",jQuery("#numericObsGraph"),
+    var numericObsInfo = new ObsInfo(jQuery("#obsInfo"),"numericObsInfoGrid",jQuery("#numericObsGraph"),
             jQuery("#numericObsGraphLegend"),jQuery("#numericObsInfoLabel"));
  
     var filter = function() {
