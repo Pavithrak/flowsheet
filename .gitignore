@@ -10,3 +10,5 @@ bin/*
 ideafiles/*
 omod/src/test/resources/scripts/test/debugMode/*
 *.springBeans
+*.iml
+**/*.iml

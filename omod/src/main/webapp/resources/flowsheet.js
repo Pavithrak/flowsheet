@@ -51,8 +51,7 @@ var Flowsheet = function(tableId) {
         });
 
         hideColumnHeaders();
-        createSearchToolBar();
-
+        createSearchToolBar();       
     }
 
     this.reload = function(entries) {
