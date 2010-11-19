@@ -189,8 +189,8 @@ Screw.Unit(function() {
             var searchResult = flowsheetData.search("diastolic blood pressure");
             numericObsInfo.reload(searchResult,"positionTest");
             expect($('#numericObsGraph').find('canvas').length).to(equal,2);
-            expect($('#numericObsGraphLegend').find('td:nth-child(2)').html()).to(equal,"Hi");
-            expect($('#numericObsGraphLegend').find('td:nth-child(4)').html()).to(equal,"Low");
+            expect($('#numericObsGraphLegend').find('td:nth-child(2)').html()).to(equal,"Normal Hi");
+            expect($('#numericObsGraphLegend').find('td:nth-child(4)').html()).to(equal,"Normal Low");
             expect($('#numericObsGraphLegend').find('td:nth-child(6)').html()).to(equal,"Value");
         }),
         it("should not dispay graph for non-numeric observation",function(){

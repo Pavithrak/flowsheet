@@ -281,8 +281,8 @@ var ObsInfo = function(obsInfoElem,numericObsInfoGrid,numericObsGraph,numericObs
             jQuery(this.numericObsGraphLegend).show();
             var dataToPlot = convertEntriesToPlotArray(entries);
             jQuery.plot(this.numericObsGraph, [
-                    {label:"Hi",data: dataToPlot.criticalRangeHi,lines: { show: true, fill: false,color:"#d18b2c" }},
-                    {label:"Low",data: dataToPlot.criticalRangeLow,lines: { show: true, fill: false,color:"#d18b2c" }},
+                    {label:"Normal Hi",data: dataToPlot.criticalRangeHi,lines: { show: true, fill: false,color:"#d18b2c" }},
+                    {label:"Normal Low",data: dataToPlot.criticalRangeLow,lines: { show: true, fill: false,color:"#d18b2c" }},
                     {label:"Value",data: dataToPlot.values,lines: { show: true },points: { show: true }}
             ],
             {
