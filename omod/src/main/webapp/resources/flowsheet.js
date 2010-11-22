@@ -321,18 +321,19 @@ var ObsInfo = function(obsInfoElem,numericObsInfoGrid,numericObsGraph,numericObs
            resizable: false,
            modal: true,
            width: 'auto',
-           closeOnEscape:true
+           closeOnEscape:true,
+           close :hideObsInfo
        });
        renderObsInfo(entries);
     };
-    
-    this.hide = function(){
-        jQuery(this.numericObsInfoGrid).empty();
-        jQuery(this.obsInfoElem).hide();
-        jQuery(obsInfoDialog).dialog('close');
+    var hideObsInfo = function(){
+        jQuery(numericObsInfoGrid).empty();
+        jQuery(obsInfoElem).hide();
         jQuery(obsInfoDialog).dialog('destroy');
         jQuery(obsInfoDialog).attr("style","");
-
+    }
+    this.hide = function(){
+        hideObsInfo();
     }
 
     var convertEntriesToPlotArray = function(entries){
