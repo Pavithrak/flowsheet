@@ -53,13 +53,17 @@
         </td>
 </table>
 
+<div id="obsInfoDialog" class="">
 <div id="obsInfo" class="obsInfoPanel">
+    <div id="maximizeIcon" class="maximizeIcon ui-icon ui-icon-arrowthick-2-ne-sw"></div>
     <div id="obsInfoLabel" class="obsInfoLabel"></div>
+
     <div id="numericObsGraph" class="obsGraph"></div>
     <div id="numericObsGraphLegend" class="obsGraphLegend" ></div>
-    <div id="numericObsInfoGrid" class="obsInfoGrid">
+    <div id="obsInfoGrid" class="obsInfoGrid">
     </div>
 
+</div>
 </div>
 
 <script type="text/javascript">
@@ -74,9 +78,9 @@ jQuery(document).ready(function(){
     var flowsheetObj = new Flowsheet("flowsheet");
     var data;
     var classes = new ConceptClass("#classTypeList");
-    var numericObsInfo = new ObsInfo(jQuery("#obsInfo"),"numericObsInfoGrid",jQuery("#numericObsGraph"),
-            jQuery("#numericObsGraphLegend"),jQuery("#numericObsInfoLabel"));
- 
+    var obsInfo = new ObsInfo("#obsInfo","#obsInfoGrid","#numericObsGraph",
+            "#numericObsGraphLegend","#obsInfoLabel","#maximizeIcon","#obsInfoDialog");
+
     var filter = function() {
         var from = jQuery('#sliderInfoFrom').text();
         var to = jQuery('#sliderInfoTo').text();
@@ -91,14 +95,20 @@ jQuery(document).ready(function(){
         e.stopPropagation();
         var conceptName = jQuery("#"+rowid).find('td:nth-child(2)').html();
         var searchResult = data.search(conceptName);
-        numericObsInfo.reload(searchResult,rowid);
+        obsInfo.reload(searchResult,rowid);
     }
 
     jQuery("body").click(function(){
-        jQuery("#numericObsInfo").hide();
-     });    
-    
+          obsInfo.hide();
+     });
 
+    jQuery("#maximizeIcon").click(function(e){
+        e.stopPropagation();
+        var conceptName = jQuery("#maximizeIcon").attr("concept");
+        var searchResult = data.search(conceptName);
+        obsInfo.reloadInExpandedMode(searchResult);
+    });
+    
     renderflowsheet = function(json) {
     	data = new FlowsheetData(json);
         flowsheetObj.render(data.entries,onClickHandlerForGrid);

@@ -110,6 +110,11 @@ Verdana, Arial, Helvetica, sans-serif; font-size: 1em; color: #000; empty-cells:
 border: 1px solid #333;
 background-color: #ffffff;
 }
+.obsInfoPanelExpanded {
+    width:700px;
+background-color: #ffffff;
+}
+
 .obsGraphLegend{
    width:100%;
 }
@@ -125,5 +130,9 @@ background-color: #ffffff;
 .obsGraph{
     width:100%;
     height:150px;
+}
+.maximizeIcon{
+    background-color:#ffffff;
+    float:right;
 }
 /* Styles used for onclick obs info view -- Ends here */

@@ -168,26 +168,23 @@ Screw.Unit(function() {
 
 Screw.Unit(function() {
     describe("ObsInfo - View details of an Observation", function() {
-//        var flowsheet = new Flowsheet("flowsheet");
-//        var data = new FlowsheetData(SampleFlowsheetData());
-//        flowsheet.render(data.entries);
         var flowsheetData = new FlowsheetData(SampleFlowsheetData());
-        var numericObsInfo = new ObsInfo(jQuery("#numericObsInfo"),"numericObsInfoGrid",jQuery("#numericObsGraph"),
-        jQuery("#numericObsGraphLegend"),jQuery("#numericObsInfoLabel"));
+        var obsInfo = new ObsInfo("#obsInfo","#obsInfoGrid","#numericObsGraph",
+        "#numericObsGraphLegend","#obsInfoLabel");
         it("should display observation specific data in a table for numeric observation",function(){
             var searchResult = flowsheetData.search("diastolic blood pressure");
-            numericObsInfo.reload(searchResult,"positionTest");
-            expect($('#numericObsInfoGrid').find('td:nth-child(1)').html()).to(
+            obsInfo.reload(searchResult,"positionTest");
+            expect($('#obsInfoGrid').find('td:nth-child(1)').html()).to(
                     equal,"2001-01-12"
                     );
-            expect($('#numericObsInfoGrid').find('td:nth-child(2)').html()).to(
+            expect($('#obsInfoGrid').find('td:nth-child(2)').html()).to(
                     equal,"55"
                     );
 
         }),
         it("should dispay graph for numeric observation",function(){
             var searchResult = flowsheetData.search("diastolic blood pressure");
-            numericObsInfo.reload(searchResult,"positionTest");
+            obsInfo.reload(searchResult,"positionTest");
             expect($('#numericObsGraph').find('canvas').length).to(equal,2);
             expect($('#numericObsGraphLegend').find('td:nth-child(2)').html()).to(equal,"Normal Hi");
             expect($('#numericObsGraphLegend').find('td:nth-child(4)').html()).to(equal,"Normal Low");
@@ -195,16 +192,16 @@ Screw.Unit(function() {
         }),
         it("should not dispay graph for non-numeric observation",function(){
             var searchResult = flowsheetData.search("Pregnancy status");
-            numericObsInfo.reload(searchResult,"positionTest");
+            obsInfo.reload(searchResult,"positionTest");
             expect($('#numericObsGraph').is(':hidden') ).to(be_true);
         }),
         it("should display observation specific data in a table for non-numeric observation",function(){
             var searchResult = flowsheetData.search("Pregnancy status");
-            numericObsInfo.reload(searchResult,"positionTest");
-            expect($('#numericObsInfoGrid').find('td:nth-child(1)').html()).to(
+            obsInfo.reload(searchResult,"positionTest");
+            expect($('#obsInfoGrid').find('td:nth-child(1)').html()).to(
                     equal,"2002-01-12"
                     );
-            expect($('#numericObsInfoGrid').find('td:nth-child(2)').html()).to(
+            expect($('#obsInfoGrid').find('td:nth-child(2)').html()).to(
                     equal,"false"
                     );
 
