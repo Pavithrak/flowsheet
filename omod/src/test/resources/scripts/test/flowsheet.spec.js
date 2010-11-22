@@ -86,6 +86,12 @@ Screw.Unit(function() {
                     var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"]);
                     expect(3).to(equal, filteredData.length);
                 }),
+                 it("should be able to filter data by date , Concept Class Types & Search Entries", function() {
+                    var filteredData = flowsheetData.filter(new DateObject("2002-01-02", "2020-01-01"), ["Finding"],["Problem added","Temparature"]);
+                    expect(1).to(equal, filteredData.length);
+                    var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"],["Pregnancy status"]);
+                    expect(1).to(equal, filteredData.length);
+                }),
                 it("should search by concept name", function() {
                     var filteredData = flowsheetData.search("blood");
                     expect(2).to(equal, filteredData.length);

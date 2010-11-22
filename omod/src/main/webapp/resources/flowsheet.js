@@ -51,7 +51,7 @@ var Flowsheet = function(tableId) {
         });
 
         hideColumnHeaders();
-        createSearchToolBar();       
+        createSearchToolBar();
     }
 
     this.reload = function(entries) {
@@ -104,17 +104,21 @@ var FlowsheetData = function(data) {
         return sortDateArray(jQuery.unique(dates));
     };
 
-    this.filter = function(dateObj, classTypes) {
+    this.filter = function(dateObj, classTypes,searchEntries) {
         var filteredEntries = new Array();
         var entries = this.entries;
-        jQuery(entries).each(function(index, entry) {
+		jQuery(entries).each(function(index, entry) {
             var classTypeCheck = (jQuery.inArray(entry.classType, classTypes) >= 0);
+			var searchEntryCheck =true;
+			if(searchEntries && searchEntries.length>0){
+				searchEntryCheck= (jQuery.inArray(entry.name, searchEntries) >= 0);
+			}
             var dateCheck = (entry.date >= dateObj.from) && (entry.date <= dateObj.to);
-            if (dateCheck && classTypeCheck) {
+            if (dateCheck && classTypeCheck && searchEntryCheck) {
                 filteredEntries.push(entry);
             }
         });
-        return filteredEntries;
+		return filteredEntries;
     }
 
     this.search = function(query) {
@@ -187,7 +191,7 @@ var DateRange = function(slider, filterHandler) {
 
 var ConceptClass = function(list) {
 	this.list = list;
-	
+
     this.render = function(classTypes) {
         jQuery(classTypes).each(function(index, classType) {
             var classTypeContainer = jQuery(list);

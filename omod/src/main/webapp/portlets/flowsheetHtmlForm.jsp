@@ -6,10 +6,11 @@
 <openmrs:htmlInclude file="/scripts/jquery-ui/js/jquery-ui.custom.min.js"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/flowsheet.js"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/ui.multiselect.js"/>
-<openmrs:htmlInclude file="/moduleResources/flowsheet/fcbkcomplete.js"/>
+<openmrs:htmlInclude file="/moduleResources/flowsheet/fcbkcomplete_2_75.js"/>
+
 
 <openmrs:htmlInclude file="/moduleResources/flowsheet/ui.jqgrid.css"/>
-<openmrs:htmlInclude file="/moduleResources/flowsheet/fcbkStyles.css"/>
+<openmrs:htmlInclude file="/moduleResources/flowsheet/fcbkStyles_2_75.css"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jslider.css"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/uicustom.css"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.dependClass.js"/>
@@ -47,24 +48,17 @@
                 </tr>
                 <tr align="left">
                     <td>
-                        <ol>
-                            <li id="facebook-list" class="input-text">
-                                <label>FacebookList input</label>
-                                <input type="text" value="" id="facebook-demo"/>
-                                <ul id="preadded" style="display:none">
-                                </ul>
-                                <div id="facebook-auto">
-                                    <div class="default">Type the name of an argentine writer you like</div>
-                                    <ul id="feed">
-
-                                    </ul>
-
-                                </div>
-                            </li>
-                        </ol>
-                        <input type="button" id="search" name="search" />
+                        <select id="conceptSelect" name="conceptSelect" > </select>
+						
                     </td>
                 </tr>
+                  <tr align="left">
+                    <td>
+                         <input type="button" id="search" name="search" value="search" />
+
+                    </td>
+                </tr>
+
             </table>
 
         </td>
@@ -85,10 +79,9 @@
 </div>
 
 <script type="text/javascript">
+         //to be refactored - Balaji/Khaarthiga
+var searchList=[];
 
-    function searchHandler(entries) {
-        jQuery.facebooklist('#facebook-demo', "#preadded", '#facebook-auto', entries, 7, {userfilter:1,casesensetive:1});
-    }
     function getUniqueEntries(entries) {
         var uniqueEntries = [];
         jQuery.each(entries, function(index, entry) {
@@ -105,8 +98,7 @@
         var jsondata = {
             patientId : patientIdValue
         };
-
-        var flowsheetObj = new Flowsheet("flowsheet");
+	    var flowsheetObj = new Flowsheet("flowsheet");
         var data = {};
         var classes = new ConceptClass("#classTypeList");
         var numericObsInfo = new ObsInfo(jQuery("#numericObsInfo"), "numericObsInfoGrid", jQuery("#numericObsGraph"),
@@ -115,7 +107,8 @@
         var filter = function() {
             var from = jQuery('#sliderInfoFrom').text();
             var to = jQuery('#sliderInfoTo').text();
-            var entries = data.filter(new DateObject(from, to), classes.getSelected());
+			var list=getSearchEntries();
+            var entries = data.filter(new DateObject(from, to), classes.getSelected(),list);
             flowsheetObj.reload(entries);
             searchHandler(getUniqueEntries(entries));
         }
@@ -141,7 +134,7 @@
             classes.render(data.getConceptClasses());
             classes.change(filter);
             dateRange.render(data.getDateRange());
-            searchHandler(getUniqueEntries(data.entries));            
+            searchHandler(getUniqueEntries(data.entries));
         };
 
         $j.ajax({
@@ -152,17 +145,41 @@
         });
 
 
-        jQuery("#search").click(function(){
-            alert("hello world");
-            
-        });
-      
-        //        var jsonData = [{"caption":"Tester","value":5},{"caption":"Work relateds","value":3},{"caption":"Testedsfdsfr","value":4}];
-        //        jQuery(document).ready(function() {
-        //            jQuery.facebooklist('#facebook-demo', null, '#facebook-auto', jsonData, 10, {userfilter:1,casesensetive:0});
-        ////            jQuery.facebooklist(jQuery('#facebook-demo'), null,jQuery('#facebook-auto'), data.entries, 10, {userfilter:1,casesensetive:0});
-        //        });
+		var getSearchEntries= function(){
+			var list=[]
+       		jQuery(".holder").children('li').each(function(index){
+				var text=jQuery(this).text();
+				if(text.length>0){
+				list.push(text);
+				}
+			});
+			return list
+			}
 
-    });
+
+
+
+    	 function searchHandler(entries) {
+			jQuery("#conceptSelect").fcbkcomplete({
+                json_url: entries,
+                addontab: true,
+                cache: true,
+                height: 20,
+                filter_selected:true,
+                filter_case:false,
+                maxshownitems:10,
+                cache:false,
+                maxitimes:10                           
+            });
+
+        }
+
+		 jQuery("#search").click(function(){
+			searchList=getSearchEntries();
+			filter();
+
+		});
+
+	});
 </script>
 
