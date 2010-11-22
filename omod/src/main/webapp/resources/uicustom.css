@@ -107,11 +107,13 @@ Verdana, Arial, Helvetica, sans-serif; font-size: 1em; color: #000; empty-cells:
 
 .obsInfoPanel {
     width:500px;
+    height:300px;
 border: 1px solid #333;
 background-color: #ffffff;
 }
 .obsInfoPanelExpanded {
-    width:700px;
+    width:1000px;
+    height:600px;
 background-color: #ffffff;
 }
 
@@ -129,7 +131,7 @@ background-color: #ffffff;
 }
 .obsGraph{
     width:100%;
-    height:150px;
+    height:65%;
 }
 .maximizeIcon{
     background-color:#ffffff;
