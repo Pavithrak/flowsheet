@@ -48,15 +48,20 @@
                 </tr>
                 <tr align="left">
                     <td>
-                        <select id="conceptSelect" name="conceptSelect" > </select>
-						
-                    </td>
-                </tr>
-                  <tr align="left">
-                    <td>
-                         <input type="button" id="search" name="search" value="search" />
+                        <select id="conceptSelect" name="conceptSelect"> </select>
 
                     </td>
+                </tr>
+                <tr align="left">
+                    <td>
+                        <input type="button" id="search" name="search" value="Search"/>
+
+                    </td>
+                    <td>
+                        <input type="button" id="clear" name="clear" value="Clear"/>
+
+                    </td>
+
                 </tr>
 
             </table>
@@ -70,21 +75,21 @@
 </table>
 
 <div id="obsInfoDialog" class="">
-<div id="obsInfo" class="obsInfoPanel">
-    <div id="maximizeIcon" class="maximizeIcon ui-icon ui-icon-arrowthick-2-ne-sw"></div>
-    <div id="obsInfoLabel" class="obsInfoLabel"></div>
+    <div id="obsInfo" class="obsInfoPanel">
+        <div id="maximizeIcon" class="maximizeIcon ui-icon ui-icon-arrowthick-2-ne-sw"></div>
+        <div id="obsInfoLabel" class="obsInfoLabel"></div>
 
-    <div id="numericObsGraph" class="obsGraph"></div>
-    <div id="numericObsGraphLegend" class="obsGraphLegend" ></div>
-    <div id="obsInfoGrid" class="obsInfoGrid">
+        <div id="numericObsGraph" class="obsGraph"></div>
+        <div id="numericObsGraphLegend" class="obsGraphLegend"></div>
+        <div id="obsInfoGrid" class="obsInfoGrid">
+        </div>
+
     </div>
-
-</div>
 </div>
 
 <script type="text/javascript">
-//to be refactored - Balaji/Khaarthiga
-var searchList=[];
+    //to be refactored - Balaji/Khaarthiga
+    var searchList = [];
 
     function getUniqueEntries(entries) {
         var uniqueEntries = [];
@@ -102,17 +107,17 @@ var searchList=[];
         var jsondata = {
             patientId : patientIdValue
         };
-	    var flowsheetObj = new Flowsheet("flowsheet");
+        var flowsheetObj = new Flowsheet("flowsheet");
         var data = {};
         var classes = new ConceptClass("#classTypeList");
-        var obsInfo = new ObsInfo("#obsInfo","#obsInfoGrid","#numericObsGraph",
-            "#numericObsGraphLegend","#obsInfoLabel","#maximizeIcon","#obsInfoDialog");
+        var obsInfo = new ObsInfo("#obsInfo", "#obsInfoGrid", "#numericObsGraph",
+                "#numericObsGraphLegend", "#obsInfoLabel", "#maximizeIcon", "#obsInfoDialog");
 
         var filter = function() {
             var from = jQuery('#sliderInfoFrom').text();
             var to = jQuery('#sliderInfoTo').text();
-			var list=getSearchEntries();
-            var entries = data.filter(new DateObject(from, to), classes.getSelected(),list);
+            var list = getSearchEntries();
+            var entries = data.filter(new DateObject(from, to), classes.getSelected(), list);
             flowsheetObj.reload(entries);
             searchHandler(getUniqueEntries(entries));
         }
@@ -124,14 +129,14 @@ var searchList=[];
             e.stopPropagation();
             var conceptName = jQuery("#" + rowid).find('td:nth-child(2)').html();
             var searchResult = data.search(conceptName);
-            obsInfo.reload(searchResult,rowid);
+            obsInfo.reload(searchResult, rowid);
         }
 
-         jQuery("body").click(function(){
-          obsInfo.hide();
-           });
+        jQuery("body").click(function() {
+            obsInfo.hide();
+        });
 
-        jQuery("#maximizeIcon").click(function(e){
+        jQuery("#maximizeIcon").click(function(e) {
             e.stopPropagation();
             var conceptName = jQuery("#maximizeIcon").attr("concept");
             var searchResult = data.search(conceptName);
@@ -156,22 +161,20 @@ var searchList=[];
         });
 
 
-		var getSearchEntries= function(){
-			var list=[]
-       		jQuery(".holder").children('li').each(function(index){
-				var text=jQuery(this).text();
-				if(text.length>0){
-				list.push(text);
-				}
-			});
-			return list
-			}
+        var getSearchEntries = function() {
+            var list = []
+            jQuery(".holder").children('li').each(function(index) {
+                var text = jQuery(this).text();
+                if (text.length > 0) {
+                    list.push(text);
+                }
+            });
+            return list
+        }
 
 
-
-
-    	 function searchHandler(entries) {
-			jQuery("#conceptSelect").fcbkcomplete({
+        function searchHandler(entries) {
+            jQuery("#conceptSelect").fcbkcomplete({
                 json_url: entries,
                 addontab: true,
                 cache: true,
@@ -180,17 +183,33 @@ var searchList=[];
                 filter_case:false,
                 maxshownitems:10,
                 cache:false,
-                maxitimes:10                           
+                maxitimes:10
             });
 
         }
 
-		 jQuery("#search").click(function(){
-			searchList=getSearchEntries();
-			filter();
+        jQuery("#search").click(function() {
+            searchList = getSearchEntries();
+            filter();
 
-		});
+        });
 
-	});
+        jQuery("#clear").click(function() {
+            searchList = [];
+            var count = 0;
+            jQuery(".holder").children('li').each(function(index) {
+                if (jQuery(this).hasClass('bit-box')) {
+                    jQuery(".holder").children(this).remove();
+                    count = count + 1;
+                }
+
+            });
+            if (count > 0) {
+                filter();
+            }
+
+        });
+
+    });
 </script>
 
