@@ -121,6 +121,17 @@ var FlowsheetData = function(data) {
 		return filteredEntries;
     }
 
+    this.searchForExactMatch = function(query) {
+        var filteredData = new Array();
+        jQuery(this.entries).each(function(index, entry) {
+            if (entry.name == query || entry.value == query ) {
+                filteredData.push(entry);
+            }
+        });
+
+        return filteredData;
+    }
+
     this.search = function(query) {
         var filteredData = new Array();
         jQuery(this.entries).each(function(index, entry) {

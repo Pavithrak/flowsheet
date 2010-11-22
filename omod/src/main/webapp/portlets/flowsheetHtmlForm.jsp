@@ -123,7 +123,7 @@ var searchList=[];
         var onClickHandlerForGrid = function(rowid, iCol, cellcontent, e) {
             e.stopPropagation();
             var conceptName = jQuery("#" + rowid).find('td:nth-child(2)').html();
-            var searchResult = data.search(conceptName);
+            var searchResult = data.searchForExactMatch(conceptName);
             obsInfo.reload(searchResult,rowid);
         }
 
@@ -134,7 +134,7 @@ var searchList=[];
         jQuery("#maximizeIcon").click(function(e){
             e.stopPropagation();
             var conceptName = jQuery("#maximizeIcon").attr("concept");
-            var searchResult = data.search(conceptName);
+            var searchResult = data.searchForExactMatch(conceptName);
             obsInfo.reloadInExpandedMode(searchResult);
         });
 

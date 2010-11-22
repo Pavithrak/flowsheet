@@ -96,6 +96,12 @@ Screw.Unit(function() {
                     var filteredData = flowsheetData.search("blood");
                     expect(2).to(equal, filteredData.length);
                 }),
+                it("should search by concept name for exact match", function() {
+                    var filteredData = flowsheetData.searchForExactMatch("blood");
+                    expect(0).to(equal, filteredData.length);
+                    filteredData = flowsheetData.searchForExactMatch("Systolic blood pressure");
+                    expect(1).to(equal, filteredData.length);                    
+                }),
                 it("should search by concept value", function() {
                     var filteredData = flowsheetData.search("dermatitis");
                     expect(1).to(equal, filteredData.length);
@@ -227,6 +233,7 @@ Screw.Unit(function() {
             obsInfo.reloadInExpandedMode(searchResult);
             var title = jQuery("#obsInfoDialog").attr("title");
             expect(title).to(equal,conceptName);
+            obsInfo.hide();
         })
 
     })
