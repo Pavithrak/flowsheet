@@ -176,7 +176,8 @@ Screw.Unit(function() {
     describe("ObsInfo - View details of an Observation", function() {
         var flowsheetData = new FlowsheetData(SampleFlowsheetData());
         var obsInfo = new ObsInfo("#obsInfo","#obsInfoGrid","#numericObsGraph",
-        "#numericObsGraphLegend","#obsInfoLabel");
+                "#numericObsGraphLegend","#obsInfoLabel","#maximizeIcon","#obsInfoDialog");
+
         it("should display observation specific data in a table for numeric observation",function(){
             var searchResult = flowsheetData.search("diastolic blood pressure");
             obsInfo.reload(searchResult,"positionTest");
@@ -211,6 +212,21 @@ Screw.Unit(function() {
                     equal,"false"
                     );
 
+        }),
+        it("should be able to expand the obsInfo",function(){
+            var searchResult = flowsheetData.search("Pregnancy status");
+            obsInfo.reloadInExpandedMode(searchResult);
+            var classForObsInfoElem = jQuery("#obsInfo").attr("class");
+            expect(classForObsInfoElem).to(equal,"obsInfoPanelExpanded");
+            expect($('#obsInfoLabel').is(':hidden') ).to(be_true);
+            expect($('#maximizeIcon').is(':hidden') ).to(be_true);
+        }),
+        it("should display concept name in popup title",function(){
+            var conceptName = "Pregnancy status";
+            var searchResult = flowsheetData.search(conceptName);
+            obsInfo.reloadInExpandedMode(searchResult);
+            var title = jQuery("#obsInfoDialog").attr("title");
+            expect(title).to(equal,conceptName);
         })
 
     })
