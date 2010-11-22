@@ -232,27 +232,25 @@ var DateObject = function(from, to) {
     this.to = to;
 }
 
-var ObsInfo = function(obsInfoElem,numericObsInfoGrid,numericObsGraph,numericObsGraphLegend,obsInfoLabel){
+var ObsInfo = function(obsInfoElem,numericObsInfoGrid,numericObsGraph,numericObsGraphLegend,obsInfoLabel,maximizeIcon,obsInfoDialog){
+ var requiredKey = ["date","value"];
  this.obsInfoElem = obsInfoElem;
  this.numericObsGraph = numericObsGraph;
  this.numericObsGraphLegend = numericObsGraphLegend;
  this.obsInfoLabel = obsInfoLabel;
+ this.maximizeIcon = maximizeIcon;
+ this.numericObsInfoGrid = numericObsInfoGrid;
  jQuery(this.obsInfoElem).hide();
 
-
- var requiredKey = ["date","value"];
-
-    this.render = function(entries, theme, requiredKey) {
+    var renderObsInfoGrid = function(entries, theme, requiredKey) {
         var array = entries;
         var str = '<table class="' + theme + '">';
-        // table head
-            str += '<thead><tr>';
-            for (var index in requiredKey) {
-                str += '<th scope="col">' + requiredKey[index] + '</th>';
-            }
-            str += '</tr></thead>';
+        str += '<thead><tr>';
+        for (var index in requiredKey) {
+            str += '<th scope="col">' + requiredKey[index] + '</th>';
+        }
+        str += '</tr></thead>';
 
-        // table body
         str += '<tbody>';
         for (var i = 0; i < array.length; i++) {
             str += (i % 2 == 0) ? '<tr class="alt">' : '<tr>';
@@ -264,48 +262,77 @@ var ObsInfo = function(obsInfoElem,numericObsInfoGrid,numericObsGraph,numericObs
         }
         str += '</tbody>'
         str += '</table>';
-        jQuery("#" + numericObsInfoGrid).append(str);
-        jQuery(this.obsInfoLabel).html(entries[0].name);
+        jQuery(numericObsInfoGrid).append(str);
+        jQuery(obsInfoLabel).html(entries[0].name);
+        jQuery(maximizeIcon).attr("concept",entries[0].name);
 
     }
-
-    this.reload = function(entries,positionTargetId) {
-        jQuery(this.obsInfoElem).show();
-        jQuery("#" + numericObsInfoGrid).empty();
-        jQuery(this.obsInfoElem).position({
-            of: jQuery( "#"+positionTargetId ),
-            my: "left center",
-            at: "right center",
-            offset: "10 0",
-            collision: "fit"
-        });
+    
+    var renderObsInfo = function(entries){
+        jQuery(obsInfoElem).show();
+        jQuery(numericObsInfoGrid).empty();
         if(isNumericObs(entries)){
-            jQuery(this.numericObsGraph).show();
-            jQuery(this.numericObsGraphLegend).show();
+            jQuery(numericObsGraph).show();
+            jQuery(numericObsGraphLegend).show();
             var dataToPlot = convertEntriesToPlotArray(entries);
-            jQuery.plot(this.numericObsGraph, [
-                    {label:"Hi",data: dataToPlot.criticalRangeHi,lines: { show: true, fill: false,color:"#d18b2c" }},
-                    {label:"Low",data: dataToPlot.criticalRangeLow,lines: { show: true, fill: false,color:"#d18b2c" }},
+            jQuery.plot(numericObsGraph, [
+                    {label:"Normal Hi",data: dataToPlot.criticalRangeHi,lines: { show: true, fill: false,color:"#d18b2c" }},
+                    {label:"Normal Low",data: dataToPlot.criticalRangeLow,lines: { show: true, fill: false,color:"#d18b2c" }},
                     {label:"Value",data: dataToPlot.values,lines: { show: true },points: { show: true }}
             ],
             {
                 xaxis:{
                     mode:"time",timeformat:"%y/%m/%d",ticks:4
                 },legend:{
-                    container:this.numericObsGraphLegend,noColumns:3
+                    container:jQuery(numericObsGraphLegend),noColumns:3
                 },grid: { hoverable: true, clickable: true }
             }
             );
         }else{
-           jQuery(this.numericObsGraph).hide();
-           jQuery(this.numericObsGraphLegend).hide();
+           jQuery(numericObsGraph).hide();
+           jQuery(numericObsGraphLegend).hide();
         }
-        this.render(entries, "lightPro", requiredKey);
+        renderObsInfoGrid(entries, "lightPro", requiredKey);
     }
 
+    this.reload = function(entries,positionTargetId) {
+        jQuery(obsInfoElem).attr("class","obsInfoPanel");
+        jQuery(obsInfoLabel).show();
+        jQuery(maximizeIcon).show();
+        renderObsInfo(entries);
+
+        jQuery(obsInfoElem).position({
+            of: jQuery( "#"+positionTargetId ),
+            my: "left center",
+            at: "right center",
+            offset: "10 0",
+            collision: "fit"
+        });
+
+    }
+
+    this.reloadInExpandedMode = function(entries){
+       jQuery(obsInfoElem).attr("style","display: block");
+       jQuery(obsInfoElem).attr("class","obsInfoPanelExpanded");
+       jQuery(obsInfoLabel).hide();
+       jQuery(maximizeIcon).hide();
+       jQuery(obsInfoDialog).attr("title",jQuery(obsInfoLabel).html());
+       jQuery(obsInfoDialog).dialog({
+           resizable: false,
+           modal: true,
+           width: 'auto',
+           closeOnEscape:true
+       });
+       renderObsInfo(entries);
+    };
+    
     this.hide = function(){
-        jQuery("#" + numericObsInfoGrid).empty();
+        jQuery(this.numericObsInfoGrid).empty();
         jQuery(this.obsInfoElem).hide();
+        jQuery(obsInfoDialog).dialog('close');
+        jQuery(obsInfoDialog).dialog('destroy');
+        jQuery(obsInfoDialog).attr("style","");
+
     }
 
     var convertEntriesToPlotArray = function(entries){

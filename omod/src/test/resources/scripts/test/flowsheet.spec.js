@@ -171,4 +171,47 @@ Screw.Unit(function() {
 
     })
 });
-var dateFilterId = "textSlider1";
+
+Screw.Unit(function() {
+    describe("ObsInfo - View details of an Observation", function() {
+        var flowsheetData = new FlowsheetData(SampleFlowsheetData());
+        var obsInfo = new ObsInfo("#obsInfo","#obsInfoGrid","#numericObsGraph",
+        "#numericObsGraphLegend","#obsInfoLabel");
+        it("should display observation specific data in a table for numeric observation",function(){
+            var searchResult = flowsheetData.search("diastolic blood pressure");
+            obsInfo.reload(searchResult,"positionTest");
+            expect($('#obsInfoGrid').find('td:nth-child(1)').html()).to(
+                    equal,"2001-01-12"
+                    );
+            expect($('#obsInfoGrid').find('td:nth-child(2)').html()).to(
+                    equal,"55"
+                    );
+
+        }),
+        it("should dispay graph for numeric observation",function(){
+            var searchResult = flowsheetData.search("diastolic blood pressure");
+            obsInfo.reload(searchResult,"positionTest");
+            expect($('#numericObsGraph').find('canvas').length).to(equal,2);
+            expect($('#numericObsGraphLegend').find('td:nth-child(2)').html()).to(equal,"Normal Hi");
+            expect($('#numericObsGraphLegend').find('td:nth-child(4)').html()).to(equal,"Normal Low");
+            expect($('#numericObsGraphLegend').find('td:nth-child(6)').html()).to(equal,"Value");
+        }),
+        it("should not dispay graph for non-numeric observation",function(){
+            var searchResult = flowsheetData.search("Pregnancy status");
+            obsInfo.reload(searchResult,"positionTest");
+            expect($('#numericObsGraph').is(':hidden') ).to(be_true);
+        }),
+        it("should display observation specific data in a table for non-numeric observation",function(){
+            var searchResult = flowsheetData.search("Pregnancy status");
+            obsInfo.reload(searchResult,"positionTest");
+            expect($('#obsInfoGrid').find('td:nth-child(1)').html()).to(
+                    equal,"2002-01-12"
+                    );
+            expect($('#obsInfoGrid').find('td:nth-child(2)').html()).to(
+                    equal,"false"
+                    );
+
+        })
+
+    })
+});

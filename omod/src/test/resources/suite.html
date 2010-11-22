@@ -4,6 +4,7 @@
 
     <script type="text/javascript" src="scripts/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="scripts/jquery-ui.custom.min.js"></script>
+    <script type="text/javascript" src="../../main/webapp/resources/date.js"></script>
     <script type="text/javascript" src="../../main/webapp/resources/grid.locale-en.js"></script>
     <script type="text/javascript" src="../../main/webapp/resources/jquery.jqGrid.min.js"></script>
 
@@ -22,6 +23,8 @@
 
     <script src="../../main/webapp/resources/flowsheet.js"></script>
     <script type="text/javascript" src="scripts/test/sampleFlowsheetData.js"></script>
+    <script type="text/javascript" src="scripts/jquery.flot.min.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="../../main/webapp/resources/uicustom.css"/><!-- adding custom css -->
 
 
     <link rel="stylesheet" href="./scripts/test/screw.css">
@@ -67,6 +70,21 @@
         </td>
 </table>
 
+<div id="obsInfoDialog" class="">
+<div id="obsInfo" class="obsInfoPanel">
+    <div id="maximizeIcon" class="maximizeIcon ui-icon ui-icon-arrowthick-2-ne-sw"></div>
+    <div id="obsInfoLabel" class="obsInfoLabel"></div>
 
+    <div id="numericObsGraph" class="obsGraph"></div>
+    <div id="numericObsGraphLegend" class="obsGraphLegend" ></div>
+    <div id="obsInfoGrid" class="obsInfoGrid">
+    </div>
+
+</div>
+</div>
+
+<div id="positionTest">
+
+</div>
 </body>
 </html>
