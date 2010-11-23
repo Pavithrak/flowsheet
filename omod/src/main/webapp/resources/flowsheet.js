@@ -57,7 +57,7 @@ var Flowsheet = function(tableId) {
     this.reload = function(entries) {
         jQuery("#" + tableId).clearGridData(false);
         jQuery("#" + tableId).jqGrid('setGridParam', {data:entries}).trigger("reloadGrid");
-       }
+    }
 
     var rangeFormatter = function(cellvalue, options, rowObject) {
         if (rowObject.numeric && rowObject.numeric.hi && rowObject.numeric.low) {
@@ -153,8 +153,8 @@ var FlowsheetData = function(data) {
         return uniqueClassTypes;
     }
 
-    this.getConceptDesc = function(conceptName){
-        if(this.conceptMap[conceptName] && this.conceptMap[conceptName].desc){
+    this.getConceptDesc = function(conceptName) {
+        if (this.conceptMap[conceptName] && this.conceptMap[conceptName].desc) {
             return this.conceptMap[conceptName].desc;
         }
         return null;
@@ -184,7 +184,9 @@ var DateRange = function(slider, filterHandler) {
         }
 
         if (dateRange.length <= 1) {
-            jQuery(".layout-slider").html("No sufficient date to filter");
+            jQuery("#dateFrom").hide();
+            jQuery("#dateTo").hide();
+            jQuery(".layout-slider").html("Insufficient data to filter");
             return;
         }
 
@@ -443,11 +445,11 @@ var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numeric
         return false;
     }
 
-    this.setConceptDesc = function(conceptDescElem,conceptDescText){
-        if(conceptDescText){
+    this.setConceptDesc = function(conceptDescElem, conceptDescText) {
+        if (conceptDescText) {
             jQuery(conceptDescElem).show();
             jQuery(conceptDescElem).html(conceptDescText);
-        }else{
+        } else {
             jQuery(conceptDescElem).hide();
         }
     }
