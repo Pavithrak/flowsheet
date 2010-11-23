@@ -136,6 +136,14 @@ background-color: #ffffff;
     background-color:#ffffff;
     float:right;
 }
+.conceptDesc{
+    background: #e0e0e0;
+    color:#000000;
+    font:10pt sans-serif;
+    margin:2px;
+    padding:2px
+}
+/* Styles used for onclick obs info view -- Ends here */
 
 .searchButtonPanel{
 	left:315px;
@@ -150,4 +158,3 @@ background-color: #ffffff;
 .searchPanel{
 position:relative;
 }
-/* Styles used for onclick obs info view -- Ends here */

@@ -82,7 +82,7 @@ var Flowsheet = function(tableId) {
 
 var FlowsheetData = function(data) {
     this.entries = data.flowsheet.entries;
-
+    this.conceptMap = data.flowsheet.conceptMap;
 
     function createDateArray(entries) {
         var datearr = [];
@@ -151,6 +151,13 @@ var FlowsheetData = function(data) {
             }
         })
         return uniqueClassTypes;
+    }
+
+    this.getConceptDesc = function(conceptName){
+        if(this.conceptMap[conceptName] && this.conceptMap[conceptName].desc){
+            return this.conceptMap[conceptName].desc;
+        }
+        return null;
     }
 }
 
@@ -306,7 +313,8 @@ var ConceptNameSearch = function(selectElement) {
 
 }
 
-var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numericObsGraphLegend, obsInfoLabel, maximizeIcon, obsInfoDialog) {
+var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numericObsGraphLegend,
+                       obsInfoLabel, maximizeIcon, obsInfoDialog) {
     var requiredKey = ["date","value"];
     this.obsInfoElem = obsInfoElem;
     this.numericObsGraph = numericObsGraph;
@@ -433,6 +441,14 @@ var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numeric
         return false;
     }
 
+    this.setConceptDesc = function(conceptDescElem,conceptDescText){
+        if(conceptDescText){
+            jQuery(conceptDescElem).show();
+            jQuery(conceptDescElem).html(conceptDescText);
+        }else{
+            jQuery(conceptDescElem).hide();
+        }
+    }
 }
 
 
