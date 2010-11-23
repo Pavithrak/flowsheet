@@ -7,9 +7,16 @@ var SampleFlowsheetData = function() {
             {name:"Pregnancy status",value:"false",dataType:"boolean",classType:"Finding",date: "2002-01-12"},
             {name:"Problem added",value:"Dermatitis",dataType:"non-numeric",classType:"Finding", date: "2010-01-12"}
 
-        ]
+        ],
+        "conceptMap":{
+            "Systolic blood pressure"
+        :
+            {
+                "desc":
+                "SBP is the pressure exerted by circulating blood upon the walls of blood vessels, and is one of the principal vital signs."
+            }
+        }
     };
     this.flowsheet = sampleflowsheet;
     return this;
 }
-
