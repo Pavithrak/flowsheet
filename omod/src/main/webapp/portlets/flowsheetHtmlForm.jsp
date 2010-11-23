@@ -48,22 +48,15 @@
                 </tr>
                 <tr align="left">
                     <td>
-                        <select id="conceptSelect" name="conceptSelect"> </select>
-
+						<div  class="searchPanel" >
+							<select id="conceptSelect" name="conceptSelect"> </select>
+							<div class="searchButtonPanel">
+								<input type="button" id="search" name="search" value="Search"/><br/>
+								 <input type="button" id="clear" name="clear" value="Clear"/>
+							</div>
+						</div>
                     </td>
                 </tr>
-                <tr align="left">
-                    <td>
-                        <input type="button" id="search" name="search" value="Search"/>
-
-                    </td>
-                    <td>
-                        <input type="button" id="clear" name="clear" value="Clear"/>
-
-                    </td>
-
-                </tr>
-
             </table>
 
         </td>

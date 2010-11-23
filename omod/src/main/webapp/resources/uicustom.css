@@ -39,10 +39,9 @@
 
 .flowsheet_left_panel {
     padding-left: 30px;
-    padding-right: 20px;
     padding-top: 10px;
     padding-bottom: 30px;
-    width: 200px;
+    width: 400px;
 }
 
 .flowsheet_left_panel span {
@@ -136,5 +135,19 @@ background-color: #ffffff;
 .maximizeIcon{
     background-color:#ffffff;
     float:right;
+}
+
+.searchButtonPanel{
+	left:315px;
+	top: 0;
+	position:absolute;
+}
+
+.searchPanel ul.holder{
+	background-color:white;
+}
+
+.searchPanel{
+position:relative;
 }
 /* Styles used for onclick obs info view -- Ends here */
