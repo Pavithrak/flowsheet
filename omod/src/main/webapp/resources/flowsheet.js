@@ -377,14 +377,14 @@ var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numeric
         renderObsInfoGrid(entries, "lightPro", requiredKey);
     }
 
-    this.reload = function(entries, positionTargetId) {
+    this.reload = function(entries, positionTargetElem) {
         jQuery(obsInfoElem).attr("class", "obsInfoPanel");
         jQuery(obsInfoLabel).show();
         jQuery(maximizeIcon).show();
         renderObsInfo(entries);
 
         jQuery(obsInfoElem).position({
-            of: jQuery("#" + positionTargetId),
+            of: positionTargetElem,
             my: "left center",
             at: "right center",
             offset: "10 0",
