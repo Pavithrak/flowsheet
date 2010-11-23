@@ -48,13 +48,14 @@
                 </tr>
                 <tr align="left">
                     <td>
-						<div  class="searchPanel" >
-							<select id="conceptSelect" name="conceptSelect"> </select>
-							<div class="searchButtonPanel">
-								<input type="button" id="search" name="search" value="Search"/><br/>
-								 <input type="button" id="clear" name="clear" value="Clear"/>
-							</div>
-						</div>
+                        <div class="searchPanel">
+                            <select id="conceptSelect" name="conceptSelect"> </select>
+
+                            <div class="searchButtonPanel">
+                                <input type="button" id="search" name="search" value="Search"/><br/>
+                                <input type="button" id="clear" name="clear" value="Clear"/>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -84,6 +85,7 @@
     //to be refactored - Balaji/Khaarthiga
     var searchList = [];
 
+
     jQuery(document).ready(function() {
 
         var patientIdValue = $j('#patientId').val();
@@ -97,6 +99,14 @@
                 "#numericObsGraphLegend", "#obsInfoLabel", "#maximizeIcon", "#obsInfoDialog");
 
 
+        var createErrorMessage =function(entries) {
+            if (!entries || entries.length == 0) {
+                jQuery("#flowsheet").append(jQuery('<tr>')
+                        .append(jQuery('<td>')
+                        .text('Undo some filters to view the observations')));
+            }
+        }
+
         var filter = function() {
             var from = jQuery('#sliderInfoFrom').text();
             var to = jQuery('#sliderInfoTo').text();
@@ -104,6 +114,7 @@
             var entries = data.filter(new DateObject(from, to), classes.getSelected(), list);
             flowsheetObj.reload(entries);
             conceptNameSearch.render(entries);
+            createErrorMessage(entries);
         }
 
         var dateRange = new DateRange(jQuery("#Slider1"), filter);
@@ -166,7 +177,6 @@
         });
 
         jQuery("#clear").click(function() {
-            searchList = [];
             var count = 0;
             jQuery(".holder").children('li').each(function(index) {
                 if (jQuery(this).hasClass('bit-box')) {
