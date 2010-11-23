@@ -1,5 +1,6 @@
 package org.openmrs.module;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Assert;
@@ -7,7 +8,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.flowsheet.ConceptInfo;
 import org.openmrs.module.flowsheet.FlowsheetEntry;
+import org.openmrs.module.flowsheet.Flowsheet;
 import org.openmrs.module.flowsheet.impl.FlowsheetService;
 import org.openmrs.test.BaseContextSensitiveTest;
 
@@ -81,4 +84,11 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 		Assert.assertEquals("", entry.getNumeric().getLow());
 	}
 
+    @Test
+    public void shouldReturnConceptDesc(){
+        Flowsheet flowsheet = service.getFlowsheet(7);
+        HashMap<String, ConceptInfo> conceptDescMap = flowsheet.getConceptMap();
+        Assert.assertEquals("Patient's weight in kilograms.",conceptDescMap.get("WT").getDesc());
+        Assert.assertEquals("Measure of CD4 (T-helper cells) in blood",conceptDescMap.get("CD4").getDesc());
+    }
 }

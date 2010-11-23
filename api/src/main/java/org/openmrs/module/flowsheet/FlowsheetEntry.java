@@ -3,6 +3,7 @@ package org.openmrs.module.flowsheet;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.Obs;
@@ -18,6 +19,8 @@ public class FlowsheetEntry {
 	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	private String comment;
 
+    private Obs obs;
+
 	public FlowsheetEntry(Obs obs) {
 		Concept concept = obs.getConcept();
 
@@ -31,6 +34,7 @@ public class FlowsheetEntry {
 		if (concept.isNumeric()) {
 			this.numeric = new Numeric(concept);
 		}
+        this.obs = obs ;
 	}
 
 	public String getName() {
@@ -60,5 +64,13 @@ public class FlowsheetEntry {
 	public String getComment() {
 		return comment;
 	}
+
+    public String getConceptDesc() {
+        String conceptDesc = null;
+        if(obs.getConcept().getDescription() != null){
+            conceptDesc = obs.getConcept().getDescription().getDescription();
+        }
+        return conceptDesc;
+    }
 
 }
