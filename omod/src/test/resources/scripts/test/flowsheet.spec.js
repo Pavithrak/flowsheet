@@ -110,6 +110,12 @@ Screw.Unit(function() {
                     var uniqueClassTypes = flowsheetData.getConceptClasses();
                     expect(3).to(equal, uniqueClassTypes.length);
                     expect(["Test","Diagnosis","Finding"]).to(equal, uniqueClassTypes);
+                }),
+                it("should return concept desc for concept name",function(){
+                    var conceptDesc = flowsheetData.getConceptDesc("Systolic blood pressure");
+                    var expectedDesc = "SBP is the pressure exerted by circulating blood upon " +
+                            "the walls of blood vessels, and is one of the principal vital signs.";
+                    expect(conceptDesc).to(equal,expectedDesc);
                 })
     })
 });
@@ -269,6 +275,16 @@ Screw.Unit(function() {
                     var title = jQuery("#obsInfoDialog").attr("title");
                     expect(title).to(equal, conceptName);
                     obsInfo.hide();
+                }),
+                it("should set concept desc when available",function(){
+                    var conceptDescText = "This is the desc from flowsheetData";
+                    obsInfo.setConceptDesc("#conceptDesc",conceptDescText);
+                    expect($("#conceptDesc").html()).to(equal,conceptDescText);
+                }),
+                it("should make concept desc hidden when desc not available",function(){
+                    var conceptDescText = null;
+                    obsInfo.setConceptDesc("#conceptDesc",conceptDescText);
+                    expect($("#conceptDesc").is(':hidden')).to(be_true);
                 })
 
     })
