@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="../../main/webapp/resources/jslider.css" type="text/css">
     <script type="text/javascript" src="../../main/webapp/resources/jquery.dependClass.js"></script>
+    <script type="text/javascript" src="../../main/webapp/resources/fcbkcomplete_2_75.js"></script>
 
     <script src="scripts/test/screw.builder.js"></script>
     <script src="scripts/test/screw.matchers.js"></script>
@@ -24,7 +25,8 @@
     <script src="../../main/webapp/resources/flowsheet.js"></script>
     <script type="text/javascript" src="scripts/test/sampleFlowsheetData.js"></script>
     <script type="text/javascript" src="scripts/jquery.flot.min.js"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="../../main/webapp/resources/uicustom.css"/><!-- adding custom css -->
+    <link rel="stylesheet" type="text/css" media="screen" href="../../main/webapp/resources/uicustom.css"/>
+    <!-- adding custom css -->
 
 
     <link rel="stylesheet" href="./scripts/test/screw.css">
@@ -37,29 +39,45 @@
         <td class="flowsheet_left_panel">
             <table>
                 <tr>
-                    <td class="slider_title">Date Range
-                    </td>
-                </tr>
-                <tr>
-                    <td class="slider_info">From : <label id="sliderInfoFrom"></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="slider_info">To : <label id="sliderInfoTo"></label>
-                    </td>
-                </tr>
-                <tr>
                     <td>
+                        <div id="dateRangeText" class="slider_title"> Date Range</div>
+                        <div id="dateFrom" class="slider_info"> From : <label id="sliderInfoFrom"></label></div>
+                        <div id="dateTo" class="slider_info"> To : <label id="sliderInfoTo"></label></div>
 
                         <div class="layout-slider">
                              <span class="slider">
                             <input id="Slider1" type="slider" name="price"/></span>
                         </div>
-                        <br/>
+                    </td>
 
-                        <div id="classTypeList">Class Types</div>
+                </tr>
+                <tr>
+                    <td>
+
+                        <div id="classTypeList">
+                            <div class="slider_title">Result Types</div>
+                        </div>
+
                     </td>
                 </tr>
+                <tr align="left">
+                    <td>
+                        <select id="conceptSelect" name="conceptSelect"> </select>
+
+                    </td>
+                </tr>
+                <tr align="left">
+                    <td>
+                        <input type="button" id="search" name="search" value="Search"/>
+
+                    </td>
+                    <td>
+                        <input type="button" id="clear" name="clear" value="Clear"/>
+
+                    </td>
+
+                </tr>
+
             </table>
 
         </td>
@@ -71,16 +89,16 @@
 </table>
 
 <div id="obsInfoDialog" class="">
-<div id="obsInfo" class="obsInfoPanel">
-    <div id="maximizeIcon" class="maximizeIcon ui-icon ui-icon-arrowthick-2-ne-sw"></div>
-    <div id="obsInfoLabel" class="obsInfoLabel"></div>
+    <div id="obsInfo" class="obsInfoPanel">
+        <div id="maximizeIcon" class="maximizeIcon ui-icon ui-icon-arrowthick-2-ne-sw"></div>
+        <div id="obsInfoLabel" class="obsInfoLabel"></div>
 
-    <div id="numericObsGraph" class="obsGraph"></div>
-    <div id="numericObsGraphLegend" class="obsGraphLegend" ></div>
-    <div id="obsInfoGrid" class="obsInfoGrid">
+        <div id="numericObsGraph" class="obsGraph"></div>
+        <div id="numericObsGraphLegend" class="obsGraphLegend"></div>
+        <div id="obsInfoGrid" class="obsInfoGrid">
+        </div>
+
     </div>
-
-</div>
 </div>
 
 <div id="positionTest">

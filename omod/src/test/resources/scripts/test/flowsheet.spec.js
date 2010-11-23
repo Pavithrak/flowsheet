@@ -86,10 +86,10 @@ Screw.Unit(function() {
                     var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"]);
                     expect(3).to(equal, filteredData.length);
                 }),
-                 it("should be able to filter data by date , Concept Class Types & Search Entries", function() {
-                    var filteredData = flowsheetData.filter(new DateObject("2002-01-02", "2020-01-01"), ["Finding"],["Problem added","Temparature"]);
+                it("should be able to filter data by date , Concept Class Types & Search Entries", function() {
+                    var filteredData = flowsheetData.filter(new DateObject("2002-01-02", "2020-01-01"), ["Finding"], ["Problem added","Temparature"]);
                     expect(1).to(equal, filteredData.length);
-                    var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"],["Pregnancy status"]);
+                    var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"], ["Pregnancy status"]);
                     expect(1).to(equal, filteredData.length);
                 }),
                 it("should search by concept name", function() {
@@ -100,7 +100,7 @@ Screw.Unit(function() {
                     var filteredData = flowsheetData.searchForExactMatch("blood");
                     expect(0).to(equal, filteredData.length);
                     filteredData = flowsheetData.searchForExactMatch("Systolic blood pressure");
-                    expect(1).to(equal, filteredData.length);                    
+                    expect(1).to(equal, filteredData.length);
                 }),
                 it("should search by concept value", function() {
                     var filteredData = flowsheetData.search("dermatitis");
@@ -129,11 +129,26 @@ Screw.Unit(function() {
                     expect(jQuery("#sliderInfoFrom").html()).to(equal, "2001-01-12");
                     expect(jQuery("#sliderInfoTo").html()).to(equal, "2010-01-12");
                 }),
-                it("should not render the date range silder if there are observations of one date or no observations", function() {
+                it("should not render the date range silder if there are no observations", function() {
                     var sliderId = "Slider1";
                     var emptyData = function() {
                         this.flowsheet = {
                             entries : []
+                        };
+                        return this;
+                    }
+                    var slider = new DateRange(jQuery("#" + sliderId));
+                    slider.render(new FlowsheetData(emptyData()).getDateRange(), sliderId);
+                    expect(jQuery(".layout-slider").is(':hidden')).to(equal, true);
+
+                }),
+                it("should not render the date range silder if there are observations of one date with the text stating the reason", function() {
+                    var sliderId = "Slider1";
+                    var emptyData = function() {
+                        this.flowsheet = {
+                            entries : [
+                                {name:"Systolic blood pressure",value:"",dataType:"numeric",classType:"Test", date: "2001-01-12",numeric:{hi:"",low:"",unit:"mmHg"}}
+                            ]
                         };
                         return this;
                     }
@@ -179,62 +194,82 @@ Screw.Unit(function() {
 });
 
 Screw.Unit(function() {
+    describe("ConceptNameSearch - Search by Concept Name", function() {
+        var conceptNameSearch = new ConceptNameSearch(jQuery("#conceptSelect"));
+        it("should render the search widget if there are observations", function() {
+            var entries = [
+                {name:"Problem added",value:"Dermatitis",dataType:"non-numeric",classType:"Finding", date: "2010-01-12"},
+                {name:"Problem added",value:"Dermatitis",dataType:"non-numeric",classType:"Test", date: "2010-01-12"}
+            ];
+            conceptNameSearch.render(entries);
+            expect(jQuery("#conceptSelect_annoninput").attr("class")).to(equal, "bit-input");
+
+        }),
+        it("should not render the search widget if there are no observations", function() {
+            var entries = [];
+            conceptNameSearch.render(entries);
+            expect(jQuery("#conceptSelect").is(':hidden')).to(equal, true);
+        })
+    });
+})
+
+Screw.Unit(function() {
     describe("ObsInfo - View details of an Observation", function() {
         var flowsheetData = new FlowsheetData(SampleFlowsheetData());
-        var obsInfo = new ObsInfo("#obsInfo","#obsInfoGrid","#numericObsGraph",
-                "#numericObsGraphLegend","#obsInfoLabel","#maximizeIcon","#obsInfoDialog");
+        var obsInfo = new ObsInfo("#obsInfo", "#obsInfoGrid", "#numericObsGraph",
+                "#numericObsGraphLegend", "#obsInfoLabel", "#maximizeIcon", "#obsInfoDialog");
 
-        it("should display observation specific data in a table for numeric observation",function(){
+        it("should display observation specific data in a table for numeric observation", function() {
             var searchResult = flowsheetData.search("diastolic blood pressure");
-            obsInfo.reload(searchResult,"positionTest");
+            obsInfo.reload(searchResult, "positionTest");
             expect($('#obsInfoGrid').find('td:nth-child(1)').html()).to(
-                    equal,"2001-01-12"
+                    equal, "2001-01-12"
                     );
             expect($('#obsInfoGrid').find('td:nth-child(2)').html()).to(
-                    equal,"55"
+                    equal, "55"
                     );
 
         }),
-        it("should dispay graph for numeric observation",function(){
-            var searchResult = flowsheetData.search("diastolic blood pressure");
-            obsInfo.reload(searchResult,"positionTest");
-            expect($('#numericObsGraph').find('canvas').length).to(equal,2);
-            expect($('#numericObsGraphLegend').find('td:nth-child(2)').html()).to(equal,"Normal Hi");
-            expect($('#numericObsGraphLegend').find('td:nth-child(4)').html()).to(equal,"Normal Low");
-            expect($('#numericObsGraphLegend').find('td:nth-child(6)').html()).to(equal,"Value");
-        }),
-        it("should not dispay graph for non-numeric observation",function(){
-            var searchResult = flowsheetData.search("Pregnancy status");
-            obsInfo.reload(searchResult,"positionTest");
-            expect($('#numericObsGraph').is(':hidden') ).to(be_true);
-        }),
-        it("should display observation specific data in a table for non-numeric observation",function(){
-            var searchResult = flowsheetData.search("Pregnancy status");
-            obsInfo.reload(searchResult,"positionTest");
-            expect($('#obsInfoGrid').find('td:nth-child(1)').html()).to(
-                    equal,"2002-01-12"
-                    );
-            expect($('#obsInfoGrid').find('td:nth-child(2)').html()).to(
-                    equal,"false"
-                    );
+                it("should dispay graph for numeric observation", function() {
+                    var searchResult = flowsheetData.search("diastolic blood pressure");
+                    obsInfo.reload(searchResult, "positionTest");
+                    expect($('#numericObsGraph').find('canvas').length).to(equal, 2);
+                    expect($('#numericObsGraphLegend').find('td:nth-child(2)').html()).to(equal, "Normal Hi");
+                    expect($('#numericObsGraphLegend').find('td:nth-child(4)').html()).to(equal, "Normal Low");
+                    expect($('#numericObsGraphLegend').find('td:nth-child(6)').html()).to(equal, "Value");
+                }),
+                it("should not dispay graph for non-numeric observation", function() {
+                    var searchResult = flowsheetData.search("Pregnancy status");
+                    obsInfo.reload(searchResult, "positionTest");
+                    expect($('#numericObsGraph').is(':hidden')).to(be_true);
+                }),
+                it("should display observation specific data in a table for non-numeric observation", function() {
+                    var searchResult = flowsheetData.search("Pregnancy status");
+                    obsInfo.reload(searchResult, "positionTest");
+                    expect($('#obsInfoGrid').find('td:nth-child(1)').html()).to(
+                            equal, "2002-01-12"
+                            );
+                    expect($('#obsInfoGrid').find('td:nth-child(2)').html()).to(
+                            equal, "false"
+                            );
 
-        }),
-        it("should be able to expand the obsInfo",function(){
-            var searchResult = flowsheetData.search("Pregnancy status");
-            obsInfo.reloadInExpandedMode(searchResult);
-            var classForObsInfoElem = jQuery("#obsInfo").attr("class");
-            expect(classForObsInfoElem).to(equal,"obsInfoPanelExpanded");
-            expect($('#obsInfoLabel').is(':hidden') ).to(be_true);
-            expect($('#maximizeIcon').is(':hidden') ).to(be_true);
-        }),
-        it("should display concept name in popup title",function(){
-            var conceptName = "Pregnancy status";
-            var searchResult = flowsheetData.search(conceptName);
-            obsInfo.reloadInExpandedMode(searchResult);
-            var title = jQuery("#obsInfoDialog").attr("title");
-            expect(title).to(equal,conceptName);
-            obsInfo.hide();
-        })
+                }),
+                it("should be able to expand the obsInfo", function() {
+                    var searchResult = flowsheetData.search("Pregnancy status");
+                    obsInfo.reloadInExpandedMode(searchResult);
+                    var classForObsInfoElem = jQuery("#obsInfo").attr("class");
+                    expect(classForObsInfoElem).to(equal, "obsInfoPanelExpanded");
+                    expect($('#obsInfoLabel').is(':hidden')).to(be_true);
+                    expect($('#maximizeIcon').is(':hidden')).to(be_true);
+                }),
+                it("should display concept name in popup title", function() {
+                    var conceptName = "Pregnancy status";
+                    var searchResult = flowsheetData.search(conceptName);
+                    obsInfo.reloadInExpandedMode(searchResult);
+                    var title = jQuery("#obsInfoDialog").attr("title");
+                    expect(title).to(equal, conceptName);
+                    obsInfo.hide();
+                })
 
     })
 });
