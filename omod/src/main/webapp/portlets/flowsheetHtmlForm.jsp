@@ -26,9 +26,9 @@
             <table>
                 <tr>
                     <td>
-                        <div class="slider_title"> Date Range</div>
-                        <div class="slider_info"> From : <label id="sliderInfoFrom"></label></div>
-                        <div class="slider_info"> To : <label id="sliderInfoTo"></label></div>
+                        <div id="dateRangeText" class="slider_title"> Date Range</div>
+                        <div id="dateFrom" class="slider_info"> From : <label id="sliderInfoFrom"></label></div>
+                        <div id="dateTo" class="slider_info"> To : <label id="sliderInfoTo"></label></div>
 
                         <div class="layout-slider">
                              <span class="slider">
@@ -84,16 +84,6 @@
     //to be refactored - Balaji/Khaarthiga
     var searchList = [];
 
-    function getUniqueEntries(entries) {
-        var uniqueEntries = [];
-        jQuery.each(entries, function(index, entry) {
-            if (jQuery.inArray(entry.name, uniqueEntries) < 0) {
-                uniqueEntries.push(entry.name);
-            }
-        });
-
-        return uniqueEntries;
-    }
     jQuery(document).ready(function() {
 
         var patientIdValue = $j('#patientId').val();
@@ -106,22 +96,24 @@
         var obsInfo = new ObsInfo("#obsInfo", "#obsInfoGrid", "#numericObsGraph",
                 "#numericObsGraphLegend", "#obsInfoLabel", "#maximizeIcon", "#obsInfoDialog");
 
+
         var filter = function() {
             var from = jQuery('#sliderInfoFrom').text();
             var to = jQuery('#sliderInfoTo').text();
             var list = getSearchEntries();
             var entries = data.filter(new DateObject(from, to), classes.getSelected(), list);
             flowsheetObj.reload(entries);
-            searchHandler(getUniqueEntries(entries));
+            conceptNameSearch.render(entries);
         }
 
         var dateRange = new DateRange(jQuery("#Slider1"), filter);
+        var conceptNameSearch = new ConceptNameSearch(jQuery("#conceptSelect"));
 
 
         var onClickHandlerForGrid = function(rowid, iCol, cellcontent, e) {
             e.stopPropagation();
             var conceptName = jQuery("#" + rowid).find('td:nth-child(2)').html();
-            var searchResult = data.search(conceptName);
+            var searchResult = data.searchForExactMatch(conceptName);
             obsInfo.reload(searchResult, rowid);
         }
 
@@ -132,7 +124,7 @@
         jQuery("#maximizeIcon").click(function(e) {
             e.stopPropagation();
             var conceptName = jQuery("#maximizeIcon").attr("concept");
-            var searchResult = data.search(conceptName);
+            var searchResult = data.searchForExactMatch(conceptName);
             obsInfo.reloadInExpandedMode(searchResult);
         });
 
@@ -143,7 +135,7 @@
             classes.render(data.getConceptClasses());
             classes.change(filter);
             dateRange.render(data.getDateRange());
-            searchHandler(getUniqueEntries(data.entries));
+            conceptNameSearch.render(data.entries);
         };
 
         $j.ajax({
@@ -165,21 +157,6 @@
             return list
         }
 
-
-        function searchHandler(entries) {
-            jQuery("#conceptSelect").fcbkcomplete({
-                json_url: entries,
-                addontab: true,
-                cache: true,
-                height: 20,
-                filter_selected:true,
-                filter_case:false,
-                maxshownitems:10,
-                cache:false,
-                maxitimes:10
-            });
-
-        }
 
         jQuery("#search").click(function() {
             searchList = getSearchEntries();
