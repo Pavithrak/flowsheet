@@ -57,7 +57,7 @@ var Flowsheet = function(tableId) {
     this.reload = function(entries) {
         jQuery("#" + tableId).clearGridData(false);
         jQuery("#" + tableId).jqGrid('setGridParam', {data:entries}).trigger("reloadGrid");
-    }
+       }
 
     var rangeFormatter = function(cellvalue, options, rowObject) {
         if (rowObject.numeric && rowObject.numeric.hi && rowObject.numeric.low) {
@@ -274,22 +274,24 @@ var ConceptNameSearch = function(selectElement) {
 
     this.render = function(entries) {
         var uniqueEntries = getUniqueEntries(entries);
-        if (!uniqueEntries || uniqueEntries.length == 0) {
-            hideSearchElements();
-            return;
+        if (uniqueEntries.length > 0) {
+            jQuery(".searchPanel").show();
+            jQuery(this.selectElement).fcbkcomplete({
+                json_url: uniqueEntries,
+                addontab: true,
+                cache: true,
+                height: 20,
+                filter_selected:true,
+                filter_case:false,
+                maxshownitems:10,
+                cache:false,
+                maxitimes:10
+            });
+
+        } else {
+            jQuery(".searchPanel").hide();
         }
 
-        jQuery(this.selectElement).fcbkcomplete({
-            json_url: uniqueEntries,
-            addontab: true,
-            cache: true,
-            height: 20,
-            filter_selected:true,
-            filter_case:false,
-            maxshownitems:10,
-            cache:false,
-            maxitimes:10
-        });
 
     }
 

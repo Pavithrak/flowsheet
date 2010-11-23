@@ -86,7 +86,7 @@ Screw.Unit(function() {
                     var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"]);
                     expect(3).to(equal, filteredData.length);
                 }),
-                it("should be able to filter data by date , Concept Class Types & Search Entries", function() {
+                it("should be able to filter data by date , Concept Class Types & Search Concept Names", function() {
                     var filteredData = flowsheetData.filter(new DateObject("2002-01-02", "2020-01-01"), ["Finding"], ["Problem added","Temparature"]);
                     expect(1).to(equal, filteredData.length);
                     var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"], ["Pregnancy status"]);
@@ -205,11 +205,11 @@ Screw.Unit(function() {
             expect(jQuery("#conceptSelect_annoninput").attr("class")).to(equal, "bit-input");
 
         }),
-        it("should not render the search widget if there are no observations", function() {
-            var entries = [];
-            conceptNameSearch.render(entries);
-            expect(jQuery("#conceptSelect").is(':hidden')).to(equal, true);
-        })
+                it("should not render the search widget if there are no observations", function() {
+                    var entries = [];
+                    conceptNameSearch.render(entries);
+                    expect(jQuery("#conceptSelect").is(':hidden')).to(equal, true);
+                })
     });
 })
 
