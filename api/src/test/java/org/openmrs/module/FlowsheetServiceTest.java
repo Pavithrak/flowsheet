@@ -13,8 +13,14 @@ import org.openmrs.module.flowsheet.FlowsheetEntry;
 import org.openmrs.module.flowsheet.Flowsheet;
 import org.openmrs.module.flowsheet.impl.FlowsheetService;
 import org.openmrs.test.BaseContextSensitiveTest;
+import org.openmrs.test.BaseModuleContextSensitiveTest;
 
-public class FlowsheetServiceTest extends BaseContextSensitiveTest {
+public class FlowsheetServiceTest extends BaseModuleContextSensitiveTest {
+
+//     protected static final String INITIAL_DATA_XML = "resources/org/openmrs/module/flowsheetTestDataSet.xml";
+//     protected static final String INITIAL_DATA_XML = "../../../../../resources/org/openmrs/module/flowsheetTestDataSet.xml";
+     protected static final String INITIAL_DATA_XML = "org/openmrs/module/flowsheetTestDataSet.xml";
+
 	private List<FlowsheetEntry> getFlowSheetEntry(int personId) {
 		return service.getFlowsheet(personId).getEntries();
 	}
@@ -24,6 +30,7 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 
 	@Before
 	public void setUp() throws Exception {
+        executeDataSet(INITIAL_DATA_XML);
 		service = Context.getService(FlowsheetService.class);
 		entry = getFlowSheetEntry(7).get(0);
 	}
@@ -65,10 +72,9 @@ public class FlowsheetServiceTest extends BaseContextSensitiveTest {
 	}
 
 	@Test
-	@Ignore("Add additional data set to test this")
 	public void shouldReturnCommentObservation() throws Exception {
-		FlowsheetEntry entry = getFlowSheetEntry(7).get(10);
-		Assert.assertEquals("", entry.getComment());
+		FlowsheetEntry entry = getFlowSheetEntry(7).get(0);
+		Assert.assertEquals("Normal", entry.getComment());
 	}
 
 	@Test
