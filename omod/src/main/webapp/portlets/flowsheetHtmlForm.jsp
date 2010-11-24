@@ -83,9 +83,6 @@
 
 <script type="text/javascript">
     //to be refactored - Balaji/Khaarthiga
-    var searchList = [];
-
-
     jQuery(document).ready(function() {
 
         var patientIdValue = $j('#patientId').val();
@@ -99,7 +96,7 @@
                 "#numericObsGraphLegend", "#obsInfoLabel", "#maximizeIcon", "#obsInfoDialog");
 
 
-        var createErrorMessage =function(entries) {
+        var createErrorMessage = function(entries) {
             if (!entries || entries.length == 0) {
                 jQuery("#flowsheet").append(jQuery('<tr>')
                         .append(jQuery('<td>')
@@ -126,7 +123,7 @@
             var conceptName = jQuery("#flowsheet").find("#" + rowid).find('td:nth-child(2)').html();
             var searchResult = data.searchForExactMatch(conceptName);
             obsInfo.reload(searchResult, jQuery("#flowsheet").find("#" + rowid));
-            obsInfo.setConceptDesc("#conceptDesc",data.getConceptDesc(conceptName));
+            obsInfo.setConceptDesc("#conceptDesc", data.getConceptDesc(conceptName));
         }
 
         jQuery("body").click(function() {
@@ -171,7 +168,6 @@
 
 
         jQuery("#search").click(function() {
-            searchList = getSearchEntries();
             filter();
 
         });
