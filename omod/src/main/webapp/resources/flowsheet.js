@@ -30,7 +30,7 @@ var Flowsheet = function(tableId) {
             data: entries,
             datatype: "local",
             height: 'auto',
-            rowNum: -1,
+            rowNum: 10000000,
             colModel:[
                 {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y', klass:'firstCol'},
                 {name:'name', width:290},
@@ -46,7 +46,6 @@ var Flowsheet = function(tableId) {
             groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
             hoverrows:false,
             viewrecords: false, sortorder: "desc"
-
 
         });
 

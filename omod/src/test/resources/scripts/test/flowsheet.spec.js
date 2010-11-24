@@ -160,7 +160,7 @@ Screw.Unit(function() {
                     }
                     var slider = new DateRange(jQuery("#" + sliderId));
                     slider.render(new FlowsheetData(emptyData()).getDateRange(), sliderId);
-                    expect(jQuery(".layout-slider").html()).to(equal, "No sufficient date to filter");
+                    expect(jQuery(".layout-slider").html()).to(equal, "Insufficient data to filter");
                 })
     })
 });
