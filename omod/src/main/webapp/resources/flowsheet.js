@@ -68,7 +68,11 @@ var Flowsheet = function(tableId) {
     var valueFormatter = function(cellvalue, options, rowObject) {
         if (rowObject.value) {
             if (rowObject.numeric) {
-                return  rowObject.value + " " + rowObject.numeric.unit;
+                var valueWitUnit = rowObject.value + " " + rowObject.numeric.unit;
+                if (rowObject.comment) {
+                    valueWitUnit = valueWitUnit + "\n" + rowObject.comment +"<img class='commentImage' src='comment.gif'/>";
+                }
+                return valueWitUnit;
             }
             else {
                 return rowObject.value;
