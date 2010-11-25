@@ -122,7 +122,7 @@
             e.stopPropagation();
             var conceptId = jQuery("#flowsheet").find("#"+rowid).find('td:nth-child(5)').html();
             var searchResult = data.searchForConceptId(conceptId);
-            obsInfo.reload(searchResult,jQuery("#"+rowid));
+            obsInfo.reload(searchResult,jQuery("#flowsheet").find("#"+rowid));
             obsInfo.setConceptDesc("#conceptDesc",data.getConceptDesc(conceptId));
         }
 
