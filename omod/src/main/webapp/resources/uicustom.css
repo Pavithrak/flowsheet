@@ -144,13 +144,6 @@ background-color: #ffffff;
     padding:2px
 }
 /* Styles used for onclick obs info view -- Ends here */
-
-.searchButtonPanel{
-	left:315px;
-	top: 0;
-	position:absolute;
-}
-
 .searchPanel ul.holder{
 	background-color:white;
 }

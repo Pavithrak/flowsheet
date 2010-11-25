@@ -70,7 +70,7 @@ var Flowsheet = function(tableId) {
             if (rowObject.numeric) {
                 var valueWitUnit = rowObject.value + " " + rowObject.numeric.unit;
                 if (rowObject.comment) {
-                    valueWitUnit = valueWitUnit + "\n" + rowObject.comment +"<img class='commentImage' src='comment.gif'/>";
+                    valueWitUnit = valueWitUnit + "\n" + rowObject.comment + "<img class='commentImage' src='comment.gif'/>";
                 }
                 return valueWitUnit;
             }
@@ -266,6 +266,24 @@ var ConceptClass = function(list) {
         jQuery("input[name='classTypeCB']").change(filterHandler);
     }
 
+    this.attachSelectClearAll = function(filter) {
+        var selectDeselectAll = function(checkedStatus) {
+            jQuery("input[name='classTypeCB']").each(function() {
+                this.checked = checkedStatus;
+            });
+        }
+
+        jQuery('#selectAll').click(function() {
+            selectDeselectAll(true);
+            filter.call();
+        })
+
+        jQuery('#clearAll').click(function() {
+            selectDeselectAll(false);
+            filter.call();
+        })
+    }
+
 }
 
 var DateObject = function(from, to) {
@@ -284,20 +302,23 @@ var ConceptNameSearch = function(selectElement) {
         jQuery("#clear").hide();
     }
 
-    this.render = function(entries) {
+    this.render = function(entries, filter) {
         var uniqueEntries = getUniqueEntries(entries);
         if (uniqueEntries.length > 0) {
             jQuery(".searchPanel").show();
             jQuery(this.selectElement).fcbkcomplete({
                 json_url: uniqueEntries,
-                addontab: true,
-                cache: true,
+                addontab: false,
+                cache: false,
                 height: 20,
-                filter_selected:true,
+                filter_selected:false,
                 filter_case:false,
                 maxshownitems:10,
-                cache:false,
-                maxitimes:10
+                maxitimes:10,
+                onselect:function() {
+                    filter.call();
+                },
+                onremove:filter
             });
 
         } else {

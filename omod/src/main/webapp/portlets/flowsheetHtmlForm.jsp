@@ -42,6 +42,9 @@
 
                         <div id="classTypeList">
                             <div class="slider_title">Result Types</div>
+                            <a href="#" id="selectAll">Select All </a>
+                            &nbsp;
+                            <a href="#" id="clearAll">Clear All </a>
                         </div>
 
                     </td>
@@ -49,12 +52,8 @@
                 <tr align="left">
                     <td>
                         <div class="searchPanel">
+                            <div class="slider_title">Multiple Concept Name Search</div>
                             <select id="conceptSelect" name="conceptSelect"> </select>
-
-                            <div class="searchButtonPanel">
-                                <input type="button" id="search" name="search" value="Search"/><br/>
-                                <input type="button" id="clear" name="clear" value="Clear"/>
-                            </div>
                         </div>
                     </td>
                 </tr>
@@ -83,6 +82,7 @@
 
 <script type="text/javascript">
     //to be refactored - Balaji/Khaarthiga
+
     jQuery(document).ready(function() {
 
         var patientIdValue = $j('#patientId').val();
@@ -110,7 +110,7 @@
             var list = getSearchEntries();
             var entries = data.filter(new DateObject(from, to), classes.getSelected(), list);
             flowsheetObj.reload(entries);
-            conceptNameSearch.render(entries);
+            conceptNameSearch.render(data.entries, filter);
             createErrorMessage(entries);
         }
 
@@ -143,8 +143,9 @@
             flowsheetObj.render(data.entries, onClickHandlerForGrid);
             classes.render(data.getConceptClasses());
             classes.change(filter);
+            classes.attachSelectClearAll(filter);
             dateRange.render(data.getDateRange());
-            conceptNameSearch.render(data.entries);
+            conceptNameSearch.render(data.entries, filter);
         };
 
         $j.ajax({
@@ -165,27 +166,6 @@
             });
             return list
         }
-
-
-        jQuery("#search").click(function() {
-            filter();
-
-        });
-
-        jQuery("#clear").click(function() {
-            var count = 0;
-            jQuery(".holder").children('li').each(function(index) {
-                if (jQuery(this).hasClass('bit-box')) {
-                    jQuery(".holder").children(this).remove();
-                    count = count + 1;
-                }
-
-            });
-            if (count > 0) {
-                filter();
-            }
-
-        });
 
     });
 </script>

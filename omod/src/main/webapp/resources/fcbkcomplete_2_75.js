@@ -76,24 +76,24 @@
 jQuery(function(jQuery) {
     jQuery.fn.fcbkcomplete = function(opt) {
         return this.each(function() {
-           
-			 function removeExistingElements() {
+
+            function removeExistingElements() {
                 var selectBox = jQuery("#conceptSelect");
                 selectBox.find('option').remove();
                 if (jQuery(".maininput") && jQuery("#conceptSelect_annoninput") && jQuery(".holder")) {
                     jQuery(".maininput").remove();
                     jQuery("#conceptSelect_annoninput").remove();
                 }
-            };
-			
-			
-			function init() {
-			    createFCBK();
+            }
+
+            ;
+
+
+            function init() {
+                createFCBK();
                 preSet();
                 addInput(0);
             }
-
-           
 
 
             function createFCBK() {
@@ -102,17 +102,17 @@ jQuery(function(jQuery) {
                 if (element.attr("name").indexOf("[]") == -1) {
                     element.attr("name", element.attr("name") + "[]");
                 }
-				
-                if(!jQuery(".holder").length){
-						holder = document.createElement('ul');
-						jQuery(holder).attr('class', 'holder');
-						jQuery(holder).attr('id', 'holder');
-				}else{
-						holder=jQuery('#holder');
-						removeExistingElements();
-				}
 
-				  if (options.attachto) {
+                if (!jQuery(".holder").length) {
+                    holder = document.createElement('ul');
+                    jQuery(holder).attr('class', 'holder');
+                    jQuery(holder).attr('id', 'holder');
+                } else {
+                    holder = jQuery('#holder');
+                    removeExistingElements();
+                }
+
+                if (options.attachto) {
                     if (typeof(options.attachto) == "object") {
                         options.attachto.append(holder);
                     }
@@ -127,8 +127,9 @@ jQuery(function(jQuery) {
 
                 complete = jQuery(document.createElement("div"));
                 complete.addClass("facebook-auto");
-                complete.append('<div class="default">' + options.complete_text + "</div>");
-	              complete.hover(function() {
+                //since "Start to type text not expected , the default div element is not required 
+                //                complete.append('<div class="default">' + options.complete_text + "</div>");
+                complete.hover(function() {
                     options.complete_hover = 0;
                 }, function() {
                     options.complete_hover = 1;
@@ -137,9 +138,9 @@ jQuery(function(jQuery) {
                 feed = jQuery(document.createElement("ul"));
                 feed.attr("id", elemid + "_feed");
                 complete.prepend(feed);
-				jQuery('#holder').after(complete);
-			    feed.css("width", complete.width());
-			
+                jQuery('#holder').after(complete);
+                feed.css("width", complete.width());
+
             }
 
             function preSet() {
@@ -203,6 +204,7 @@ jQuery(function(jQuery) {
 
                 jQuery(aclose).click(function() {
                     removeItem(jQuery(this).parent("li"));
+                    options.onremove.call();
                     return false;
                 });
 
@@ -241,7 +243,6 @@ jQuery(function(jQuery) {
                     item.fadeOut("fast");
                     if (options.onremove) {
                         var _item = element.children("option[value=" + item.attr("rel") + "]");
-                        funCall(options.onremove, _item)
                     }
                     element.children('option[value="' + item.attr("rel") + '"]').removeAttr("selected").removeClass("selected");
                     item.remove();
@@ -251,30 +252,30 @@ jQuery(function(jQuery) {
             }
 
             function addInput(focusme) {
-				var li;
-				var input ;
-				var getBoxTimeout;
-				if(!jQuery('#conceptSelect_annoninput').length && !jQuery('.maininput').length){
-					
-						  li = jQuery(document.createElement("li"));
-						  input = jQuery(document.createElement("input"));
-			              getBoxTimeout = 0;
-						   li.attr({
-								"class": "bit-input",
-								"id": elemid + "_annoninput"
-							 });
-							input.attr({
-								 "type": "text",
-								 "class": "maininput",
-								 "size": "30"
-							});
-					jQuery('#holder').append(li.append(input));
-					}else{
-					li=jQuery('#conceptSelect_annoninput');
-					input=jQuery('.maininput');
-				}
-                   input.focus(function() {
-                   complete.fadeIn("fast");
+                var li;
+                var input;
+                var getBoxTimeout;
+                if (!jQuery('#conceptSelect_annoninput').length && !jQuery('.maininput').length) {
+
+                    li = jQuery(document.createElement("li"));
+                    input = jQuery(document.createElement("input"));
+                    getBoxTimeout = 0;
+                    li.attr({
+                        "class": "bit-input",
+                        "id": elemid + "_annoninput"
+                    });
+                    input.attr({
+                        "type": "text",
+                        "class": "maininput",
+                        "size": "30"
+                    });
+                    jQuery('#holder').append(li.append(input));
+                } else {
+                    li = jQuery('#conceptSelect_annoninput');
+                    input = jQuery('.maininput');
+                }
+                input.focus(function() {
+                    complete.fadeIn("fast");
                 });
 
                 input.blur(function() {
@@ -301,7 +302,7 @@ jQuery(function(jQuery) {
                     if (event.keyCode == 13) {
                         return false;
                     }
-                    //auto expand input             
+                    //auto expand input
                     input.attr("size", input.val().length + 1);
                 });
 
@@ -598,16 +599,16 @@ jQuery(function(jQuery) {
 
             function funCall(func, item) {
                 var _object = "";
-				if(item.get(0)){
-                for (i = 0; i < item.get(0).attributes.length; i++) {
-                    if (item.get(0).attributes[i].nodeValue != null) {
-                        _object += "\"_" + item.get(0).attributes[i].nodeName + "\": \"" + item.get(0).attributes[i].nodeValue + "\",";
+                if (item.get(0)) {
+                    for (i = 0; i < item.get(0).attributes.length; i++) {
+                        if (item.get(0).attributes[i].nodeValue != null) {
+                            _object += "\"_" + item.get(0).attributes[i].nodeName + "\": \"" + item.get(0).attributes[i].nodeValue + "\",";
+                        }
                     }
                 }
-				}
                 _object = "{" + _object + " notinuse: 0}";
                 func.call(func, _object);
-				
+
             }
 
             function checkFocusOn() {
@@ -637,7 +638,7 @@ jQuery(function(jQuery) {
                 firstselected: false,
                 filter_case: false,
                 filter_selected: false,
-//                complete_text: "Start to type...",
+                complete_text: "",
                 maxshownitems: 30,
                 maxitems: 10,
                 onselect: null,
