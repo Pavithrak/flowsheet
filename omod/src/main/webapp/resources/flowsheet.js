@@ -19,13 +19,9 @@ var Flowsheet = function(tableId) {
 
     this.render = function(entries, onClickHandlerForGrid) {
         if (!entries || entries.length == 0) {
-//            jQuery("#" + tableId).append(jQuery('<tr>')
-//                    .append(jQuery('<td>')
-//                    .text('There are currently no observations for this patient')));
-//
-            jQuery("#containerPanel")
-                    .text('There are currently no observations for this patient');
-
+            jQuery("#" + tableId).append(jQuery('<tr>')
+                    .append(jQuery('<td>')
+                    .text('There are currently no observations for this patient')));
             return;
         }
 
@@ -36,9 +32,10 @@ var Flowsheet = function(tableId) {
             rowNum: 10000000,
             colModel:[
                 {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y', klass:'firstCol'},
-                {name:'name', width:180},
+                {name:'name', width:180,formatter:nameFormatter},
                 {name:'value',width:100,formatter:valueFormatter},
-                {name:'low',width:100,formatter:rangeFormatter}
+                {name:'low',width:100,formatter:rangeFormatter},
+                {name:'conceptId',hidden: true }
             ],
             sortname: 'date',
             altRows:true,
@@ -61,17 +58,21 @@ var Flowsheet = function(tableId) {
         jQuery("#" + tableId).jqGrid('setGridParam', {data:entries}).trigger("reloadGrid");
     }
 
+    var nameFormatter = function(cellvalue, options, rowObject) {
+       return rowObject.name(); 
+    }
+
     var rangeFormatter = function(cellvalue, options, rowObject) {
-        if (rowObject.numeric && rowObject.numeric.hi && rowObject.numeric.low) {
-            return "(" + rowObject.numeric.low + "-" + rowObject.numeric.hi + ")";
+        if (rowObject.numeric() && rowObject.numeric().hi && rowObject.numeric().low) {
+            return "(" + rowObject.numeric().low + "-" + rowObject.numeric().hi + ")";
         }
         return " ";
     }
 
     var valueFormatter = function(cellvalue, options, rowObject) {
         if (rowObject.value) {
-            if (rowObject.numeric) {
-                var valueWitUnit = rowObject.value + " " + rowObject.numeric.unit;
+            if (rowObject.numeric()) {
+                var valueWitUnit = rowObject.value + " " + rowObject.numeric().unit;
                 if (rowObject.comment) {
 //                    valueWitUnit = valueWitUnit + "\n" + rowObject.comment + "<img class='commentImage'/>";
 //                    valueWitUnit = valueWitUnit + "\n" + "<img src='comment.gif' id='commentImg' class='commentImage'  alt='' //>" +rowObject.comment;
@@ -91,7 +92,21 @@ var Flowsheet = function(tableId) {
 var FlowsheetData = function(data) {
     this.entries = data.flowsheet.entries;
     this.conceptMap = data.flowsheet.conceptMap;
+    jQuery(this.entries).each(function(index,entry){
+        entry.name = function(){
+            var conceptMap = data.flowsheet.conceptMap;
+            return conceptMap[entry.conceptId].name ;
+        };
+        entry.numeric = function(){
+            var conceptMap = data.flowsheet.conceptMap;
+            return conceptMap[entry.conceptId].numeric ;
+        };
+        entry.classType = function(){
+            var conceptMap = data.flowsheet.conceptMap;
+            return conceptMap[entry.conceptId].classType ;
+        };
 
+    });
     function createDateArray(entries) {
         var datearr = [];
         if (datearr.length == 0) {
@@ -116,11 +131,11 @@ var FlowsheetData = function(data) {
         var filteredEntries = new Array();
         var entries = this.entries;
         jQuery(entries).each(function(index, entry) {
-            var classTypeCheck = (jQuery.inArray(entry.classType, classTypes) >= 0);
+            var classTypeCheck = (jQuery.inArray(entry.classType(), classTypes) >= 0);
             var searchEntryCheck = true;
             var dateCheck=true;
             if (searchEntries && searchEntries.length > 0) {
-                searchEntryCheck = (jQuery.inArray(entry.name, searchEntries) >= 0);
+                searchEntryCheck = (jQuery.inArray(entry.name(), searchEntries) >= 0);
             }
             if(dateObj.from && dateObj.to){
                     dateCheck = (entry.date >= dateObj.from) && (entry.date <= dateObj.to);
@@ -132,10 +147,10 @@ var FlowsheetData = function(data) {
         return filteredEntries;
     }
 
-    this.searchForExactMatch = function(query) {
+    this.searchForConceptId = function(query) {
         var filteredData = new Array();
         jQuery(this.entries).each(function(index, entry) {
-            if (entry.name == query || entry.value == query) {
+            if (entry.conceptId == query) {
                 filteredData.push(entry);
             }
         });
@@ -146,7 +161,7 @@ var FlowsheetData = function(data) {
     this.search = function(query) {
         var filteredData = new Array();
         jQuery(this.entries).each(function(index, entry) {
-            if (entry.name.contains(query) || entry.value.contains(query)) {
+            if (entry.name().contains(query) || entry.value.contains(query)) {
                 filteredData.push(entry);
             }
         });
@@ -157,16 +172,16 @@ var FlowsheetData = function(data) {
     this.getConceptClasses = function() {
         var uniqueClassTypes = [];
         jQuery(this.entries).each(function() {
-            if ((jQuery.inArray(this.classType, uniqueClassTypes)) < 0) {
-                uniqueClassTypes.push(this.classType);
+            if ((jQuery.inArray(this.classType(), uniqueClassTypes)) < 0) {
+                uniqueClassTypes.push(this.classType());
             }
         })
         return uniqueClassTypes;
     }
 
-    this.getConceptDesc = function(conceptName) {
-        if (this.conceptMap[conceptName] && this.conceptMap[conceptName].desc) {
-            return this.conceptMap[conceptName].desc;
+    this.getConceptDesc = function(conceptId) {
+        if (this.conceptMap[conceptId] && this.conceptMap[conceptId].desc) {
+            return this.conceptMap[conceptId].desc;
         }
         return null;
     }
@@ -339,8 +354,8 @@ var ConceptNameSearch = function(selectElement) {
     var getUniqueEntries = function (entries) {
         var uniqueEntries = [];
         jQuery.each(entries, function(index, entry) {
-            if (jQuery.inArray(entry.name, uniqueEntries) < 0) {
-                uniqueEntries.push(entry.name);
+            if (jQuery.inArray(entry.name(), uniqueEntries) < 0) {
+                uniqueEntries.push(entry.name());
             }
         });
 
@@ -381,8 +396,8 @@ var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numeric
         str += '</tbody>'
         str += '</table>';
         jQuery(numericObsInfoGrid).append(str);
-        jQuery(obsInfoLabel).html(entries[0].name);
-        jQuery(maximizeIcon).attr("concept", entries[0].name);
+        jQuery(obsInfoLabel).html(entries[0].name());
+        jQuery(maximizeIcon).attr("conceptId", entries[0].conceptId);
 
     }
 
@@ -461,8 +476,8 @@ var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numeric
         var values = Array();
         jQuery.each(entries, function(index, entry) {
             values.push([Date.parse(entry.date).getTime(),entry.value]);
-            criticalRangeHi.push([Date.parse(entry.date).getTime(),entry.numeric.hi]);
-            criticalRangeLow.push([Date.parse(entry.date).getTime(),entry.numeric.low]);
+            criticalRangeHi.push([Date.parse(entry.date).getTime(),entry.numeric().hi]);
+            criticalRangeLow.push([Date.parse(entry.date).getTime(),entry.numeric().low]);
         })
         dataToPlot.values = values;
         dataToPlot.criticalRangeHi = criticalRangeHi;
@@ -471,7 +486,7 @@ var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numeric
     }
 
     var isNumericObs = function(entries) {
-        if (entries.length >= 1 && entries[0].numeric) {
+        if (entries.length >= 1 && entries[0].numeric()) {
             return true;
         }
         return false;

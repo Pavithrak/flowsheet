@@ -2,31 +2,35 @@ package org.openmrs.module.flowsheet;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Flowsheet {
 
 	private final List<FlowsheetEntry> entries;
 
-    private final HashMap<String,ConceptInfo> conceptMap;
+    private final Map<Integer,ConceptInfo> conceptMap;
 
-	public Flowsheet(List<FlowsheetEntry> obs) {
-		this.entries = obs;
-        this.conceptMap = computeConceptMap(obs);
+	public Flowsheet(List<FlowsheetEntry> flowsheetEntries) {
+		this.entries = flowsheetEntries;
+        this.conceptMap = computeConceptMap(flowsheetEntries);
 	}
 
 	public List<FlowsheetEntry> getEntries() {
 		return entries;
 	}
 
-    public HashMap<String, ConceptInfo> getConceptMap(){
+    public Map<Integer, ConceptInfo> getConceptMap(){
         return conceptMap;
     }
 
-    private HashMap<String,ConceptInfo> computeConceptMap(List<FlowsheetEntry> obs){
-       HashMap<String,ConceptInfo> conceptMap = new HashMap<String,ConceptInfo>();
-       for(FlowsheetEntry entry : obs){
-           String desc = entry.getConceptDesc();
-           conceptMap.put(entry.getName(),new ConceptInfo(desc));
+    private Map<Integer,ConceptInfo> computeConceptMap(List<FlowsheetEntry> flowsheetEntries){
+
+       Map<Integer, ConceptInfo> conceptMap = new HashMap<Integer, ConceptInfo>();
+
+       for(FlowsheetEntry entry : flowsheetEntries){
+           if(!conceptMap.containsKey(entry.getConceptId())){
+               conceptMap.put(entry.getConceptId(),new ConceptInfo(entry.returnObs()));
+           }
        }
        return conceptMap;
     }

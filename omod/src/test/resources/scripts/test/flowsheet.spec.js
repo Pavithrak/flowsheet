@@ -5,12 +5,12 @@ Screw.Unit(function() {
         flowsheet.render(data.entries);
         it("should display the concept name of the observation", function() {
             var name = $('#2').find('td:nth-child(2)').html();
-            expect(name).to(equal, data.entries[2].name);
+            expect(name).to(equal, data.entries[2].name());
         }),
                 it("should display the concept value along with the units for the numeric observations", function() {
                     var value = $('#2').find('td:nth-child(3)').html();
                     var expectedData = data.entries[2];
-                    expect(value).to(equal, expectedData.value + " " + expectedData.numeric.unit);
+                    expect(value).to(equal, expectedData.value + " " + expectedData.numeric().unit);
                 }),
                 it("should display the concept value  for the non numeric observations", function() {
                     var value = $('#1').find('td:nth-child(3)').html();
@@ -39,7 +39,7 @@ Screw.Unit(function() {
                 }),
                 it("should display the range value for numeric observation", function() {
                     var value = $('#2').find('td:nth-child(4)').html();
-                    expect(value).to(equal, "(" + data.entries[2].numeric.low + "-" + data.entries[2].numeric.hi + ")");
+                    expect(value).to(equal, "(" + data.entries[2].numeric().low + "-" + data.entries[2].numeric().hi + ")");
                 }),
                 it("should not display the range value for numeric observation when the high or low value is empty", function() {
                     var value = $('#4').find('td:nth-child(4)').html();
@@ -71,7 +71,11 @@ Screw.Unit(function() {
 
 Screw.Unit(function() {
     describe("Flowsheet data", function() {
-        var flowsheetData = new FlowsheetData(SampleFlowsheetData());
+        var flowsheetData ;
+        before(function() {
+            flowsheetData = new FlowsheetData(SampleFlowsheetData());
+        });
+
         it("should return the unique sorted array of dates", function() {
             var range = flowsheetData.getDateRange();
             expect(range.length).to(equal, 3);
@@ -97,9 +101,9 @@ Screw.Unit(function() {
                     expect(2).to(equal, filteredData.length);
                 }),
                 it("should search by concept name for exact match", function() {
-                    var filteredData = flowsheetData.searchForExactMatch("blood");
+                    var filteredData = flowsheetData.searchForConceptId(22);
                     expect(0).to(equal, filteredData.length);
-                    filteredData = flowsheetData.searchForExactMatch("Systolic blood pressure");
+                    filteredData = flowsheetData.searchForConceptId(1);
                     expect(1).to(equal, filteredData.length);
                 }),
                 it("should search by concept value", function() {
@@ -112,7 +116,7 @@ Screw.Unit(function() {
                     expect(["Test","Diagnosis","Finding"]).to(equal, uniqueClassTypes);
                 }),
                 it("should return concept desc for concept name",function(){
-                    var conceptDesc = flowsheetData.getConceptDesc("Systolic blood pressure");
+                    var conceptDesc = flowsheetData.getConceptDesc(1);
                     var expectedDesc = "SBP is the pressure exerted by circulating blood upon " +
                             "the walls of blood vessels, and is one of the principal vital signs.";
                     expect(conceptDesc).to(equal,expectedDesc);
@@ -203,11 +207,8 @@ Screw.Unit(function() {
     describe("ConceptNameSearch - Search by Concept Name", function() {
         var conceptNameSearch = new ConceptNameSearch(jQuery("#conceptSelect"));
         it("should render the search widget if there are observations", function() {
-            var entries = [
-                {name:"Problem added",value:"Dermatitis",dataType:"non-numeric",classType:"Finding", date: "2010-01-12"},
-                {name:"Problem added",value:"Dermatitis",dataType:"non-numeric",classType:"Test", date: "2010-01-12"}
-            ];
-            conceptNameSearch.render(entries);
+            var flowsheetData = new FlowsheetData(SampleFlowsheetData());
+            conceptNameSearch.render(flowsheetData.entries);
             expect(jQuery("#conceptSelect_annoninput").attr("class")).to(equal, "bit-input");
 
         }),
@@ -237,7 +238,7 @@ Screw.Unit(function() {
 
         }),
                 it("should dispay graph for numeric observation", function() {
-                    var searchResult = flowsheetData.search("diastolic blood pressure");
+                    var searchResult = flowsheetData.searchForConceptId(2);
                     obsInfo.reload(searchResult, $("#positionTest"));
                     expect($('#numericObsGraph').find('canvas').length).to(equal, 2);
                     expect($('#numericObsGraphLegend').find('td:nth-child(2)').html()).to(equal, "Normal Hi");
@@ -245,12 +246,13 @@ Screw.Unit(function() {
                     expect($('#numericObsGraphLegend').find('td:nth-child(6)').html()).to(equal, "Value");
                 }),
                 it("should not dispay graph for non-numeric observation", function() {
-                    var searchResult = flowsheetData.search("Pregnancy status");
+                    var searchResult = flowsheetData.searchForConceptId(4);
                     obsInfo.reload(searchResult, $("#positionTest"));
                     expect($('#numericObsGraph').is(':hidden')).to(be_true);
+                    obsInfo.hide();
                 }),
                 it("should display observation specific data in a table for non-numeric observation", function() {
-                    var searchResult = flowsheetData.search("Pregnancy status");
+                    var searchResult = flowsheetData.searchForConceptId(4);
                     obsInfo.reload(searchResult, $("#positionTest"));
                     expect($('#obsInfoGrid').find('td:nth-child(1)').html()).to(
                             equal, "2002-01-12"
@@ -261,7 +263,7 @@ Screw.Unit(function() {
 
                 }),
                 it("should be able to expand the obsInfo", function() {
-                    var searchResult = flowsheetData.search("Pregnancy status");
+                    var searchResult = flowsheetData.searchForConceptId(4);
                     obsInfo.reloadInExpandedMode(searchResult);
                     var classForObsInfoElem = jQuery("#obsInfo").attr("class");
                     expect(classForObsInfoElem).to(equal, "obsInfoPanelExpanded");
@@ -269,11 +271,10 @@ Screw.Unit(function() {
                     expect($('#maximizeIcon').is(':hidden')).to(be_true);
                 }),
                 it("should display concept name in popup title", function() {
-                    var conceptName = "Pregnancy status";
-                    var searchResult = flowsheetData.search(conceptName);
+                    var searchResult = flowsheetData.searchForConceptId(4);
                     obsInfo.reloadInExpandedMode(searchResult);
                     var title = jQuery("#obsInfoDialog").attr("title");
-                    expect(title).to(equal, conceptName);
+                    expect(title).to(equal,"Pregnancy status" );
                     obsInfo.hide();
                 }),
                 it("should set concept desc when available",function(){

@@ -19,7 +19,7 @@
 
 
 <input type="hidden" id="patientId" name="patientId" value='<request:parameter name="patientId" />'/>
-<div class="containerPanel" id="containerPanel">
+<%--<div class="containerPanel" id="containerPanel">--%>
 <table class="table_group">
     <tr>
         <td class="flowsheet_left_panel">
@@ -67,7 +67,7 @@
         </td>
     </tr>
 </table>
-</div>
+<%--</div>--%>
 <div id="obsInfoDialog" class="">
     <div id="obsInfo" class="obsInfoPanel">
         <div id="maximizeIcon" class="maximizeIcon ui-icon ui-icon-arrowthick-2-ne-sw"></div>
@@ -122,10 +122,10 @@
 
         var onClickHandlerForGrid = function(rowid, iCol, cellcontent, e) {
             e.stopPropagation();
-            var conceptName = jQuery("#flowsheet").find("#" + rowid).find('td:nth-child(2)').html();
-            var searchResult = data.searchForExactMatch(conceptName);
-            obsInfo.reload(searchResult, jQuery("#flowsheet").find("#" + rowid));
-            obsInfo.setConceptDesc("#conceptDesc", data.getConceptDesc(conceptName));
+            var conceptId = jQuery("#flowsheet").find("#"+rowid).find('td:nth-child(5)').html();
+            var searchResult = data.searchForConceptId(conceptId);
+            obsInfo.reload(searchResult,jQuery("#flowsheet").find("#"+rowid));
+            obsInfo.setConceptDesc("#conceptDesc",data.getConceptDesc(conceptId));
         }
 
         jQuery("body").click(function() {
@@ -134,8 +134,8 @@
 
         jQuery("#maximizeIcon").click(function(e) {
             e.stopPropagation();
-            var conceptName = jQuery("#maximizeIcon").attr("concept");
-            var searchResult = data.searchForExactMatch(conceptName);
+            var conceptId = jQuery("#maximizeIcon").attr("conceptId");
+            var searchResult = data.searchForConceptId(conceptId);
             obsInfo.reloadInExpandedMode(searchResult);
         });
 
