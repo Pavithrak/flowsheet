@@ -19,7 +19,7 @@
 
 
 <input type="hidden" id="patientId" name="patientId" value='<request:parameter name="patientId" />'/>
-
+<div class="containerPanel" id="containerPanel">
 <table class="table_group">
     <tr>
         <td class="flowsheet_left_panel">
@@ -65,8 +65,9 @@
             </table>
 
         </td>
+    </tr>
 </table>
-
+</div>
 <div id="obsInfoDialog" class="">
     <div id="obsInfo" class="obsInfoPanel">
         <div id="maximizeIcon" class="maximizeIcon ui-icon ui-icon-arrowthick-2-ne-sw"></div>
@@ -100,7 +101,8 @@
             if (!entries || entries.length == 0) {
                 jQuery("#flowsheet").append(jQuery('<tr>')
                         .append(jQuery('<td>')
-                        .text('Undo some filters to view the observations')));
+                        .append(jQuery('<div style="padding:10px">')
+                        .text('Undo some filters to view the observations'))));
             }
         }
 

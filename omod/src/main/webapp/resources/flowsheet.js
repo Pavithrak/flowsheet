@@ -19,9 +19,12 @@ var Flowsheet = function(tableId) {
 
     this.render = function(entries, onClickHandlerForGrid) {
         if (!entries || entries.length == 0) {
-            jQuery("#" + tableId).append(jQuery('<tr>')
-                    .append(jQuery('<td>')
-                    .text('There are currently no observations for this patient')));
+//            jQuery("#" + tableId).append(jQuery('<tr>')
+//                    .append(jQuery('<td>')
+//                    .text('There are currently no observations for this patient')));
+//
+            jQuery("#containerPanel")
+                    .text('There are currently no observations for this patient');
 
             return;
         }
@@ -33,7 +36,7 @@ var Flowsheet = function(tableId) {
             rowNum: 10000000,
             colModel:[
                 {name:'date', width:150, sorttype:'date', formatter:'date', datefmt:'d/m/Y', klass:'firstCol'},
-                {name:'name', width:290},
+                {name:'name', width:180},
                 {name:'value',width:100,formatter:valueFormatter},
                 {name:'low',width:100,formatter:rangeFormatter}
             ],
@@ -41,7 +44,7 @@ var Flowsheet = function(tableId) {
             altRows:true,
             altclass:'row_odd',
             grouping:true,
-            width:700,
+            width:550,
             onCellSelect:onClickHandlerForGrid,
             groupingView : { groupField : ['date'], groupColumnShow : [false], groupText : ['<b>{0}</b>'], groupCollapse : true, groupOrder: ['desc'], groupCollapse : false },
             hoverrows:false,
@@ -70,7 +73,9 @@ var Flowsheet = function(tableId) {
             if (rowObject.numeric) {
                 var valueWitUnit = rowObject.value + " " + rowObject.numeric.unit;
                 if (rowObject.comment) {
-                    valueWitUnit = valueWitUnit + "\n" + rowObject.comment + "<img class='commentImage' src='comment.gif'/>";
+//                    valueWitUnit = valueWitUnit + "\n" + rowObject.comment + "<img class='commentImage'/>";
+//                    valueWitUnit = valueWitUnit + "\n" + "<img src='comment.gif' id='commentImg' class='commentImage'  alt='' //>" +rowObject.comment;
+                    valueWitUnit = valueWitUnit + "\n" + "*" +rowObject.comment;
                 }
                 return valueWitUnit;
             }

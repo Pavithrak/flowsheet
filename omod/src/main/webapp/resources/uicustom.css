@@ -41,7 +41,7 @@
     padding-left: 30px;
     padding-top: 10px;
     padding-bottom: 30px;
-    width: 400px;
+    width: 250px;
 }
 
 .flowsheet_left_panel span {
@@ -77,6 +77,10 @@
     font-weight: bold;
 }
 
+.ui-jqgrid {
+    font-size: 13px;
+}
+
 .layout-slider {
     height: 60px;
 }
@@ -86,68 +90,177 @@
 }
 
 /* Styles used for onclick obs info view -- Starts here */
-.lightPro { padding: 0; margin: 10px auto; border-collapse: collapse; border: 1px solid #000; font-family: "Trebuchet MS" ,
-Verdana, Arial, Helvetica, sans-serif; font-size: 1em; color: #000; empty-cells: show; background-color: #fff; width:100%; }
-.lightPro caption { caption-side: top; font-size: 0.9em; font-style: italic; text-align: right; padding: 0.5em 0; }
-.lightPro th, .lightPro td { border: 1px solid #000; padding: 0.1em 0.3em; text-align: left; color: #055f81; }
-.lightPro th[scope=col] { background-color: #DFEAF5; text-transform: capitalize; font-size: 1.1em; border: 1px solid #000000; padding-left: 6px; }
-.lightPro th[scope=row] { width: 140px; background-color: #eee; border: 1px solid #000; font-size: 1.2em; color: #582E00; }
-.lightPro tr.alt th[scope=row], .lightPro tr.alt td { color: #055f81; }
-.lightPro tr.alt td { background-color: #eee; }
-.lightPro tr:hover th[scope=row], .lightPro tr:hover td, .lightPro tr:hover { background-color: #F4FF9A; color: #000; }
-.lightPro tr.alt td a, .lightPro tr td a { color: rgb(188,0,47); text-decoration: underline; }
-.lightPro tr.alt td a:hover, .lightPro tr td a:hover { color: rgb(47,0,188); text-decoration: underline; }
-.lightPro tr.pager:hover td, lightPro tr.pager:hover { background-color: #fff; }
-.lightPro tr.pager td table tr td { background-color: #795732; color: #fff; font-weight: bolder; padding: 0px; }
-.lightPro tr.pager td table tr:hover td { background-color: #795732; color: #fff; font-weight: bolder; }
-.lightPro tr.pager td table tr td a { color: #fff; background-color: #582E00; text-decoration: underline; padding: 2px 5px; display: block; border: 1px solid #000; }
-.lightPro tr.pager td table tr td a:hover { color: #fff; text-decoration: none; font-weight: bold; }
-.lightPro tr.pager td table tr td span { background-color: #fff; color: #000; padding: 0px 5px; }
+.lightPro {
+    padding: 0;
+    margin: 10px auto;
+    border-collapse: collapse;
+    border: 1px solid #000;
+    font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    color: #000;
+    empty-cells: show;
+    background-color: #fff;
+    width: 100%;
+}
+
+.lightPro caption {
+    caption-side: top;
+    font-size: 0.9em;
+    font-style: italic;
+    text-align: right;
+    padding: 0.5em 0;
+}
+
+.lightPro th, .lightPro td {
+    border: 1px solid #000;
+    padding: 0.1em 0.3em;
+    text-align: left;
+    color: #055f81;
+}
+
+.lightPro th[scope=col] {
+    background-color: #DFEAF5;
+    text-transform: capitalize;
+    font-size: 1.1em;
+    border: 1px solid #000000;
+    padding-left: 6px;
+}
+
+.lightPro th[scope=row] {
+    width: 140px;
+    background-color: #eee;
+    border: 1px solid #000;
+    font-size: 1.2em;
+    color: #582E00;
+}
+
+.lightPro tr.alt th[scope=row], .lightPro tr.alt td {
+    color: #055f81;
+}
+
+.lightPro tr.alt td {
+    background-color: #eee;
+}
+
+.lightPro tr:hover th[scope=row], .lightPro tr:hover td, .lightPro tr:hover {
+    background-color: #F4FF9A;
+    color: #000;
+}
+
+.lightPro tr.alt td a, .lightPro tr td a {
+    color: rgb(188, 0, 47);
+    text-decoration: underline;
+}
+
+.lightPro tr.alt td a:hover, .lightPro tr td a:hover {
+    color: rgb(47, 0, 188);
+    text-decoration: underline;
+}
+
+.lightPro tr.pager:hover td, lightPro tr.pager:hover {
+    background-color: #fff;
+}
+
+.lightPro tr.pager td table tr td {
+    background-color: #795732;
+    color: #fff;
+    font-weight: bolder;
+    padding: 0px;
+}
+
+.lightPro tr.pager td table tr:hover td {
+    background-color: #795732;
+    color: #fff;
+    font-weight: bolder;
+}
+
+.lightPro tr.pager td table tr td a {
+    color: #fff;
+    background-color: #582E00;
+    text-decoration: underline;
+    padding: 2px 5px;
+    display: block;
+    border: 1px solid #000;
+}
+
+.lightPro tr.pager td table tr td a:hover {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.lightPro tr.pager td table tr td span {
+    background-color: #fff;
+    color: #000;
+    padding: 0px 5px;
+}
 
 .obsInfoPanel {
-    width:500px;
-    height:300px;
-border: 1px solid #333;
-background-color: #ffffff;
+    width: 500px;
+    height: 300px;
+    border: 1px solid #333;
+    background-color: #ffffff;
 }
+
 .obsInfoPanelExpanded {
-    width:1000px;
-    height:600px;
-background-color: #ffffff;
+    width: 1000px;
+    height: 600px;
+    background-color: #ffffff;
 }
 
-.obsGraphLegend{
-   width:100%;
+.obsGraphLegend {
+    width: 100%;
 }
-.obsInfoLabel{
-    width:100%;
-    color:#ffffff;
-    font-weight:bolder;
-   background-color:#055f81;
+
+.obsInfoLabel {
+    width: 100%;
+    color: #ffffff;
+    font-weight: bolder;
+    background-color: #055f81;
 }
-.obsInfoGrid{
-    width:100%;
+
+.obsInfoGrid {
+    width: 100%;
 }
-.obsGraph{
-    width:100%;
-    height:65%;
+
+.obsGraph {
+    width: 100%;
+    height: 65%;
 }
-.maximizeIcon{
-    background-color:#ffffff;
-    float:right;
+
+.maximizeIcon {
+    background-color: #ffffff;
+    float: right;
 }
-.conceptDesc{
+
+.conceptDesc {
     background: #e0e0e0;
-    color:#000000;
-    font:10pt sans-serif;
-    margin:2px;
-    padding:2px
-}
-/* Styles used for onclick obs info view -- Ends here */
-.searchPanel ul.holder{
-	background-color:white;
+    color: #000000;
+    font: 10pt sans-serif;
+    margin: 2px;
+    padding: 2px
 }
 
-.searchPanel{
-position:relative;
+/* Styles used for onclick obs info view -- Ends here */
+.searchPanel ul.holder {
+    background-color: white;
+}
+
+.searchPanel {
+    position: relative;
+}
+
+.commentImage {
+    background: url('comment.gif');
+    width: 15px;
+    height: 15px;
+}
+
+.containerPanel {
+    font-size: 18px;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #A6C9E2;
+    background-color: #d2deee;
+    width: 600px;
 }

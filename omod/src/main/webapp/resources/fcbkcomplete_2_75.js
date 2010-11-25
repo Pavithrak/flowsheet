@@ -127,7 +127,7 @@ jQuery(function(jQuery) {
 
                 complete = jQuery(document.createElement("div"));
                 complete.addClass("facebook-auto");
-                //since "Start to type text not expected , the default div element is not required 
+                //since "Start to type text not expected , the default div element is not required
                 //                complete.append('<div class="default">' + options.complete_text + "</div>");
                 complete.hover(function() {
                     options.complete_hover = 0;
