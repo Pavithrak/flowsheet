@@ -113,10 +113,13 @@ var FlowsheetData = function(data) {
         jQuery(entries).each(function(index, entry) {
             var classTypeCheck = (jQuery.inArray(entry.classType, classTypes) >= 0);
             var searchEntryCheck = true;
+            var dateCheck=true;
             if (searchEntries && searchEntries.length > 0) {
                 searchEntryCheck = (jQuery.inArray(entry.name, searchEntries) >= 0);
             }
-            var dateCheck = (entry.date >= dateObj.from) && (entry.date <= dateObj.to);
+            if(dateObj.from && dateObj.to){
+                    dateCheck = (entry.date >= dateObj.from) && (entry.date <= dateObj.to);
+           }
             if (dateCheck && classTypeCheck && searchEntryCheck) {
                 filteredEntries.push(entry);
             }
