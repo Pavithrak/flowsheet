@@ -92,7 +92,7 @@ jQuery(function(jQuery) {
             function init() {
                 createFCBK();
                 preSet();
-                addInput(0);
+                addInput(1);
             }
 
 
@@ -322,19 +322,28 @@ jQuery(function(jQuery) {
                         if (!jQuery('#holder').children("li.bit-box:last").hasClass('locked')) {
                             if (jQuery('#holder').children("li.bit-box.deleted").length == 0) {
                                 jQuery('#holder').children("li.bit-box:last").addClass("deleted");
-                                return false;
-                            }
-                            else {
-                                if (deleting) {
-                                    return;
-                                }
-                                deleting = 1;
                                 jQuery('#holder').children("li.bit-box.deleted").fadeOut("fast",
                                         function() {
                                             removeItem(jQuery(this));
+                                            options.onremove.call();
                                             return false;
                                         });
+
+                                return false;
                             }
+//                            else {
+//                                alert("4");
+//                                if (deleting) {
+//                                    return;
+//                                }
+//                                deleting = 1;
+//                                jQuery('#holder').children("li.bit-box.deleted").fadeOut("fast",
+//                                        function() {
+//                                            removeItem(jQuery(this));
+//                                            alert("5");
+//                                            return false;
+//                                        });
+//                            }
                         }
                     }
 
@@ -402,7 +411,6 @@ jQuery(function(jQuery) {
 
 
                 var content = '';
-
                 while (match != null && maximum > 0) {
                     var id = match[1];
                     var object = cache[id];
