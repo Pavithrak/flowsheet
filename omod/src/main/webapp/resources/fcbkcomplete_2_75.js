@@ -299,23 +299,10 @@ jQuery(function(jQuery) {
                 });
 
                 input.keypress(function(event) {
+                    var etext = xssPrevent(input.val());
                     if (event.keyCode == 13) {
                         return false;
                     }
-                    //auto expand input
-                    input.attr("size", input.val().length + 1);
-                });
-
-                input.keydown(function(event) {
-                    //prevent to enter some bad chars when input is empty
-                    if (event.keyCode == 191) {
-                        event.preventDefault();
-                        return false;
-                    }
-                });
-
-                input.keyup(function(event) {
-                    var etext = xssPrevent(input.val());
 
                     if (event.keyCode == 8 && etext.length == 0) {
                         feed.hide();
@@ -331,21 +318,25 @@ jQuery(function(jQuery) {
 
                                 return false;
                             }
-//                            else {
-//                                alert("4");
-//                                if (deleting) {
-//                                    return;
-//                                }
-//                                deleting = 1;
-//                                jQuery('#holder').children("li.bit-box.deleted").fadeOut("fast",
-//                                        function() {
-//                                            removeItem(jQuery(this));
-//                                            alert("5");
-//                                            return false;
-//                                        });
-//                            }
                         }
                     }
+                    //auto expand input
+                    input.attr("size", input.val().length + 1);
+                });
+
+                input.keydown(function(event) {
+
+
+                    //prevent to enter some bad chars when input is empty
+                    if (event.keyCode == 191) {
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+
+                input.keyup(function(event) {
+                    var etext = xssPrevent(input.val());
+
 
                     if (event.keyCode != 40 && event.keyCode != 38 && event.keyCode != 37 && event.keyCode != 39 && etext.length != 0) {
                         counter = 0;
