@@ -16,12 +16,15 @@
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.dependClass.js"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.slider-min.js"/>
 <openmrs:htmlInclude file="/scripts/flot/jquery.flot.js"/>
+<openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.blockUI.js"/>
 
 
 <input type="hidden" id="patientId" name="patientId" value='<request:parameter name="patientId" />'/>
 <%--<div class="containerPanel" id="containerPanel">--%>
-<table class="table_group">
-    <tr>
+
+<table class="table_group" id="table_group">
+
+	<tr>
         <td class="flowsheet_left_panel">
             <table>
                 <tr>
@@ -60,12 +63,11 @@
             </table>
 
         </td>
-        <td class="flowsheet_grid">
-            <table id="flowsheet">
+        <td class="flowsheet_grid" id="flowsheet_grid">
+			<table id="flowsheet" class="flowsheet">
             </table>
-
-        </td>
-    </tr>
+		</td>
+	</tr>
 </table>
 <%--</div>--%>
 <div id="obsInfoDialog" class="">
@@ -90,6 +92,14 @@
         var jsondata = {
             patientId : patientIdValue
         };
+		var WaitMsg = function (field) {
+			jQuery(field).block({
+				message: '<h1>Loading...</h1>'
+					});
+		};
+		var StopWaiting = function (field) {
+		    jQuery(field).unblock();
+		};
         var flowsheetObj = new Flowsheet("flowsheet");
         var data = {};
         var classes = new ConceptClass("#classTypeList");
@@ -107,6 +117,7 @@
         }
 
         var filter = function() {
+			WaitMsg('#table_group');
             var from = jQuery('#sliderInfoFrom').text();
             var to = jQuery('#sliderInfoTo').text();
             var list = getSearchEntries();
@@ -114,6 +125,7 @@
             flowsheetObj.reload(entries);
             conceptNameSearch.render(data.entries, filter);
             createErrorMessage(entries);
+			StopWaiting('#table_group');
         }
 
         var dateRange = new DateRange(jQuery("#Slider1"), filter);
@@ -148,8 +160,10 @@
             classes.attachSelectClearAll(filter);
             dateRange.render(data.getDateRange());
             conceptNameSearch.render(data.entries, filter);
-        };
+			StopWaiting('#table_group');
 
+        };
+		WaitMsg('#table_group');
         $j.ajax({
             url : "flowsheet.json",
             data : jsondata,
@@ -168,6 +182,9 @@
             });
             return list
         }
+
+		
+
 
     });
 </script>
