@@ -20,9 +20,8 @@
 
 
 <input type="hidden" id="patientId" name="patientId" value='<request:parameter name="patientId" />'/>
-<%--<div class="containerPanel" id="containerPanel">--%>
-
-<table class="table_group" id="table_group">
+<div id="loading" class="loading">Loading .... </div>
+<table class="table_group" id="table_group" style="display:none">
 
 	<tr>
         <td class="flowsheet_left_panel">
@@ -69,7 +68,6 @@
 		</td>
 	</tr>
 </table>
-<%--</div>--%>
 <div id="obsInfoDialog" class="">
     <div id="obsInfo" class="obsInfoPanel">
         <div id="maximizeIcon" class="maximizeIcon ui-icon ui-icon-arrowthick-2-ne-sw"></div>
@@ -94,7 +92,7 @@
         };
 		var WaitMsg = function (field) {
 			jQuery(field).block({
-				message: '<h1>Loading...</h1>'
+				message: 'Loading...'
 					});
 		};
 		var StopWaiting = function (field) {
@@ -117,7 +115,7 @@
         }
 
         var filter = function() {
-			WaitMsg('#table_group');
+			WaitMsg('#flowsheet');
             var from = jQuery('#sliderInfoFrom').text();
             var to = jQuery('#sliderInfoTo').text();
             var list = getSearchEntries();
@@ -125,11 +123,11 @@
             flowsheetObj.reload(entries);
             conceptNameSearch.render(data.entries, filter);
             createErrorMessage(entries);
-			StopWaiting('#table_group');
+			StopWaiting('#flowsheet');
         }
 
         var dateRange = new DateRange(jQuery("#Slider1"), filter);
-        var conceptNameSearch = new ConceptNameSearch(jQuery("#conceptSelect"));
+        var conceptNameSearch ;
 
 
         var onClickHandlerForGrid = function(rowid, iCol, cellcontent, e) {
@@ -159,11 +157,13 @@
             classes.change(filter);
             classes.attachSelectClearAll(filter);
             dateRange.render(data.getDateRange());
+            jQuery('#table_group').show();
+         	conceptNameSearch = new ConceptNameSearch(jQuery("#conceptSelect"));
             conceptNameSearch.render(data.entries, filter);
-			StopWaiting('#table_group');
+			jQuery('#loading').hide();
 
         };
-		WaitMsg('#table_group');
+		
         $j.ajax({
             url : "flowsheet.json",
             data : jsondata,
@@ -183,7 +183,7 @@
             return list
         }
 
-		
+
 
 
     });
