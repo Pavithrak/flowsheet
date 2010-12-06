@@ -139,7 +139,7 @@ jQuery(function(jQuery) {
                 feed.attr("id", elemid + "_feed");
                 complete.prepend(feed);
                 jQuery('#holder').after(complete);
-                feed.css("width", complete.width());
+                feed.css("width", complete.width()==0?"250px":complete.width());
 
             }
 
