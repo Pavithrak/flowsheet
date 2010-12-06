@@ -139,7 +139,7 @@ jQuery(function(jQuery) {
                 feed.attr("id", elemid + "_feed");
                 complete.prepend(feed);
                 jQuery('#holder').after(complete);
-                feed.css("width", complete.width()==0?"250px":complete.width());
+                feed.css("width", complete.width() == 0 ? "250px" : complete.width());
 
             }
 
@@ -304,22 +304,6 @@ jQuery(function(jQuery) {
                         return false;
                     }
 
-                    if (event.keyCode == 8 && etext.length == 0) {
-                        feed.hide();
-                        if (!jQuery('#holder').children("li.bit-box:last").hasClass('locked')) {
-                            if (jQuery('#holder').children("li.bit-box.deleted").length == 0) {
-                                jQuery('#holder').children("li.bit-box:last").addClass("deleted");
-                                jQuery('#holder').children("li.bit-box.deleted").fadeOut("fast",
-                                        function() {
-                                            removeItem(jQuery(this));
-                                            options.onremove.call();
-                                            return false;
-                                        });
-
-                                return false;
-                            }
-                        }
-                    }
                     //auto expand input
                     input.attr("size", input.val().length + 1);
                 });
@@ -337,6 +321,22 @@ jQuery(function(jQuery) {
                 input.keyup(function(event) {
                     var etext = xssPrevent(input.val());
 
+                    if (event.keyCode == 8 && length== 0) {
+                                           feed.hide();
+                                           if (!jQuery('#holder').children("li.bit-box:last").hasClass('locked')) {
+                                               if (jQuery('#holder').children("li.bit-box.deleted").length == 0) {
+                                                   jQuery('#holder').children("li.bit-box:last").addClass("deleted");
+                                                   jQuery('#holder').children("li.bit-box.deleted").fadeOut("fast",
+                                                           function() {
+                                                               removeItem(jQuery(this));
+                                                               options.onremove.call();
+                                                               return false;
+                                                           });
+
+                                                   return false;
+                                               }
+                                           }
+                    }
 
                     if (event.keyCode != 40 && event.keyCode != 38 && event.keyCode != 37 && event.keyCode != 39 && etext.length != 0) {
                         counter = 0;
@@ -496,6 +496,13 @@ jQuery(function(jQuery) {
                     if (event.keyCode != 8) {
                         jQuery('#holder').children("li.bit-box.deleted").removeClass("deleted");
                     }
+
+                    if (event.keyCode == 8) {
+                        feed.hide();
+                        length = maininput.val().length;
+
+                    }
+
 
                     if ((event.keyCode == 13 || event.keyCode == 9) && checkFocusOn()) {
                         var option = focuson;
@@ -666,4 +673,5 @@ jQuery(function(jQuery) {
             return this;
         });
     };
+    var length=0;
 });
