@@ -16,12 +16,14 @@
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.dependClass.js"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.slider-min.js"/>
 <openmrs:htmlInclude file="/scripts/flot/jquery.flot.js"/>
+<openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.blockUI.js"/>
 
 
 <input type="hidden" id="patientId" name="patientId" value='<request:parameter name="patientId" />'/>
-<%--<div class="containerPanel" id="containerPanel">--%>
-<table class="table_group">
-    <tr>
+<div id="loading" class="loading">Loading .... </div>
+<table class="table_group" id="table_group" style="display:none">
+
+	<tr>
         <td class="flowsheet_left_panel">
             <table>
                 <tr>
@@ -60,14 +62,12 @@
             </table>
 
         </td>
-        <td class="flowsheet_grid">
-            <table id="flowsheet">
+        <td class="flowsheet_grid" id="flowsheet_grid">
+			<table id="flowsheet" class="flowsheet">
             </table>
-
-        </td>
-    </tr>
+		</td>
+	</tr>
 </table>
-<%--</div>--%>
 <div id="obsInfoDialog" class="">
     <div id="obsInfo" class="obsInfoPanel">
         <div id="maximizeIcon" class="maximizeIcon ui-icon ui-icon-arrowthick-2-ne-sw"></div>
@@ -90,6 +90,14 @@
         var jsondata = {
             patientId : patientIdValue
         };
+		var WaitMsg = function (field) {
+			jQuery(field).block({
+				message: 'Loading...'
+					});
+		};
+		var StopWaiting = function (field) {
+		    jQuery(field).unblock();
+		};
         var flowsheetObj = new Flowsheet("flowsheet");
         var data = {};
         var classes = new ConceptClass("#classTypeList");
@@ -107,6 +115,7 @@
         }
 
         var filter = function() {
+			WaitMsg('#flowsheet');
             var from = jQuery('#sliderInfoFrom').text();
             var to = jQuery('#sliderInfoTo').text();
             var list = getSearchEntries();
@@ -114,10 +123,11 @@
             flowsheetObj.reload(entries);
             conceptNameSearch.render(data.entries, filter);
             createErrorMessage(entries);
+			StopWaiting('#flowsheet');
         }
 
         var dateRange = new DateRange(jQuery("#Slider1"), filter);
-        var conceptNameSearch = new ConceptNameSearch(jQuery("#conceptSelect"));
+        var conceptNameSearch ;
 
 
         var onClickHandlerForGrid = function(rowid, iCol, cellcontent, e) {
@@ -147,8 +157,10 @@
             classes.change(filter);
             classes.attachSelectClearAll(filter);
             dateRange.render(data.getDateRange());
+            jQuery('#table_group').show();
+         	conceptNameSearch = new ConceptNameSearch(jQuery("#conceptSelect"));
             conceptNameSearch.render(data.entries, filter);
-            
+			jQuery('#loading').hide();
             fetchFlowsheetCompleteData();
         };
         
@@ -186,6 +198,9 @@
             });
             return list
         }
+
+
+
 
     });
 --></script>
