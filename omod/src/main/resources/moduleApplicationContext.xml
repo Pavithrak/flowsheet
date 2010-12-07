@@ -38,6 +38,9 @@
                     </property>
                     <property name="target">
                         <bean class="org.openmrs.module.flowsheet.impl.FlowsheetServiceImpl">
+                            <property name="factory">
+                                <ref bean="sessionFactory"/>
+                            </property>                            
                         </bean>
                     </property>
                     <property name="preInterceptors">

@@ -92,22 +92,31 @@ var Flowsheet = function(tableId) {
 var FlowsheetData = function(data) {
     this.entries = data.flowsheet.entries;
     this.conceptMap = data.flowsheet.conceptMap;
-    jQuery(this.entries).each(function(index,entry){
-        entry.name = function(){
-            var conceptMap = data.flowsheet.conceptMap;
-            return conceptMap[entry.conceptId].name ;
-        };
-        entry.numeric = function(){
-            var conceptMap = data.flowsheet.conceptMap;
-            return conceptMap[entry.conceptId].numeric ;
-        };
-        entry.classType = function(){
-            var conceptMap = data.flowsheet.conceptMap;
-            return conceptMap[entry.conceptId].classType ;
-        };
+    this.conceptClasses = data.flowsheet.conceptClasses;
+    this.obsDates = data.flowsheet.obsDates;
+    
+    this.initEntries = function(data){
+		jQuery(this.entries).each(function(index,entry){
+		    entry.name = function(){
+		        var conceptMap = data.flowsheet.conceptMap;
+		        return conceptMap[entry.conceptId].name ;
+		    };
+		    entry.numeric = function(){
+		        var conceptMap = data.flowsheet.conceptMap;
+		        return conceptMap[entry.conceptId].numeric ;
+		    };
+		    entry.classType = function(){
+		        var conceptMap = data.flowsheet.conceptMap;
+		        return conceptMap[entry.conceptId].classType ;
+		    };
+		
+		});
+    };
+    
+    this.initEntries(data);
 
-    });
-    function createDateArray(entries) {
+/*  No longer used. Currently received from server.  
+	function createDateArray(entries) {
         var datearr = [];
         if (datearr.length == 0) {
             jQuery(entries).each(function(key, value) {
@@ -121,10 +130,13 @@ var FlowsheetData = function(data) {
         dates.sort();
         return dates;
     }
-
+*/
     this.getDateRange = function() {
+/*
         var dates = createDateArray(this.entries);
         return sortDateArray(jQuery.unique(dates));
+*/
+        return this.obsDates;
     };
 
     this.filter = function(dateObj, classTypes, searchEntries) {
@@ -170,6 +182,7 @@ var FlowsheetData = function(data) {
     }
 
     this.getConceptClasses = function() {
+/*
         var uniqueClassTypes = [];
         jQuery(this.entries).each(function() {
             if ((jQuery.inArray(this.classType(), uniqueClassTypes)) < 0) {
@@ -177,6 +190,8 @@ var FlowsheetData = function(data) {
             }
         })
         return uniqueClassTypes;
+*/
+        return this.conceptClasses;
     }
 
     this.getConceptDesc = function(conceptId) {
@@ -184,6 +199,12 @@ var FlowsheetData = function(data) {
             return this.conceptMap[conceptId].desc;
         }
         return null;
+    }
+    
+    this.updateData = function(json){
+        this.entries = json.flowsheet.entries;
+        this.conceptMap = json.flowsheet.conceptMap;
+        this.initEntries(json);
     }
 }
 

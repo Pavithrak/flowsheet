@@ -22,5 +22,16 @@ public class FlowsheetFormControllerTest extends BaseModuleContextSensitiveTest 
 		Flowsheet flowsheet = (Flowsheet)map.get("flowsheet");
 
         Assert.assertEquals(flowsheet.getEntries().size(),9);
+
+	}
+
+	@Test
+	public void shouldReturnFlowsheetSnapshotForPatient() {
+		ModelMap map = new ModelMap();
+		new FlowsheetFormController().loadFlowsheetSnapshot(7, map);
+		Flowsheet flowsheet = (Flowsheet)map.get("flowsheet");
+
+        Assert.assertEquals(flowsheet.getEntries().size(),2);
+
 	}
 }

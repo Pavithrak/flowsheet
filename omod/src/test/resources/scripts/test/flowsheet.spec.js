@@ -76,14 +76,6 @@ Screw.Unit(function() {
             flowsheetData = new FlowsheetData(SampleFlowsheetData());
         });
 
-        it("should return the unique sorted array of dates", function() {
-            var range = flowsheetData.getDateRange();
-            expect(range.length).to(equal, 3);
-            expect("2001-01-12").to(equal, range[0]);
-            expect("2002-01-12").to(equal, range[1]);
-            expect("2010-01-12").to(equal, range[2]);
-
-        }),
                 it("should be able to filter data by date and Concept Class Types", function() {
                     var filteredData = flowsheetData.filter(new DateObject("2002-01-02", "2020-01-01"), ["Finding","Test"]);
                     expect(filteredData.length).to(equal, 3);
@@ -110,16 +102,27 @@ Screw.Unit(function() {
                     var filteredData = flowsheetData.search("dermatitis");
                     expect(1).to(equal, filteredData.length);
                 }),
-                it("should return Unique classtype array from the flowsheet data", function() {
-                    var uniqueClassTypes = flowsheetData.getConceptClasses();
-                    expect(3).to(equal, uniqueClassTypes.length);
-                    expect(["Test","Diagnosis","Finding"]).to(equal, uniqueClassTypes);
-                }),
                 it("should return concept desc for concept name",function(){
                     var conceptDesc = flowsheetData.getConceptDesc(1);
                     var expectedDesc = "SBP is the pressure exerted by circulating blood upon " +
                             "the walls of blood vessels, and is one of the principal vital signs.";
                     expect(conceptDesc).to(equal,expectedDesc);
+                }),
+                it("should update data if needed",function(){
+                	var json = {};
+                	json.flowsheet = {
+                	        entries : [
+                	            {conceptId:1,value:"220",date: "2001-01-12"}
+                	        ],
+                	        "conceptMap":{
+                	            "1":
+                	            {"name":"Systolic blood pressure","numeric":{hi:"",low:"",unit:"mmHg"},
+                	                "desc":"SBP is the pressure exerted by circulating blood upon the walls of blood vessels, and is one of the principal vital signs.",
+                	                "classType":"Test","dataType":"Coded"}
+                	            }
+                	        };
+                	flowsheetData.updateData(json);
+                	expect(1).to(equal, flowsheetData.entries.length);
                 })
     })
 });
@@ -158,7 +161,8 @@ Screw.Unit(function() {
                         this.flowsheet = {
                             entries : [
                                 {name:"Systolic blood pressure",value:"",dataType:"numeric",classType:"Test", date: "2001-01-12",numeric:{hi:"",low:"",unit:"mmHg"}}
-                            ]
+                            ],
+                            "obsDates":["2001-01-12"]
                         };
                         return this;
                     }

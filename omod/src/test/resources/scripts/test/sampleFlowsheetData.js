@@ -17,7 +17,9 @@ var SampleFlowsheetData = function() {
             "3":{"name":"Temparature (C)",dataType:"numeric",classType:"Test",numeric:{hi:"150",low:"100",unit:"DEG C"}},
             "4":{name:"Pregnancy status",dataType:"boolean",classType:"Finding"},
                 "5":{name:"Problem added",dataType:"non-numeric",classType:"Finding"}
-            }
+            },
+        "conceptClasses":["Test","Diagnosis","Finding"],
+        "obsDates":["2001-01-12","2002-01-12","2010-01-12"]
         };
 
     this.flowsheet = sampleflowsheet;

@@ -81,7 +81,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript"><!--
     //to be refactored - Balaji/Khaarthiga
 
     jQuery(document).ready(function() {
@@ -148,10 +148,28 @@
             classes.attachSelectClearAll(filter);
             dateRange.render(data.getDateRange());
             conceptNameSearch.render(data.entries, filter);
+            
+            fetchFlowsheetCompleteData();
         };
+        
+        renderflowsheetComplete = function(json){
+        	data.updateData(json);
+        	flowsheetObj.reload(data.entries);
+            conceptNameSearch.render(data.entries, filter);
+        }
 
+        var fetchFlowsheetCompleteData = function(){
+            $j.ajax({
+                url : "flowsheet.json",
+                data : jsondata,
+                success : renderflowsheetComplete,
+                dataType : "json"
+            });
+        	
+        }
+        
         $j.ajax({
-            url : "flowsheet.json",
+            url : "flowsheetSnapshot.json",
             data : jsondata,
             success : renderflowsheet,
             dataType : "json"
@@ -170,5 +188,5 @@
         }
 
     });
-</script>
+--></script>
 

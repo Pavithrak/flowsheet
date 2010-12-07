@@ -1,19 +1,29 @@
 package org.openmrs.module.flowsheet;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Flowsheet {
 
 	private final List<FlowsheetEntry> entries;
 
     private final Map<Integer,ConceptInfo> conceptMap;
+    private List<String> conceptClasses = null;
+    private final List<String> obsDates = new ArrayList<String>();
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 	public Flowsheet(List<FlowsheetEntry> flowsheetEntries) {
 		this.entries = flowsheetEntries;
         this.conceptMap = computeConceptMap(flowsheetEntries);
 	}
+
+    public Flowsheet(List<FlowsheetEntry> flowsheetEntries,List<String> conceptClasses,List<Date> obsDates) {
+        this(flowsheetEntries);
+        this.conceptClasses = conceptClasses;
+        for(Date obsDate :obsDates){
+            this.obsDates.add(format.format(obsDate));
+        }
+    }
 
 	public List<FlowsheetEntry> getEntries() {
 		return entries;
@@ -33,5 +43,13 @@ public class Flowsheet {
            }
        }
        return conceptMap;
+    }
+
+    public List<String> getConceptClasses() {
+        return conceptClasses;
+    }
+
+    public List<String> getObsDates() {
+        return obsDates;
     }
 }

@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import flexjson.JSONSerializer;
 
 @Controller
-@RequestMapping(value = "/flowsheet.json")
 public class FlowsheetFormController {
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET,value = "/flowsheet.json")
 	public void loadFlowsheet(
 			@RequestParam(required = true, value = "patientId") Integer id,
 			ModelMap map) {
@@ -22,4 +21,15 @@ public class FlowsheetFormController {
 		Flowsheet flowsheet = service.getFlowsheet(id);
 		map.put("flowsheet", flowsheet);
 	}
+
+    @RequestMapping(method = RequestMethod.GET,value = "/flowsheetSnapshot.json")
+    public void loadFlowsheetSnapshot(
+            @RequestParam(required = true, value = "patientId") Integer id,
+            ModelMap map) {
+        FlowsheetService service = Context.getService(FlowsheetService.class);
+        Flowsheet flowsheet = service.getFlowsheetSnapshot(id);
+        map.put("flowsheet", flowsheet);
+
+    }
+
 }
