@@ -15,6 +15,7 @@
 <openmrs:htmlInclude file="/moduleResources/flowsheet/uicustom.css"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.dependClass.js"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.slider-min.js"/>
+<openmrs:htmlInclude file="/moduleResources/flowsheet/excanvas.js"/>
 <openmrs:htmlInclude file="/scripts/flot/jquery.flot.js"/>
 <openmrs:htmlInclude file="/moduleResources/flowsheet/jquery.blockUI.js"/>
 
@@ -63,8 +64,10 @@
 
         </td>
         <td class="flowsheet_grid" id="flowsheet_grid">
+            <div id="flowsheet_grid_div">
 			<table id="flowsheet" class="flowsheet">
             </table>
+            </div>
 		</td>
 	</tr>
 </table>
@@ -115,7 +118,7 @@
         }
 
         var filter = function() {
-			WaitMsg('#flowsheet');
+			WaitMsg('#flowsheet_grid_div');
             var from = jQuery('#sliderInfoFrom').text();
             var to = jQuery('#sliderInfoTo').text();
             var list = getSearchEntries();
@@ -123,7 +126,7 @@
             flowsheetObj.reload(entries);
             conceptNameSearch.render(data.entries, filter);
             createErrorMessage(entries);
-			StopWaiting('#flowsheet');
+			StopWaiting('#flowsheet_grid_div');
         }
 
         var dateRange = new DateRange(jQuery("#Slider1"), filter);
