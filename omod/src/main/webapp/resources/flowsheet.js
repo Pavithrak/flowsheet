@@ -74,8 +74,6 @@ var Flowsheet = function(tableId) {
             if (rowObject.numeric()) {
                 var valueWitUnit = rowObject.value + " " + rowObject.numeric().unit;
                 if (rowObject.comment) {
-//                    valueWitUnit = valueWitUnit + "\n" + rowObject.comment + "<img class='commentImage'/>";
-//                    valueWitUnit = valueWitUnit + "\n" + "<img src='comment.gif' id='commentImg' class='commentImage'  alt='' //>" +rowObject.comment;
                     valueWitUnit = valueWitUnit + "\n" + "*" +rowObject.comment;
                 }
                 return valueWitUnit;
@@ -105,8 +103,13 @@ var FlowsheetData = function(data) {
             var conceptMap = data.flowsheet.conceptMap;
             return conceptMap[entry.conceptId].classType ;
         };
-
+        
+        if(!data.flowsheet.conceptMap[entry.conceptId].entries){
+        	data.flowsheet.conceptMap[entry.conceptId].entries = [];	
+        }  
+        data.flowsheet.conceptMap[entry.conceptId].entries.push(entry);
     });
+    
     function createDateArray(entries) {
         var datearr = [];
         if (datearr.length == 0) {
@@ -148,14 +151,10 @@ var FlowsheetData = function(data) {
     }
 
     this.searchForConceptId = function(query) {
-        var filteredData = new Array();
-        jQuery(this.entries).each(function(index, entry) {
-            if (entry.conceptId == query) {
-                filteredData.push(entry);
-            }
-        });
-
-        return filteredData;
+    	if(data.flowsheet.conceptMap[query]){
+    		return data.flowsheet.conceptMap[query].entries;
+    	}
+    	return [];
     }
 
     this.search = function(query) {
