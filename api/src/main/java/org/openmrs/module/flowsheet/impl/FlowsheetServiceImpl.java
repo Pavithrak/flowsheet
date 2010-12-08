@@ -29,23 +29,9 @@ public class FlowsheetServiceImpl implements FlowsheetService {
 	}
 
     public Flowsheet getFlowsheetSnapshot(int personId) {
-/*
-        Query query = factory
-				.getCurrentSession()
-				.createSQLQuery(
-						"select distinct(c1.name) from concept_class c1, concept c " +
-                        "where c.class_id = c1.concept_class_id and c.concept_id in " +
-                            "(select distinct concept_id from obs where person_id="+personId+" and voided=0 )");
-*/
-
         Query query = factory
 				.getCurrentSession()
 				.createQuery(
-/*
-                        "select distinct c1.name from ConceptClass c1, Concept c " +
-                        "where c.classId = c1.conceptClassId and c.conceptId in " +
-                        "( select distinct o1.conceptId from Obs o1 where o1.personId = :id and o1.voided = 0)");
-*/
                         "select distinct c.conceptClass.name from Concept c " +
                         "where c.conceptId in " +
                         "( select distinct o1.concept.conceptId from Obs o1 where o1.personId = :id and o1.voided = 0)");
@@ -55,7 +41,7 @@ public class FlowsheetServiceImpl implements FlowsheetService {
 				.getCurrentSession()
 				.createQuery(
 						"select distinct o.obsDatetime from Obs o " +
-                                "where o.personId = :id and o.voided = 0 ");//order by obsDate desc
+                                "where o.personId = :id and o.voided = 0 order by o.obsDatetime desc");//
         query.setInteger("id",personId);
 		List<Date> obsDates = query.list();
         String firstFewDates = "''";
@@ -63,7 +49,7 @@ public class FlowsheetServiceImpl implements FlowsheetService {
             firstFewDates = "'"+format.format(obsDates.get(0))+"'";
         }
         if(obsDates.size() >1){
-            firstFewDates = firstFewDates + ",'"+format.format(obsDates.get(0))+"'";
+            firstFewDates = firstFewDates + ",'"+format.format(obsDates.get(1))+"'";
         }
         query = factory
 				.getCurrentSession()
@@ -77,8 +63,6 @@ public class FlowsheetServiceImpl implements FlowsheetService {
         for (Obs obs : obsList){
             flowsheetEntries.add(new FlowsheetEntry(obs));
         }
-//        List<FlowsheetEntry> flowsheetEntries = new ArrayList<FlowsheetEntry>();
-//        List<Date> obsDates = new ArrayList<Date>();
         return new Flowsheet(flowsheetEntries,conceptClasses,obsDates);
     }
 

@@ -11,7 +11,6 @@ import org.openmrs.module.flowsheet.web.controller.FlowsheetFormController;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.ui.ModelMap;
 
-import flexjson.JSONDeserializer;
 
 public class FlowsheetFormControllerTest extends BaseModuleContextSensitiveTest {
 	@SuppressWarnings("rawtypes")
@@ -21,7 +20,7 @@ public class FlowsheetFormControllerTest extends BaseModuleContextSensitiveTest 
 		new FlowsheetFormController().loadFlowsheet(7, map);
 		Flowsheet flowsheet = (Flowsheet)map.get("flowsheet");
 
-        Assert.assertEquals(flowsheet.getEntries().size(),9);
+        Assert.assertEquals(9,flowsheet.getEntries().size());
 
 	}
 
@@ -31,7 +30,7 @@ public class FlowsheetFormControllerTest extends BaseModuleContextSensitiveTest 
 		new FlowsheetFormController().loadFlowsheetSnapshot(7, map);
 		Flowsheet flowsheet = (Flowsheet)map.get("flowsheet");
 
-        Assert.assertEquals(flowsheet.getEntries().size(),2);
+        Assert.assertEquals(7,flowsheet.getEntries().size());
 
 	}
 }
