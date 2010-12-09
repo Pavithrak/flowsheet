@@ -41,7 +41,7 @@ public class FlowsheetServiceImpl implements FlowsheetService {
 				.getCurrentSession()
 				.createQuery(
 						"select distinct o.obsDatetime from Obs o " +
-                                "where o.personId = :id and o.voided = 0 order by o.obsDatetime desc");//
+                                "where o.personId = :id and o.voided = 0 order by o.obsDatetime asc");//
         query.setInteger("id",personId);
 		List<Date> obsDates = query.list();
         String firstFewDates = "''";
