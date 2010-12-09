@@ -46,10 +46,10 @@ public class FlowsheetServiceImpl implements FlowsheetService {
 		List<Date> obsDates = query.list();
         String firstFewDates = "''";
         if(obsDates.size() >0){
-            firstFewDates = "'"+format.format(obsDates.get(0))+"'";
+            firstFewDates = "'"+format.format(obsDates.get(obsDates.size()-1))+"'";
         }
         if(obsDates.size() >1){
-            firstFewDates = firstFewDates + ",'"+format.format(obsDates.get(1))+"'";
+            firstFewDates = firstFewDates + ",'"+format.format(obsDates.get(obsDates.size()-2))+"'";
         }
         query = factory
 				.getCurrentSession()
