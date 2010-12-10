@@ -68,7 +68,7 @@ var Flowsheet = function(tableId) {
     }
 
     var nameFormatter = function(cellvalue, options, rowObject) {
-       return rowObject.name(); 
+        return rowObject.name();
     }
 
     var rangeFormatter = function(cellvalue, options, rowObject) {
@@ -83,9 +83,7 @@ var Flowsheet = function(tableId) {
             if (rowObject.numeric()) {
                 var valueWitUnit = rowObject.value + " " + rowObject.numeric().unit;
                 if (rowObject.comment) {
-//                    valueWitUnit = valueWitUnit + "\n" + rowObject.comment + "<img class='commentImage'/>";
-//                    valueWitUnit = valueWitUnit + "\n" + "<img src='comment.gif' id='commentImg' class='commentImage'  alt='' //>" +rowObject.comment;
-                    valueWitUnit = valueWitUnit + "\n" + "*" +rowObject.comment;
+                    valueWitUnit = valueWitUnit + "\n" + "*" + rowObject.comment;
                 }
                 return valueWitUnit;
             }
@@ -103,48 +101,32 @@ var FlowsheetData = function(data) {
     this.conceptMap = data.flowsheet.conceptMap;
     this.conceptClasses = data.flowsheet.conceptClasses;
     this.obsDates = data.flowsheet.obsDates;
-    
-    this.initEntries = function(data){
-		jQuery(this.entries).each(function(index,entry){
-		    entry.name = function(){
-		        var conceptMap = data.flowsheet.conceptMap;
-		        return conceptMap[entry.conceptId].name ;
-		    };
-		    entry.numeric = function(){
-		        var conceptMap = data.flowsheet.conceptMap;
-		        return conceptMap[entry.conceptId].numeric ;
-		    };
-		    entry.classType = function(){
-		        var conceptMap = data.flowsheet.conceptMap;
-		        return conceptMap[entry.conceptId].classType ;
-		    };
-		
-		});
+
+    this.initEntries = function(data) {
+        jQuery(this.entries).each(function(index, entry) {
+            entry.name = function() {
+                var conceptMap = data.flowsheet.conceptMap;
+                return conceptMap[entry.conceptId].name;
+            };
+            entry.numeric = function() {
+                var conceptMap = data.flowsheet.conceptMap;
+                return conceptMap[entry.conceptId].numeric;
+            };
+            entry.classType = function() {
+                var conceptMap = data.flowsheet.conceptMap;
+                return conceptMap[entry.conceptId].classType;
+            };
+            if (!data.flowsheet.conceptMap[entry.conceptId].entries) {
+                data.flowsheet.conceptMap[entry.conceptId].entries = [];
+            }
+            data.flowsheet.conceptMap[entry.conceptId].entries.push(entry);
+
+        });
     };
-    
+
     this.initEntries(data);
 
-/*  No longer used. Currently received from server.  
-	function createDateArray(entries) {
-        var datearr = [];
-        if (datearr.length == 0) {
-            jQuery(entries).each(function(key, value) {
-                datearr.push(value.date);
-            })
-        }
-        return datearr;
-    }
-
-    function sortDateArray(dates) {
-        dates.sort();
-        return dates;
-    }
-*/
     this.getDateRange = function() {
-/*
-        var dates = createDateArray(this.entries);
-        return sortDateArray(jQuery.unique(dates));
-*/
         return this.obsDates;
     };
 
@@ -152,17 +134,15 @@ var FlowsheetData = function(data) {
         var filteredEntries = new Array();
         var entries = this.entries;
         jQuery(entries).each(function(index, entry) {
-            //var classTypeCheck = (jQuery.inArray(entry.classType(), classTypes) >= 0);
             var classTypeCheck = classTypes.indexOf(entry.classType()) >= 0;
             var searchEntryCheck = true;
-            var dateCheck=true;
+            var dateCheck = true;
             if (searchEntries && searchEntries.length > 0) {
-                //searchEntryCheck = (jQuery.inArray(entry.name(), searchEntries) >= 0);
                 searchEntryCheck = searchEntries.indexOf(entry.name()) >= 0;
             }
-            if(dateObj.from && dateObj.to){
-                    dateCheck = (entry.date >= dateObj.from) && (entry.date <= dateObj.to);
-           }
+            if (dateObj.from && dateObj.to) {
+                dateCheck = (entry.date >= dateObj.from) && (entry.date <= dateObj.to);
+            }
             if (dateCheck && classTypeCheck && searchEntryCheck) {
                 filteredEntries.push(entry);
             }
@@ -171,14 +151,10 @@ var FlowsheetData = function(data) {
     }
 
     this.searchForConceptId = function(query) {
-        var filteredData = new Array();
-        jQuery(this.entries).each(function(index, entry) {
-            if (entry.conceptId == query) {
-                filteredData.push(entry);
-            }
-        });
-
-        return filteredData;
+        if (data.flowsheet.conceptMap[query]) {
+            return data.flowsheet.conceptMap[query].entries;
+        }
+        return [];
     }
 
     this.search = function(query) {
@@ -193,15 +169,6 @@ var FlowsheetData = function(data) {
     }
 
     this.getConceptClasses = function() {
-/*
-        var uniqueClassTypes = [];
-        jQuery(this.entries).each(function() {
-            if ((jQuery.inArray(this.classType(), uniqueClassTypes)) < 0) {
-                uniqueClassTypes.push(this.classType());
-            }
-        })
-        return uniqueClassTypes;
-*/
         return this.conceptClasses;
     }
 
@@ -211,8 +178,8 @@ var FlowsheetData = function(data) {
         }
         return null;
     }
-    
-    this.updateData = function(json){
+
+    this.updateData = function(json) {
         this.entries = json.flowsheet.entries;
         this.conceptMap = json.flowsheet.conceptMap;
         this.initEntries(json);
@@ -386,7 +353,6 @@ var ConceptNameSearch = function(selectElement) {
     var getUniqueEntries = function (entries) {
         var uniqueEntries = [];
         jQuery.each(entries, function(index, entry) {
-            //if (jQuery.inArray(entry.name(), uniqueEntries) < 0) {
             if (uniqueEntries.indexOf(entry.name()) < 0) {
                 uniqueEntries.push(entry.name());
             }
