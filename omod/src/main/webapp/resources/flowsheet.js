@@ -4,6 +4,15 @@ String.prototype.contains = function(compare) {
     }
 }
 
+Array.prototype.indexOf = function(obj, start) {
+    for (var i = (start || 0), j = this.length; i < j; i++) {
+        if (this[i] === obj) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 
 var Flowsheet = function(tableId) {
     this.tableId = tableId;
@@ -143,11 +152,13 @@ var FlowsheetData = function(data) {
         var filteredEntries = new Array();
         var entries = this.entries;
         jQuery(entries).each(function(index, entry) {
-            var classTypeCheck = (jQuery.inArray(entry.classType(), classTypes) >= 0);
+            //var classTypeCheck = (jQuery.inArray(entry.classType(), classTypes) >= 0);
+            var classTypeCheck = classTypes.indexOf(entry.classType()) >= 0;
             var searchEntryCheck = true;
             var dateCheck=true;
             if (searchEntries && searchEntries.length > 0) {
-                searchEntryCheck = (jQuery.inArray(entry.name(), searchEntries) >= 0);
+                //searchEntryCheck = (jQuery.inArray(entry.name(), searchEntries) >= 0);
+                searchEntryCheck = searchEntries.indexOf(entry.name()) >= 0;
             }
             if(dateObj.from && dateObj.to){
                     dateCheck = (entry.date >= dateObj.from) && (entry.date <= dateObj.to);
@@ -375,7 +386,8 @@ var ConceptNameSearch = function(selectElement) {
     var getUniqueEntries = function (entries) {
         var uniqueEntries = [];
         jQuery.each(entries, function(index, entry) {
-            if (jQuery.inArray(entry.name(), uniqueEntries) < 0) {
+            //if (jQuery.inArray(entry.name(), uniqueEntries) < 0) {
+            if (uniqueEntries.indexOf(entry.name()) < 0) {
                 uniqueEntries.push(entry.name());
             }
         });
