@@ -25,6 +25,7 @@
   <concept concept_id="5089" retired="false" datatype_id="1" class_id="1" is_set="false" creator="1" date_created="2004-08-12 00:00:00.0" version="" changed_by="1" date_changed="2005-02-25 11:43:43.0" uuid="c607c80f-1ea9-4da3-bb88-6276ce8868dd"/>
   <concept concept_id="5497" retired="false" datatype_id="1" class_id="1" is_set="false" creator="1" date_created="2004-08-12 00:00:00.0" version="0.1" changed_by="1" date_changed="2006-06-09 14:57:33.0" uuid="a09ab2c5-878e-4905-b25d-5784167d0216"/>
   <concept concept_id="24" retired="true" datatype_id="1" class_id="1" is_set="false" creator="1" date_created="2004-08-12 00:00:00.0" version="" uuid="11716f9c-1434-4f8d-b9fc-9aa14c4d6129"/>
+  <concept concept_id="5090" retired="false" datatype_id="13" class_id="1" is_set="false" creator="1" date_created="2004-08-12 00:00:00.0" version="" uuid="11716f9c-1434-4f8d-b9fc-9aa14c4d6235"/>
   <concept_answer concept_answer_id="1" concept_id="21" answer_concept="7" creator="1" date_created="2008-08-18 12:34:26.0" uuid="b1230431-2fe5-49fc-b535-ae42bc849747"/>
   <concept_answer concept_answer_id="2" concept_id="21" answer_concept="8" creator="1" date_created="2008-08-18 12:34:26.0" uuid="f67e537b-d9f9-45c4-846b-79ed1ba88778"/>
   <concept_answer concept_answer_id="3" concept_id="21" answer_concept="22" creator="1" date_created="2008-08-18 12:34:58.0" uuid="11e15f3b-3237-40e9-9c24-cb7916a4868b"/>
@@ -115,6 +116,7 @@
   <concept_name concept_id="8" name="N" locale="en" creator="1" date_created="2008-08-15 13:53:31.0" concept_name_id="2479" concept_name_type="" locale_preferred="0" voided="false" uuid="0ae52990-0c41-4591-8caa-31ed6a3dffa8"/>
   <concept_name concept_id="792" name="TRIOMUNE-30" locale="en" creator="1" date_created="2008-08-15 14:05:56.0" concept_name_id="2480" concept_name_type="" locale_preferred="0" voided="false" uuid="726f9e6d-bc7e-4a78-8741-c7d644d704cc"/>
   <concept_name concept_id="7" name="Y" locale="en" creator="1" date_created="2008-08-15 13:52:53.0" concept_name_id="2481" concept_name_type="" locale_preferred="0" voided="false" uuid="0631be3b-e338-4505-a876-ef3310f65896"/>
+  <concept_name concept_id="5090" name="Leg Xray" locale="en" creator="1" date_created="2008-08-15 13:52:53.0" concept_name_id="2433" concept_name_type="" locale_preferred="0" voided="false" uuid="0631be3b-e338-4505-a876-ef3310f65823"/>
   <concept_name_tag concept_name_tag_id="1" tag="default" description="name to use when nothing else is available" creator="1" date_created="2007-05-01 00:00:00.0" voided="false" uuid="9e9df183-2328-4117-acd8-fb9bf400911d"/>
   <concept_name_tag concept_name_tag_id="2" tag="short" description="preferred short name for a concept" creator="1" date_created="2007-05-01 00:00:00.0" voided="false" uuid="57396ec9-fb90-44b2-b59a-21bc5631bf3d"/>
   <concept_name_tag concept_name_tag_id="3" tag="synonym" description="a different word with similar meaning" creator="1" date_created="2007-05-01 00:00:00.0" voided="false" uuid="cb6bc7cf-d5d3-4d51-a05b-5ea656c7413a"/>
@@ -174,6 +176,7 @@
   <obs obs_id="14" person_id="7" concept_id="20" encounter_id="4" obs_datetime="2008-08-15 00:00:00.0" location_id="1" value_datetime="2008-08-14 00:00:00.0" comments="" creator="1" date_created="2008-08-19 12:32:38.0" voided="false" uuid="99b92980-db62-40cd-8bca-733357c48126"/>
   <obs obs_id="15" person_id="7" concept_id="21" encounter_id="4" obs_datetime="2008-08-15 00:00:00.0" location_id="1" comments="balaji" creator="1" date_created="2008-08-19 12:32:59.0" voided="false" uuid="1ce473c8-3fac-440d-9f92-e10facab194f"/>
   <obs obs_id="16" person_id="7" concept_id="5089" encounter_id="5" obs_datetime="2008-08-19 00:00:00.0" location_id="2" value_numeric="61.0" comments="balaji" creator="1" date_created="2008-08-19 12:35:30.0" voided="false" uuid="2ed1e57d-9f18-41d3-b067-2eeaf4b30fb0"/>
+  <obs obs_id="17" person_id="7" concept_id="5090" encounter_id="5" obs_datetime="2008-08-19 00:00:00.0" location_id="2" value_complex="jpeg image" comments="balaji" creator="1" date_created="2008-08-19 12:35:30.0" voided="false" uuid="2ed1e57d-9f18-41d3-b067-2eeaf4b30fb4"/>
   <order_type order_type_id="1" name="Drug order" description="Order of medications for the patient" creator="1" date_created="2008-08-15 13:49:47.0" retired="false" uuid="84ce45a8-5e7c-48f7-a581-ca1d17d63a62"/>
   <order_type order_type_id="2" name="Lab test" description="An order by a clinician for a laboratory test" creator="1" date_created="2008-08-15 13:50:14.0" retired="false" uuid="f149b5e1-4314-4d0d-a95f-1c4f8031161d"/>
   <order_type order_type_id="4" name="Lunch order" description="so hungry" creator="1" date_created="2008-08-15 15:49:04.0" retired="true" uuid="e23733ab-787e-4096-8ba2-577a902d2c2b"/>

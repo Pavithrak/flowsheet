@@ -43,7 +43,7 @@ public class FlowsheetServiceTest extends BaseModuleContextSensitiveTest {
 	@Test
 	public void shouldReturnObservationsForPerson() {
 		Assert.assertEquals(0, getFlowSheetEntry(1).size());
-		Assert.assertEquals(9, getFlowSheetEntry(7).size());
+		Assert.assertEquals(10, getFlowSheetEntry(7).size());
 	}
 
 
@@ -103,5 +103,12 @@ public class FlowsheetServiceTest extends BaseModuleContextSensitiveTest {
         Map<Integer, ConceptInfo> conceptMap = flowsheet.getConceptMap();
         Assert.assertEquals("Patient's weight in kilograms.",conceptMap.get(5089).getDesc());
         Assert.assertEquals("Measure of CD4 (T-helper cells) in blood",conceptMap.get(5497).getDesc());
+    }
+
+    @Test
+    public void shouldReturnImageIdForComplexType(){
+        Map<Integer, ConceptInfo> conceptMap = flowsheet.getConceptMap();
+        Assert.assertEquals("17",conceptMap.get(5090).getImageId());
+        Assert.assertEquals(null,conceptMap.get(5089).getImageId());
     }
 }

@@ -1,17 +1,20 @@
 package org.openmrs.module.flowsheet;
 
 import org.openmrs.Concept;
+import org.openmrs.ConceptDatatype;
 import org.openmrs.ConceptName;
 import org.openmrs.Obs;
 
+import javax.servlet.jsp.jstl.core.ConditionalTagSupport;
 import java.util.Locale;
 
 public class ConceptInfo {
     private Concept concept;
-
+    private Integer obsId;
     public ConceptInfo(Obs obs) {
         if(obs != null){
             this.concept = obs.getConcept();
+            this.obsId = obs.getObsId();
         }
         else{
             concept = new Concept();
@@ -43,4 +46,11 @@ public class ConceptInfo {
 		}
 		return null;
 	}
+
+    public String getImageId(){
+        if("Complex".equalsIgnoreCase(concept.getDatatype().getName()))
+            return  obsId + "";
+        else
+            return null;
+    }
 }

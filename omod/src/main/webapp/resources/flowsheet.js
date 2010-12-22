@@ -86,6 +86,8 @@ var Flowsheet = function(tableId) {
                     valueWitUnit = valueWitUnit + "\n" + "*" + rowObject.comment;
                 }
                 return valueWitUnit;
+            }else if(rowObject.complex()){
+                 return "<a href='/openmrs/complexObsServlet?obsId=" +rowObject.complex() + "'>click to view image</a>";
             }
             else {
                 return rowObject.value;
@@ -111,6 +113,10 @@ var FlowsheetData = function(data) {
             entry.numeric = function() {
                 var conceptMap = data.flowsheet.conceptMap;
                 return conceptMap[entry.conceptId].numeric;
+            };
+            entry.complex=function(){
+                var conceptMap = data.flowsheet.conceptMap;
+                return conceptMap[entry.conceptId].imageId;
             };
             entry.classType = function() {
                 var conceptMap = data.flowsheet.conceptMap;
