@@ -21,7 +21,7 @@ public class FlowsheetFormControllerTest extends BaseModuleContextSensitiveTest 
 		Flowsheet flowsheet = (Flowsheet)map.get("flowsheet");
 
         Assert.assertEquals(9,flowsheet.getEntries().size());
-
+// TO DO -- Assert all the values rather than just the size 
 	}
 
 	@Test
