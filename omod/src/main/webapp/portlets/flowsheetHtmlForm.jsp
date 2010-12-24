@@ -108,12 +108,15 @@
                 "#numericObsGraphLegend", "#obsInfoLabel", "#maximizeIcon", "#obsInfoDialog");
 
 
-        var createErrorMessage = function(entries) {
+        var createErrorMessage = function(entries,requiredClassNotSelected) {
             if (!entries || entries.length == 0) {
+                errorMsg='Undo some filters to view the observations'
+                if(requiredClassNotSelected())
+                errorMsg="You have selected a concept but deselected the associated class"
                 jQuery("#flowsheet").append(jQuery('<tr>')
                         .append(jQuery('<td>')
                         .append(jQuery('<div style="padding:10px">')
-                        .text('Undo some filters to view the observations'))));
+                        .text(errorMsg))));
             }
         }
 
@@ -122,10 +125,13 @@
             var from = jQuery('#sliderInfoFrom').text();
             var to = jQuery('#sliderInfoTo').text();
             var list = getSearchEntries();
-            var entries = data.filter(new DateObject(from, to), classes.getSelected(), list);
+            var range = new DateObject(from, to);
+            var entries = data.filter(range, classes.getSelected(), list);
             flowsheetObj.reload(entries);
             conceptNameSearch.render(data.entries, filter);
-            createErrorMessage(entries);
+            createErrorMessage(entries,function(){
+                return data.filter(range,classes.notSelected(),list) != 0;
+            });
 			StopWaiting('#flowsheet_grid_div');
         }
 
