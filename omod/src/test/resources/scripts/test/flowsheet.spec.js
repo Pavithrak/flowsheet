@@ -5,7 +5,7 @@ Screw.Unit(function() {
         flowsheet.render(data.entries);
         it("should display the concept name of the observation", function() {
             var name = $('#2').find('td:nth-child(2)').html();
-            expect(name).to(equal, data.entries[2].name());
+            expect(name).to(equal, data.entries[2].shortName());
         }),
                 it("should display the concept value along with the units for the numeric observations", function() {
                     var value = $('#2').find('td:nth-child(3)').html();
@@ -71,19 +71,19 @@ Screw.Unit(function() {
 
 Screw.Unit(function() {
     describe("Flowsheet data", function() {
-        var flowsheetData ;
+        var flowsheetData;
         before(function() {
             flowsheetData = new FlowsheetData(SampleFlowsheetData());
         });
 
-                it("should be able to filter data by date and Concept Class Types", function() {
-                    var filteredData = flowsheetData.filter(new DateObject("2002-01-02", "2020-01-01"), ["Finding","Test"]);
-                    expect(filteredData.length).to(equal, 3);
-                    var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"]);
-                    expect(3).to(equal, filteredData.length);
-                }),
+        it("should be able to filter data by date and Concept Class Types", function() {
+            var filteredData = flowsheetData.filter(new DateObject("2002-01-02", "2020-01-01"), ["Finding","Test"]);
+            expect(filteredData.length).to(equal, 3);
+            var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"]);
+            expect(3).to(equal, filteredData.length);
+        }),
                 it("should be able to filter data by date , Concept Class Types & Search Concept Names", function() {
-                    var filteredData = flowsheetData.filter(new DateObject("2002-01-02", "2020-01-01"), ["Finding"], ["Problem added","Temparature"]);
+                    var filteredData = flowsheetData.filter(new DateObject("2002-01-02", "2020-01-01"), ["Finding"], ["Problem added","Temperature"]);
                     expect(1).to(equal, filteredData.length);
                     var newfilteredData = flowsheetData.filter(new DateObject("1998-01-02", "2020-01-01"), ["Test","Diagnosis"], ["Pregnancy status"]);
                     expect(1).to(equal, filteredData.length);
@@ -102,27 +102,27 @@ Screw.Unit(function() {
                     var filteredData = flowsheetData.search("dermatitis");
                     expect(1).to(equal, filteredData.length);
                 }),
-                it("should return concept desc for concept name",function(){
+                it("should return concept desc for concept name", function() {
                     var conceptDesc = flowsheetData.getConceptDesc(1);
                     var expectedDesc = "SBP is the pressure exerted by circulating blood upon " +
                             "the walls of blood vessels, and is one of the principal vital signs.";
-                    expect(conceptDesc).to(equal,expectedDesc);
+                    expect(conceptDesc).to(equal, expectedDesc);
                 }),
-                it("should update data if needed",function(){
-                	var json = {};
-                	json.flowsheet = {
-                	        entries : [
-                	            {conceptId:1,value:"220",date: "2001-01-12"}
-                	        ],
-                	        "conceptMap":{
-                	            "1":
-                	            {"name":"Systolic blood pressure","numeric":{hi:"",low:"",unit:"mmHg"},
-                	                "desc":"SBP is the pressure exerted by circulating blood upon the walls of blood vessels, and is one of the principal vital signs.",
-                	                "classType":"Test","dataType":"Coded"}
-                	            }
-                	        };
-                	flowsheetData.updateData(json);
-                	expect(1).to(equal, flowsheetData.entries.length);
+                it("should update data if needed", function() {
+                    var json = {};
+                    json.flowsheet = {
+                        entries : [
+                            {conceptId:1,value:"220",date: "2001-01-12"}
+                        ],
+                        "conceptMap":{
+                            "1":
+                            {"name":"Systolic blood pressure","numeric":{hi:"",low:"",unit:"mmHg"},
+                                "desc":"SBP is the pressure exerted by circulating blood upon the walls of blood vessels, and is one of the principal vital signs.",
+                                "classType":"Test","dataType":"Coded"}
+                        }
+                    };
+                    flowsheetData.updateData(json);
+                    expect(1).to(equal, flowsheetData.entries.length);
                 })
     })
 });
@@ -160,10 +160,12 @@ Screw.Unit(function() {
                     var emptyData = function() {
                         this.flowsheet = {
                             entries : [
-                                {name:"Systolic blood pressure",value:"",dataType:"numeric",classType:"Test", date: "2001-01-12",numeric:{hi:"",low:"",unit:"mmHg"}}
+                                {conceptId:1,value:"",date: "2001-01-12"}
                             ],
-                            "obsDates":["2001-01-12"]
-                        };
+                            "conceptMap":{
+                                "1":{name:"Systolic blood pressure",value:"",dataType:"numeric",classType:"Test", date: "2001-01-12",numeric:{hi:"",low:"",unit:"mmHg"}}},
+
+                            "obsDates":["2001-01-12"] }
                         return this;
                     }
                     var slider = new DateRange(jQuery("#" + sliderId));
@@ -278,17 +280,17 @@ Screw.Unit(function() {
                     var searchResult = flowsheetData.searchForConceptId(4);
                     obsInfo.reloadInExpandedMode(searchResult);
                     var title = jQuery("#obsInfoDialog").attr("title");
-                    expect(title).to(equal,"Pregnancy status" );
+                    expect(title).to(equal, "Pregnancy status");
                     obsInfo.hide();
                 }),
-                it("should set concept desc when available",function(){
+                it("should set concept desc when available", function() {
                     var conceptDescText = "This is the desc from flowsheetData";
-                    obsInfo.setConceptDesc("#conceptDesc",conceptDescText);
-                    expect($("#conceptDesc").html()).to(equal,conceptDescText);
+                    obsInfo.setConceptDesc("#conceptDesc", conceptDescText);
+                    expect($("#conceptDesc").html()).to(equal, conceptDescText);
                 }),
-                it("should make concept desc hidden when desc not available",function(){
+                it("should make concept desc hidden when desc not available", function() {
                     var conceptDescText = null;
-                    obsInfo.setConceptDesc("#conceptDesc",conceptDescText);
+                    obsInfo.setConceptDesc("#conceptDesc", conceptDescText);
                     expect($("#conceptDesc").is(':hidden')).to(be_true);
                 })
 

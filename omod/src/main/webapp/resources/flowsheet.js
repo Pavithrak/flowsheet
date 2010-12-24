@@ -71,7 +71,8 @@ var Flowsheet = function(tableId) {
     }
 
     var nameFormatter = function(cellvalue, options, rowObject) {
-        return rowObject.name();
+        var shortName = rowObject.shortName();
+        return rowObject.shortName() != "" ? shortName : rowObject.name();
     }
 
     var rangeFormatter = function(cellvalue, options, rowObject) {
@@ -127,6 +128,16 @@ var FlowsheetData = function(data) {
                 var conceptMap = data.flowsheet.conceptMap;
                 return conceptMap[entry.conceptId].classType;
             };
+            entry.shortName = function() {
+                var conceptMap = data.flowsheet.conceptMap;
+                return conceptMap[entry.conceptId].shortName;
+            };
+            entry.synonyms = function() {
+                var conceptMap = data.flowsheet.conceptMap;
+                var synonymsList = conceptMap[entry.conceptId].synonyms;
+                var synonyms = synonymsList.length > 0 ? synonymsList : [];
+                return synonyms;
+            };
             if (!data.flowsheet.conceptMap[entry.conceptId].entries) {
                 data.flowsheet.conceptMap[entry.conceptId].entries = [];
             }
@@ -141,6 +152,19 @@ var FlowsheetData = function(data) {
         return this.obsDates;
     };
 
+    function searchEntriesCheck(searchEntries, entry) {
+        var isSearchEntryRelatedToObservation = (searchEntries.indexOf(entry.name()) >= 0) || (searchEntries.indexOf(entry.shortName()) >= 0);
+        if (!isSearchEntryRelatedToObservation) {
+            jQuery.each(entry.synonyms(), function(index, value) {
+                if (searchEntries.indexOf(value) >= 0) {
+                    isSearchEntryRelatedToObservation = true;
+                    return false;
+                }
+            })
+        }
+        return isSearchEntryRelatedToObservation;
+    }
+
     this.filter = function(dateObj, classTypes, searchEntries) {
         var filteredEntries = new Array();
         var entries = this.entries;
@@ -149,7 +173,7 @@ var FlowsheetData = function(data) {
             var searchEntryCheck = true;
             var dateCheck = true;
             if (searchEntries && searchEntries.length > 0) {
-                searchEntryCheck = searchEntries.indexOf(entry.name()) >= 0;
+                searchEntryCheck = searchEntriesCheck(searchEntries, entry);
             }
             if (dateObj.from && dateObj.to) {
                 dateCheck = (entry.date >= dateObj.from) && (entry.date <= dateObj.to);
@@ -157,6 +181,7 @@ var FlowsheetData = function(data) {
             if (dateCheck && classTypeCheck && searchEntryCheck) {
                 filteredEntries.push(entry);
             }
+
         });
         return filteredEntries;
     }
@@ -375,6 +400,14 @@ var ConceptNameSearch = function(selectElement) {
             if (uniqueEntries.indexOf(entry.name()) < 0) {
                 uniqueEntries.push(entry.name());
             }
+            if (uniqueEntries.indexOf(entry.shortName()) < 0) {
+                uniqueEntries.push(entry.shortName());
+            }
+            jQuery.each(entry.synonyms(), function(index, value) {
+                if (uniqueEntries.indexOf(value) < 0) {
+                    uniqueEntries.push(value);
+                }
+            })
         });
 
         return uniqueEntries;
