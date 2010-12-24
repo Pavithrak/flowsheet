@@ -52,6 +52,20 @@ Screw.Unit(function() {
                 it("should hide the column headers ", function() {
                     expect(jQuery('.ui-jqgrid-hdiv').css("display")).to(equal, "none");
                 }),
+                it("should ask to undo some filters if the filter doesnt give any results and not due to class unselected", function() {
+                    jQuery("#flowsheet").text("");
+                    flowsheet.createErrorMessage([], function() {
+                        return false;
+                    });
+                    expect(jQuery('#flowsheet').text()).to(equal, "Undo some filters to view the observations");
+                }),
+                it("should ask to select the class if there are no results due to class unselected", function() {
+                    jQuery("#flowsheet").text("");
+                    flowsheet.createErrorMessage([], function() {
+                        return true;
+                    });
+                    expect(jQuery('#flowsheet').text()).to(equal, "You have selected a concept but deselected the associated class");
+                }),
                 it("should not create Grid if there are no observations", function() {
                     jQuery("#flowsheet").GridUnload();
                     var emptyData = function() {

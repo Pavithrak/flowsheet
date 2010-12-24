@@ -51,7 +51,20 @@ var Flowsheet = function(tableId) {
 
         hideColumnHeaders();
         createSearchToolBar();
-    }
+    };
+
+    //Have to get rid of this one somehow
+    this.createErrorMessage = function(entries, requiredClassNotSelected) {
+        if (!entries || entries.length == 0) {
+            errorMsg = 'Undo some filters to view the observations'
+            if (requiredClassNotSelected())
+                errorMsg = "You have selected a concept but deselected the associated class"
+            jQuery("#flowsheet").append(jQuery('<tr>')
+                    .append(jQuery('<td>')
+                    .append(jQuery('<div style="padding:10px">')
+                    .text(errorMsg))));
+        }
+    };
 
     this.reload = function(entries) {
         jQuery("#" + tableId).clearGridData(false);

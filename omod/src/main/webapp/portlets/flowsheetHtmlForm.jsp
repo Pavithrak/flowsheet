@@ -107,19 +107,6 @@
         var obsInfo = new ObsInfo("#obsInfo", "#obsInfoGrid", "#numericObsGraph",
                 "#numericObsGraphLegend", "#obsInfoLabel", "#maximizeIcon", "#obsInfoDialog");
 
-
-        var createErrorMessage = function(entries,requiredClassNotSelected) {
-            if (!entries || entries.length == 0) {
-                errorMsg='Undo some filters to view the observations'
-                if(requiredClassNotSelected())
-                errorMsg="You have selected a concept but deselected the associated class"
-                jQuery("#flowsheet").append(jQuery('<tr>')
-                        .append(jQuery('<td>')
-                        .append(jQuery('<div style="padding:10px">')
-                        .text(errorMsg))));
-            }
-        }
-
         var filter = function() {
 			WaitMsg('#flowsheet_grid_div');
             var from = jQuery('#sliderInfoFrom').text();
@@ -127,9 +114,9 @@
             var list = getSearchEntries();
             var range = new DateObject(from, to);
             var entries = data.filter(range, classes.getSelected(), list);
-            flowsheetObj.reload(entries);
             conceptNameSearch.render(data.entries, filter);
-            createErrorMessage(entries,function(){
+            flowsheetObj.reload(entries);
+            flowsheetObj.createErrorMessage(entries,function(){
                 return data.filter(range,classes.notSelected(),list) != 0;
             });
 			StopWaiting('#flowsheet_grid_div');
@@ -207,10 +194,6 @@
             });
             return list
         }
-
-
-
-
     });
 --></script>
 
