@@ -5,6 +5,8 @@ String.prototype.contains = function(compare) {
 }
 
 
+
+
 var Flowsheet = function(tableId) {
     this.tableId = tableId;
 
@@ -66,6 +68,7 @@ var Flowsheet = function(tableId) {
         }
     };
 
+
     this.reload = function(entries) {
         jQuery("#" + tableId).clearGridData(false);
         jQuery("#" + tableId).jqGrid('setGridParam', {data:entries}).trigger("reloadGrid");
@@ -84,6 +87,7 @@ var Flowsheet = function(tableId) {
 
     var valueFormatter = function(cellvalue, options, rowObject) {
         if (rowObject.value) {
+
             if (rowObject.numeric()) {
                 var valueWitUnit = rowObject.value + " " + rowObject.numeric().unit;
                 if (rowObject.comment) {
@@ -92,9 +96,12 @@ var Flowsheet = function(tableId) {
                     valueWitUnit = valueWitUnit + "\n" + "*" +rowObject.comment;
                 }
                 return valueWitUnit;
+            }else if(rowObject.complex()){
+                var loadImgPath="loadImage('/openmrs/complexObsServlet?obsId="+rowObject.complex()+"')" ;
+                return "<a href='#' onclick="+loadImgPath+" >click to view image</a>";
             }
             else {
-                return rowObject.value;
+               return rowObject.value;
             }
         }
         return " ";
@@ -107,23 +114,40 @@ var FlowsheetData = function(data) {
     this.conceptMap = data.flowsheet.conceptMap;
     this.conceptClasses = data.flowsheet.conceptClasses;
     this.obsDates = data.flowsheet.obsDates;
-    
-    this.initEntries = function(data){
-		jQuery(this.entries).each(function(index,entry){
-		    entry.name = function(){
-		        var conceptMap = data.flowsheet.conceptMap;
-		        return conceptMap[entry.conceptId].name ;
-		    };
-		    entry.numeric = function(){
-		        var conceptMap = data.flowsheet.conceptMap;
-		        return conceptMap[entry.conceptId].numeric ;
-		    };
-		    entry.classType = function(){
-		        var conceptMap = data.flowsheet.conceptMap;
-		        return conceptMap[entry.conceptId].classType ;
-		    };
-		
-		});
+    this.initEntries = function(data) {
+        jQuery(this.entries).each(function(index, entry) {
+            entry.name = function() {
+                var conceptMap = data.flowsheet.conceptMap;
+                return conceptMap[entry.conceptId].name;
+            };
+            entry.numeric = function() {
+                var conceptMap = data.flowsheet.conceptMap;
+                return conceptMap[entry.conceptId].numeric;
+            };
+            entry.complex=function(){
+                var conceptMap = data.flowsheet.conceptMap;
+                return conceptMap[entry.conceptId].imageId;
+            };
+            entry.classType = function() {
+                var conceptMap = data.flowsheet.conceptMap;
+                return conceptMap[entry.conceptId].classType;
+            };
+            entry.shortName = function() {
+                var conceptMap = data.flowsheet.conceptMap;
+                return conceptMap[entry.conceptId].shortName;
+            };
+            entry.synonyms = function() {
+                var conceptMap = data.flowsheet.conceptMap;
+                var synonymsList = conceptMap[entry.conceptId].synonyms;
+                var synonyms = synonymsList.length > 0 ? synonymsList : [];
+                return synonyms;
+            };
+            if (!data.flowsheet.conceptMap[entry.conceptId].entries) {
+                data.flowsheet.conceptMap[entry.conceptId].entries = [];
+            }
+            data.flowsheet.conceptMap[entry.conceptId].entries.push(entry);
+
+        });
     };
     
     this.initEntries(data);
@@ -173,14 +197,18 @@ var FlowsheetData = function(data) {
     }
 
     this.searchForConceptId = function(query) {
-        var filteredData = new Array();
-        jQuery(this.entries).each(function(index, entry) {
-            if (entry.conceptId == query) {
-                filteredData.push(entry);
-            }
-        });
+        if (this.conceptMap[query]) {
+            return this.conceptMap[query].entries;
+        }
+        return [];
+    }
 
-        return filteredData;
+
+    this.isConceptComplex=function(query){
+         if (this.conceptMap[query]) {
+            return this.conceptMap[query].imageId;
+        }
+        return [];
     }
 
     this.search = function(query) {
@@ -463,7 +491,8 @@ var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numeric
             },grid: { hoverable: true, clickable: true }
             }
                     );
-        } else {
+        }
+        else {
             jQuery(numericObsGraph).hide();
             jQuery(numericObsGraphLegend).hide();
         }

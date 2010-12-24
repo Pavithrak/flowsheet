@@ -1,20 +1,24 @@
 package org.openmrs.module.flowsheet;
 
 import org.openmrs.Concept;
+import org.openmrs.ConceptDatatype;
 import org.openmrs.ConceptName;
 import org.openmrs.Obs;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import java.util.Locale;
 
 public class ConceptInfo {
     private Concept concept;
-
+    private Integer obsId;
     public ConceptInfo(Obs obs) {
         if(obs != null){
             this.concept = obs.getConcept();
+            this.obsId = obs.getObsId();
         }
         else{
             concept = new Concept();
@@ -64,4 +68,8 @@ public class ConceptInfo {
 		}
 		return null;
 	}
+
+    public String getImageId(){
+        return ConceptDatatype.COMPLEX_UUID.equalsIgnoreCase(concept.getDatatype().getUuid())?String.valueOf(obsId):null;
+    }
 }

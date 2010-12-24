@@ -18,7 +18,7 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 public class FlowsheetServiceTest extends BaseModuleContextSensitiveTest {
 
-//     protected static final String INITIAL_DATA_XML = "resources/org/openmrs/module/flowsheetTestDataSet.xml";
+    //     protected static final String INITIAL_DATA_XML = "resources/org/openmrs/module/flowsheetTestDataSet.xml";
     //     protected static final String INITIAL_DATA_XML = "../../../../../resources/org/openmrs/module/flowsheetTestDataSet.xml";
     protected static final String INITIAL_DATA_XML = "org/openmrs/module/flowsheetTestDataSet.xml";
 
@@ -38,12 +38,13 @@ public class FlowsheetServiceTest extends BaseModuleContextSensitiveTest {
         entry = getFlowSheetEntry(7).get(0);
         flowsheet = service.getFlowsheet(7);
 
+
     }
 
     @Test
     public void shouldReturnObservationsForPerson() {
         Assert.assertEquals(0, getFlowSheetEntry(1).size());
-        Assert.assertEquals(9, getFlowSheetEntry(7).size());
+        Assert.assertEquals(10, getFlowSheetEntry(7).size());
     }
 
 
@@ -113,5 +114,12 @@ public class FlowsheetServiceTest extends BaseModuleContextSensitiveTest {
         Map<Integer, ConceptInfo> conceptMap = flowsheet.getConceptMap();
         Assert.assertEquals("Patient's weight in kilograms.", conceptMap.get(5089).getDesc());
         Assert.assertEquals("Measure of CD4 (T-helper cells) in blood", conceptMap.get(5497).getDesc());
+    }
+
+    @Test
+    public void shouldReturnImageIdForComplexType() {
+        Map<Integer, ConceptInfo> conceptMap = flowsheet.getConceptMap();
+        Assert.assertEquals("17", conceptMap.get(5090).getImageId());
+        Assert.assertEquals(null, conceptMap.get(5089).getImageId());
     }
 }
