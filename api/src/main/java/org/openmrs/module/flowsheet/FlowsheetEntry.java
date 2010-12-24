@@ -9,11 +9,12 @@ public class FlowsheetEntry {
 
     private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private Obs obs;
+    private int rowNumber;
 
-    public FlowsheetEntry(Obs obs) {
+    public FlowsheetEntry(int rowNumber, Obs obs) {
+        this.rowNumber = rowNumber;
         this.obs = obs;
     }
-
 
     public String getValue() {
         return obs.getValueAsString(Locale.ENGLISH);
@@ -33,5 +34,9 @@ public class FlowsheetEntry {
 
     public String getComment() {
         return obs.getComment() == null ? "" : obs.getComment();
+    }
+
+    public int getRowNumber() {
+        return rowNumber;
     }
 }
