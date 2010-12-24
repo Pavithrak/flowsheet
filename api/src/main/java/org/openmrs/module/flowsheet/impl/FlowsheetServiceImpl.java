@@ -22,8 +22,9 @@ public class FlowsheetServiceImpl implements FlowsheetService {
 
 		List<Obs> obsList = Context.getObsService().getObservationsByPerson(new Person(personId));
         List<FlowsheetEntry> flowsheetEntries = new ArrayList<FlowsheetEntry>();
+        int rowNumber = 0;
         for (Obs obs : obsList){
-            flowsheetEntries.add(new FlowsheetEntry(obs));
+            flowsheetEntries.add(new FlowsheetEntry(++rowNumber, obs));
         }
         return new Flowsheet(flowsheetEntries);
 	}
@@ -60,8 +61,9 @@ public class FlowsheetServiceImpl implements FlowsheetService {
 
         List<Obs> obsList = query.list();
         List<FlowsheetEntry> flowsheetEntries = new ArrayList<FlowsheetEntry>();
+        int rowNumber = 0;
         for (Obs obs : obsList){
-            flowsheetEntries.add(new FlowsheetEntry(obs));
+            flowsheetEntries.add(new FlowsheetEntry(++rowNumber, obs));
         }
         return new Flowsheet(flowsheetEntries,conceptClasses,obsDates);
     }

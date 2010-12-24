@@ -37,7 +37,8 @@ var Flowsheet = function(tableId) {
                 {name:'name', width:180,formatter:nameFormatter},
                 {name:'value',width:100,formatter:valueFormatter},
                 {name:'low',width:100,formatter:rangeFormatter},
-                {name:'conceptId',hidden: true }
+                {name:'conceptId',hidden: true },
+                {name:'rowNumber',hidden: true }
             ],
             sortname: 'date',
             altRows:true,
@@ -456,7 +457,8 @@ var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numeric
 
         str += '<tbody>';
         for (var i = 0; i < array.length; i++) {
-            str += (i % 2 == 0) ? '<tr class="alt">' : '<tr>';
+            row_class = (i % 2 == 0) ? 'class="alt"' : '';
+            str += '<tr id="' + array[i].rowNumber + '" ' + row_class +' >';
             for (var key in requiredKey) {
                 var keyToLook = requiredKey[key];
                 str += '<td>' + array[i][keyToLook] + '</td>';
@@ -513,6 +515,8 @@ var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numeric
             collision: "fit"
         });
 
+        selectedObsRowNumber = positionTargetElem.find('td:nth-child(6)').html();
+        jQuery("#obsInfoDialog").find('#'+selectedObsRowNumber).removeClass('alt').addClass('ui-state-highlight');
     }
 
     this.reloadInExpandedMode = function(entries) {
