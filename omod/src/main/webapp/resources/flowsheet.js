@@ -14,6 +14,8 @@ Array.prototype.indexOf = function(obj, start) {
 }
 
 
+
+
 var Flowsheet = function(tableId) {
     this.tableId = tableId;
 
@@ -62,6 +64,7 @@ var Flowsheet = function(tableId) {
         createSearchToolBar();
     }
 
+
     this.reload = function(entries) {
         jQuery("#" + tableId).clearGridData(false);
         jQuery("#" + tableId).jqGrid('setGridParam', {data:entries}).trigger("reloadGrid");
@@ -80,6 +83,7 @@ var Flowsheet = function(tableId) {
 
     var valueFormatter = function(cellvalue, options, rowObject) {
         if (rowObject.value) {
+
             if (rowObject.numeric()) {
                 var valueWitUnit = rowObject.value + " " + rowObject.numeric().unit;
                 if (rowObject.comment) {
@@ -87,10 +91,11 @@ var Flowsheet = function(tableId) {
                 }
                 return valueWitUnit;
             }else if(rowObject.complex()){
-                 return "<a href='/openmrs/complexObsServlet?obsId=" +rowObject.complex() + "'>click to view image</a>";
+                var loadImgPath="loadImage('/openmrs/complexObsServlet?obsId="+rowObject.complex()+"')" ;
+                return "<a href='#' onclick="+loadImgPath+" >click to view image</a>";
             }
             else {
-                return rowObject.value;
+               return rowObject.value;
             }
         }
         return " ";
@@ -157,8 +162,16 @@ var FlowsheetData = function(data) {
     }
 
     this.searchForConceptId = function(query) {
-        if (data.flowsheet.conceptMap[query]) {
-            return data.flowsheet.conceptMap[query].entries;
+        if (this.conceptMap[query]) {
+            return this.conceptMap[query].entries;
+        }
+        return [];
+    }
+
+
+    this.isConceptComplex=function(query){
+         if (this.conceptMap[query]) {
+            return this.conceptMap[query].imageId;
         }
         return [];
     }
@@ -426,7 +439,8 @@ var ObsInfo = function(obsInfoElem, numericObsInfoGrid, numericObsGraph, numeric
             },grid: { hoverable: true, clickable: true }
             }
                     );
-        } else {
+        }
+        else {
             jQuery(numericObsGraph).hide();
             jQuery(numericObsGraphLegend).hide();
         }

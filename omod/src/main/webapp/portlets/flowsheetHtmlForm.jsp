@@ -80,13 +80,21 @@
         <div id="numericObsGraphLegend" class="obsGraphLegend"></div>
         <div id="obsInfoGrid" class="obsInfoGrid">
         </div>
-
     </div>
 </div>
+    <div id="imageDialog" title="Image">
+    </div>
 
 <script type="text/javascript"><!--
     //to be refactored - Balaji/Khaarthiga
+    jQuery("#imageDialog").dialog({
+             bgiframe: true, autoOpen: false, width:'auto', height:'auto', modal: true
+           });
 
+      var loadImage = function(imgPath){
+           jQuery("#imageDialog").html("<img src='"+imgPath+"'/>");
+           jQuery('#imageDialog').dialog('open');
+    }
     jQuery(document).ready(function() {
 
         var patientIdValue = $j('#patientId').val();
@@ -101,6 +109,8 @@
 		var StopWaiting = function (field) {
 		    jQuery(field).unblock();
 		};
+
+
         var flowsheetObj = new Flowsheet("flowsheet");
         var data = {};
         var classes = new ConceptClass("#classTypeList");
@@ -136,9 +146,11 @@
         var onClickHandlerForGrid = function(rowid, iCol, cellcontent, e) {
             e.stopPropagation();
             var conceptId = jQuery("#flowsheet").find("#"+rowid).find('td:nth-child(5)').html();
+            if(data.isConceptComplex(conceptId)==null){
             var searchResult = data.searchForConceptId(conceptId);
             obsInfo.reload(searchResult,jQuery("#flowsheet").find("#"+rowid));
             obsInfo.setConceptDesc("#conceptDesc",data.getConceptDesc(conceptId));
+            }
         }
 
         jQuery("body").click(function() {
@@ -201,7 +213,6 @@
             });
             return list
         }
-
 
 
 

@@ -48,9 +48,6 @@ public class ConceptInfo {
 	}
 
     public String getImageId(){
-        if("Complex".equalsIgnoreCase(concept.getDatatype().getName()))
-            return  obsId + "";
-        else
-            return null;
+        return ConceptDatatype.COMPLEX_UUID.equalsIgnoreCase(concept.getDatatype().getUuid())?String.valueOf(obsId):null;
     }
 }
