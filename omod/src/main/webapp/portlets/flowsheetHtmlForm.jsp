@@ -21,10 +21,11 @@
 
 
 <input type="hidden" id="patientId" name="patientId" value='<request:parameter name="patientId" />'/>
-<div id="loading" class="loading">Loading .... </div>
+
+<div id="loading" class="loading">Loading ....</div>
 <table class="table_group" id="table_group" style="display:none">
 
-	<tr>
+    <tr>
         <td class="flowsheet_left_panel">
             <table>
                 <tr>
@@ -65,11 +66,11 @@
         </td>
         <td class="flowsheet_grid" id="flowsheet_grid">
             <div id="flowsheet_grid_div">
-			<table id="flowsheet" class="flowsheet">
-            </table>
+                <table id="flowsheet" class="flowsheet">
+                </table>
             </div>
-		</td>
-	</tr>
+        </td>
+    </tr>
 </table>
 <div id="obsInfoDialog" class="">
     <div id="obsInfo" class="obsInfoPanel">
@@ -82,130 +83,134 @@
         </div>
     </div>
 </div>
-    <div id="imageDialog" title="Image">
-    </div>
+<div id="imageDialog" title="Image">
+</div>
 
-<script type="text/javascript"><!--
+<script type="text/javascript"><
+!--
     //to be refactored - Balaji/Khaarthiga
-    jQuery("#imageDialog").dialog({
-             bgiframe: true, autoOpen: false, width:'auto', height:'auto', modal: true
-           });
+        jQuery("#imageDialog").dialog({
+            bgiframe: true, autoOpen: false, width:'auto', height:'auto', modal: true
+        });
 
-      var loadImage = function(imgPath){
-           jQuery("#imageDialog").html("<img src='"+imgPath+"'/>");
-           jQuery('#imageDialog').dialog('open');
+var loadImage = function(imgPath) {
+    jQuery("#imageDialog").html("<img src='" + imgPath + "'/>");
+    jQuery('#imageDialog').dialog('open');
+}
+jQuery(document).ready(function() {
+
+    var patientIdValue = $j('#patientId').val();
+    var jsondata = {
+        patientId : patientIdValue
+    };
+    var WaitMsg = function (field) {
+        jQuery(field).block({
+            message: 'Loading...'
+        });
+    };
+    var StopWaiting = function (field) {
+        jQuery(field).unblock();
+    };
+
+
+    var flowsheetObj = new Flowsheet("flowsheet");
+    var data = {};
+    var classes = new ConceptClass("#classTypeList");
+    var obsInfo = new ObsInfo("#obsInfo", "#obsInfoGrid", "#numericObsGraph",
+            "#numericObsGraphLegend", "#obsInfoLabel", "#maximizeIcon", "#obsInfoDialog");
+
+    var filter = function() {
+        WaitMsg('#flowsheet_grid_div');
+        var from = jQuery('#sliderInfoFrom').text();
+        var to = jQuery('#sliderInfoTo').text();
+        var list = getSearchEntries();
+        var range = new DateObject(from, to);
+        var entries = data.filter(range, classes.getSelected(), list);
+        conceptNameSearch.render(data.entries, filter);
+        flowsheetObj.reload(entries);
+        flowsheetObj.createErrorMessage(entries, function() {
+            var anythingSelected = classes.getSelected().length != 0;
+            var hasObsInUnselectedClasses = data.filter(range, classes.notSelected(), list).length != 0;
+            return anythingSelected && hasObsInUnselectedClasses;
+        });
+        StopWaiting('#flowsheet_grid_div');
+    };
+
+    var dateRange = new DateRange(jQuery("#Slider1"), filter);
+    var conceptNameSearch;
+
+
+    var onClickHandlerForGrid = function(rowid, iCol, cellcontent, e) {
+        e.stopPropagation();
+        var conceptId = jQuery("#flowsheet").find("#" + rowid).find('td:nth-child(5)').html();
+        if (data.isConceptComplex(conceptId) == null) {
+            var searchResult = data.searchForConceptId(conceptId);
+            obsInfo.reload(searchResult, jQuery("#flowsheet").find("#" + rowid));
+            obsInfo.setConceptDesc("#conceptDesc", data.getConceptDesc(conceptId));
+        }
     }
-    jQuery(document).ready(function() {
 
-        var patientIdValue = $j('#patientId').val();
-        var jsondata = {
-            patientId : patientIdValue
-        };
-		var WaitMsg = function (field) {
-			jQuery(field).block({
-				message: 'Loading...'
-					});
-		};
-		var StopWaiting = function (field) {
-		    jQuery(field).unblock();
-		};
+    jQuery("body").click(function() {
+        obsInfo.hide();
+    });
+
+    jQuery("#maximizeIcon").click(function(e) {
+        e.stopPropagation();
+        var conceptId = jQuery("#maximizeIcon").attr("conceptId");
+        var searchResult = data.searchForConceptId(conceptId);
+        obsInfo.reloadInExpandedMode(searchResult);
+    });
 
 
-        var flowsheetObj = new Flowsheet("flowsheet");
-        var data = {};
-        var classes = new ConceptClass("#classTypeList");
-        var obsInfo = new ObsInfo("#obsInfo", "#obsInfoGrid", "#numericObsGraph",
-                "#numericObsGraphLegend", "#obsInfoLabel", "#maximizeIcon", "#obsInfoDialog");
+    renderflowsheet = function(json) {
+        data = new FlowsheetData(json);
+        flowsheetObj.render(data.entries, onClickHandlerForGrid);
+        classes.render(data.getConceptClasses());
+        classes.change(filter);
+        classes.attachSelectClearAll(filter);
+        dateRange.render(data.getDateRange());
+        jQuery('#table_group').show();
+        conceptNameSearch = new ConceptNameSearch(jQuery("#conceptSelect"));
+        conceptNameSearch.render(data.entries, filter);
+        jQuery('#loading').hide();
+        fetchFlowsheetCompleteData();
+    };
 
-        var filter = function() {
-			WaitMsg('#flowsheet_grid_div');
-            var from = jQuery('#sliderInfoFrom').text();
-            var to = jQuery('#sliderInfoTo').text();
-            var list = getSearchEntries();
-            var range = new DateObject(from, to);
-            var entries = data.filter(range, classes.getSelected(), list);
-            conceptNameSearch.render(data.entries, filter);
-            flowsheetObj.reload(entries);
-            flowsheetObj.createErrorMessage(entries,function(){
-                return data.filter(range,classes.notSelected(),list) != 0;
-            });
-			StopWaiting('#flowsheet_grid_div');
-        }
+    renderflowsheetComplete = function(json) {
+        data.updateData(json);
+        flowsheetObj.reload(data.entries);
+        conceptNameSearch.render(data.entries, filter);
+    }
 
-        var dateRange = new DateRange(jQuery("#Slider1"), filter);
-        var conceptNameSearch ;
-
-
-        var onClickHandlerForGrid = function(rowid, iCol, cellcontent, e) {
-            e.stopPropagation();
-            var conceptId = jQuery("#flowsheet").find("#"+rowid).find('td:nth-child(5)').html();
-            if(data.isConceptComplex(conceptId)==null){
-            var searchResult = data.searchForConceptId(conceptId);
-            obsInfo.reload(searchResult,jQuery("#flowsheet").find("#"+rowid));
-            obsInfo.setConceptDesc("#conceptDesc",data.getConceptDesc(conceptId));
-            }
-        }
-
-        jQuery("body").click(function() {
-            obsInfo.hide();
-        });
-
-        jQuery("#maximizeIcon").click(function(e) {
-            e.stopPropagation();
-            var conceptId = jQuery("#maximizeIcon").attr("conceptId");
-            var searchResult = data.searchForConceptId(conceptId);
-            obsInfo.reloadInExpandedMode(searchResult);
-        });
-
-
-        renderflowsheet = function(json) {
-            data = new FlowsheetData(json);
-            flowsheetObj.render(data.entries, onClickHandlerForGrid);
-            classes.render(data.getConceptClasses());
-            classes.change(filter);
-            classes.attachSelectClearAll(filter);
-            dateRange.render(data.getDateRange());
-            jQuery('#table_group').show();
-         	conceptNameSearch = new ConceptNameSearch(jQuery("#conceptSelect"));
-            conceptNameSearch.render(data.entries, filter);
-			jQuery('#loading').hide();
-            fetchFlowsheetCompleteData();
-        };
-        
-        renderflowsheetComplete = function(json){
-        	data.updateData(json);
-        	flowsheetObj.reload(data.entries);
-            conceptNameSearch.render(data.entries, filter);
-        }
-
-        var fetchFlowsheetCompleteData = function(){
-            $j.ajax({
-                url : "flowsheet.json",
-                data : jsondata,
-                success : renderflowsheetComplete,
-                dataType : "json"
-            });
-        	
-        }
-        
+    var fetchFlowsheetCompleteData = function() {
         $j.ajax({
-            url : "flowsheetSnapshot.json",
+            url : "flowsheet.json",
             data : jsondata,
-            success : renderflowsheet,
+            success : renderflowsheetComplete,
             dataType : "json"
         });
 
+    }
 
-        var getSearchEntries = function() {
-            var list = []
-            jQuery(".holder").children('li').each(function(index) {
-                var text = jQuery(this).text();
-                if (text.length > 0) {
-                    list.push(text);
-                }
-            });
-            return list
-        }
+    $j.ajax({
+        url : "flowsheetSnapshot.json",
+        data : jsondata,
+        success : renderflowsheet,
+        dataType : "json"
     });
---></script>
+
+
+    var getSearchEntries = function() {
+        var list = []
+        jQuery(".holder").children('li').each(function(index) {
+            var text = jQuery(this).text();
+            if (text.length > 0) {
+                list.push(text);
+            }
+        });
+        return list
+    }
+});
+-- >
+</script>
 

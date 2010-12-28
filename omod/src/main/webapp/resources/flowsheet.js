@@ -331,7 +331,7 @@ var ConceptClass = function(list) {
         })
     }
     this.getSelected = function() {
-        return getValues(jQuery("input[@name='classTypeCB[]']:checked"));
+        return getValues(jQuery("input[name='classTypeCB']:checked"));
     };
 
     var getValues = function(elements) {
@@ -344,7 +344,7 @@ var ConceptClass = function(list) {
     };
 
     this.notSelected = function() {
-        return getValues(jQuery("input[@name='classTypeCB[]']").not(":checked"));
+        return getValues(jQuery("input[name='classTypeCB']:not(:checked)"));
     };
 
     this.change = function(filterHandler) {
